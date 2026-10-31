@@ -1,5 +1,17 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>Clubnight</title>
+<!doctype html><html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#07040f">
+<meta name="description" content="TECHNOID – HD-2D Techno-Shooter: 10 Clubs, 10 Festivals, Genre-Bosse.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TECHNOID">
+<meta name="application-name" content="TECHNOID">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="icons/favicon-64.png">
+<title>TECHNOID</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
@@ -227,23 +239,41 @@ h1,h2,h3{margin:0;font-weight:700;text-wrap:balance}
 .stamps{display:flex;flex-wrap:wrap;gap:.3em;font-family:var(--f-lab);font-size:.62em}.stamps span{padding:.2em .45em;background:rgba(255,255,255,.06);color:var(--dim)}.stamps span.on{background:rgba(182,255,58,.15);color:var(--lime)}
 .btn.remix{border-color:var(--gold)}.btn.remix small{color:var(--gold)}
 .stats .own{grid-column:1/-1;color:var(--gold);font-family:var(--f-lab);font-size:.8em;text-shadow:0 0 8px var(--gold)}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+canvas.logoC{image-rendering:pixelated;display:block}
+canvas.logoC.big{width:min(92vw,calc(36vh*540/176));height:auto;filter:drop-shadow(0 0 18px rgba(255,47,214,.35))}
+canvas.logoC.sm{width:min(70vw,calc(15vh*320/104));height:auto;margin-left:-.4em}
+#pSplash{overflow:hidden}#pSplash .tag{font-family:var(--f-lab);letter-spacing:.22em;font-size:.8em;color:var(--cyan);margin:-.4em 0 0;text-shadow:0 0 8px rgba(47,243,255,.6)}
+#pSplash .chips{display:flex;flex-wrap:wrap;justify-content:center;gap:.4em}#pSplash .chips span{font-family:var(--f-lab);font-size:.62em;letter-spacing:.06em;padding:.35em .7em;background:rgba(14,8,30,.75);box-shadow:inset 0 0 0 1px var(--line);clip-path:var(--cut4)}
+#pSplash>*{position:relative;z-index:1}
+.beams{position:absolute!important;inset:0;z-index:0!important;pointer-events:none;overflow:hidden}
+.beams i{position:absolute;bottom:-10%;left:50%;width:14vmax;height:130vh;transform-origin:50% 100%;background:linear-gradient(to top,rgba(255,47,214,.28),rgba(255,47,214,0) 80%);filter:blur(6px);animation:sweep 7s ease-in-out infinite alternate}
+.beams i:nth-child(2){background:linear-gradient(to top,rgba(47,243,255,.24),rgba(47,243,255,0) 80%);animation-duration:9s;animation-delay:-3s}
+.beams i:nth-child(3){background:linear-gradient(to top,rgba(255,226,58,.16),rgba(255,226,58,0) 75%);animation-duration:11s;animation-delay:-6s}
+@keyframes sweep{0%{transform:translateX(-50%) rotate(-38deg)}100%{transform:translateX(-50%) rotate(38deg)}}
+.btn.pulse{animation:bpulse 1.4s ease-in-out infinite}@keyframes bpulse{50%{box-shadow:inset 0 0 0 2px var(--mag),0 0 22px rgba(255,47,214,.55)}}
+@media (prefers-reduced-motion:reduce){.beams i,.btn.pulse{animation:none}}
+@media (max-height:500px){#pSplash{gap:.5em}#pSplash .story{display:none}canvas.logoC.big{width:min(80vw,calc(42vh*540/176))}}
 @media (max-width:760px){.flyer{display:none}.stage canvas{width:min(100%,40vh)}.mlist{width:min(22em,92vw)}.tourwrap,.ward{grid-template-columns:1fr}.trees{grid-template-columns:1fr}.res{grid-template-columns:repeat(2,1fr)}}
 @media (max-height:520px){.logo{font-size:clamp(34px,15vh,80px)}.btn{padding:.42em .9em}.mlist{gap:.32em}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 <div id="app">
- <canvas id="screen" aria-label="Spielfläche Clubnight"></canvas>
+ <canvas id="screen" aria-label="Spielfläche TECHNOID"></canvas>
  <div id="ui">
   <section id="pSplash" class="scr dim">
-   <div class="logo"><span class="l1">CLUB</span><span class="l2">NIGHT</span></div>
-   <p class="tag">HD-2D Techno-Shooter · 10 Clubs · eine Nacht</p>
-   <p class="story">König Kommerz will den Techno aus Deutschland verbannen. Seine Genre-Bosse haben die besten Clubs besetzt – vom <b>Schlagerbaron</b> in Leipzig bis zur Diva an der Spree. Du hast Bass, Platten und einen Doppelsprung. Hol dir die Tanzflächen zurück.</p>
-   <button id="btnEnter" class="btn big" data-focus>Einlass ▸</button>
-   <p class="hint">Ton an · Kopfhörer empfohlen</p>
+   <div class="beams" aria-hidden="true"><i></i><i></i><i></i></div>
+   <h1 class="vh">TECHNOID</h1>
+   <canvas class="logoC big" width="540" height="176" aria-hidden="true"></canvas>
+   <p class="tag">HD-2D Techno-Shooter · 10 Clubs · 10 Festivals</p>
+   <div class="chips"><span>🎧 Genre-Bosse</span><span>⏱ Im Takt schießen</span><span>🗺 Clubs & Festivals</span><span>★ Remix-Modus</span></div>
+   <p class="story">König Kommerz will den Techno verbannen. Seine Genre-Bosse haben die besten Clubs und Festivals besetzt – vom <b>Schlagerbaron</b> in Leipzig bis zur <b>Algorithmus-Queen</b> in Boom. Du hast Bass, Platten und einen Doppelsprung. <b>Rette den Beat.</b></p>
+   <button id="btnEnter" class="btn big pulse" data-focus>Einlass ▸</button>
+   <p class="hint" id="splashHint">Ton an · Kopfhörer empfohlen</p>
   </section>
   <section id="pMenu" class="scr dim" hidden>
    <div class="menuL">
-    <div class="logo sm"><span class="l1">CLUB</span><span class="l2">NIGHT</span></div>
+    <h1 class="vh">TECHNOID</h1><canvas class="logoC sm" width="320" height="104" aria-hidden="true"></canvas>
     <nav class="mlist" aria-label="Hauptmenü">
      <button class="btn" data-act="play" data-focus><div><span id="playLbl">Nacht starten</span><small id="playSub"></small></div></button>
      <button class="btn" data-act="tour"><div>Tour · Levelwahl<small id="tourSub"></small></div></button>
@@ -1234,16 +1264,46 @@ function drawBig(c,e,X,Y,o){
 }
 /* ---------- Schrift-Schilder (Neon), gecacht ---------- */
 const SIGNC={};
+/* Eingebaute 5×7-Pixelschrift: gestochen scharf, auch offline ohne Webfont */
+const PF=(()=>{const D={A:'.111.|1...1|1...1|11111|1...1|1...1|1...1',B:'1111.|1...1|1...1|1111.|1...1|1...1|1111.',C:'.111.|1...1|1....|1....|1....|1...1|.111.',D:'1111.|1...1|1...1|1...1|1...1|1...1|1111.',
+ E:'11111|1....|1....|1111.|1....|1....|11111',F:'11111|1....|1....|1111.|1....|1....|1....',G:'.111.|1...1|1....|1.111|1...1|1...1|.1111',H:'1...1|1...1|1...1|11111|1...1|1...1|1...1',
+ I:'111|.1.|.1.|.1.|.1.|.1.|111',J:'..111|...1.|...1.|...1.|...1.|1..1.|.11..',K:'1...1|1..1.|1.1..|11...|1.1..|1..1.|1...1',L:'1....|1....|1....|1....|1....|1....|11111',
+ M:'1...1|11.11|1.1.1|1.1.1|1...1|1...1|1...1',N:'1...1|11..1|1.1.1|1..11|1...1|1...1|1...1',O:'.111.|1...1|1...1|1...1|1...1|1...1|.111.',P:'1111.|1...1|1...1|1111.|1....|1....|1....',
+ Q:'.111.|1...1|1...1|1...1|1.1.1|1..1.|.11.1',R:'1111.|1...1|1...1|1111.|1.1..|1..1.|1...1',S:'.1111|1....|1....|.111.|....1|....1|1111.',T:'11111|..1..|..1..|..1..|..1..|..1..|..1..',
+ U:'1...1|1...1|1...1|1...1|1...1|1...1|.111.',V:'1...1|1...1|1...1|1...1|1...1|.1.1.|..1..',W:'1...1|1...1|1...1|1.1.1|1.1.1|1.1.1|.1.1.',X:'1...1|1...1|.1.1.|..1..|.1.1.|1...1|1...1',
+ Y:'1...1|1...1|.1.1.|..1..|..1..|..1..|..1..',Z:'11111|....1|...1.|..1..|.1...|1....|11111',
+ 'Ä':'.1.1.|.....|.111.|1...1|11111|1...1|1...1','Ö':'.1.1.|.....|.111.|1...1|1...1|1...1|.111.','Ü':'.1.1.|.....|1...1|1...1|1...1|1...1|.111.','ß':'.11..|1..1.|1..1.|1.1..|1..1.|1..1.|1.11.',
+ 'Ó':'...1.|..1..|.111.|1...1|1...1|1...1|.111.','É':'...1.|..1..|11111|1....|1111.|1....|11111','Ê':'..1..|.1.1.|11111|1....|1111.|1....|11111',
+ 0:'.111.|1...1|1..11|1.1.1|11..1|1...1|.111.',1:'..1..|.11..|..1..|..1..|..1..|..1..|.111.',2:'.111.|1...1|....1|...1.|..1..|.1...|11111',3:'1111.|....1|....1|.111.|....1|....1|1111.',
+ 4:'...1.|..11.|.1.1.|1..1.|11111|...1.|...1.',5:'11111|1....|1111.|....1|....1|1...1|.111.',6:'.111.|1....|1....|1111.|1...1|1...1|.111.',7:'11111|....1|...1.|..1..|.1...|.1...|.1...',
+ 8:'.111.|1...1|1...1|.111.|1...1|1...1|.111.',9:'.111.|1...1|1...1|.1111|....1|....1|.111.',
+ ' ':'...|...|...|...|...|...|...','·':'...|...|...|.1.|...|...|...','-':'....|....|....|111.|....|....|....','&':'.11..|1..1.|1.1..|.1...|1.1.1|1..1.|.11.1',
+ '.':'.|.|.|.|.|.|1',',':'..|..|..|..|..|.1|1.','!':'1|1|1|1|1|.|1',':':'.|1|.|.|.|1|.','/':'....1|...1.|...1.|..1..|.1...|.1...|1....',"'":'1|1|.|.|.|.|.',
+ '▸':'1...|11..|111.|1111|111.|11..|1...','+':'.....|..1..|..1..|11111|..1..|..1..|.....','★':'..1..|..1..|11111|.111.|.1.1.|1...1|.....','?':'.111.|1...1|....1|...1.|..1..|.....|..1..',
+ '(':'.1|1.|1.|1.|1.|1.|.1',')':'1.|.1|.1|.1|.1|.1|1.','%':'11..1|11.1.|...1.|..1..|.1...|.1.11|1..11','#':'.1.1.|11111|.1.1.|.1.1.|.1.1.|11111|.1.1.','„':'..|..|..|..|..|11|11','“':'11|11|..|..|..|..|..','"':'1.1|1.1|...|...|...|...|...','♪':'..11|..1.|..1.|..1.|111.|111.|.1..','♫':'.1111|.1..1|.1..1|.1..1|11.11|11.11|.....','∞':'.....|.1.1.|1.1.1|1.1.1|.1.1.|.....|.....','€':'..111|.1...|1111.|.1...|1111.|.1...|..111','×':'.....|1...1|.1.1.|..1..|.1.1.|1...1|.....'};
+ const G={};for(const k in D)G[k]=D[k].split('|');return G})();
+function pfGlyph(ch){let g=PF[ch];if(!g){const u=ch.toUpperCase();g=PF[u];if(!g){const b=u.normalize('NFD').replace(/[̀-ͯ]/g,'');g=PF[b]||PF['?']}}return g}
+function pfRaster(text,sc){const gl=[...String(text)].map(pfGlyph);let w=0;gl.forEach((g,i)=>{w+=g[0].length+(i<gl.length-1?1:0)});
+ const W=w*sc,H=7*sc,on=new Uint8Array(Math.max(1,W*H));let cx=0;
+ for(const g of gl){g.forEach((row,j)=>{for(let i=0;i<row.length;i++)if(row[i]==='1')for(let a=0;a<sc;a++)for(let b=0;b<sc;b++)on[(j*sc+a)*W+cx+i*sc+b]=1});cx+=(g[0].length+1)*sc}
+ return{W,H,on}}
 function neonSign(text,col,size){
  const k=text+col+size;if(SIGNC[k])return SIGNC[k];
- const t=mk(4,4),tx=t.getContext('2d');const font=size+'px Silkscreen, "Pixelify Sans", monospace';tx.font=font;
- const w=Math.ceil(tx.measureText(text).width)+8,h=size+6;const c=mk(w,h),x=c.getContext('2d');
- x.font=font;x.textBaseline='top';x.fillStyle=shade(col,-.55);x.fillText(text,5,4);x.fillStyle=col;x.fillText(text,4,3);x.fillStyle=rgba('#ffffff',.55);x.fillText(text,4,3);
- x.globalCompositeOperation='source-atop';x.fillStyle=rgba(col,.55);x.fillRect(0,0,w,h);
- return SIGNC[k]=c}
+ const sc=size>12?2:1,R=pfRaster(text,sc),P=2,w=R.W+P*2,h=R.H+P*2,on=new Uint8Array(w*h);
+ for(let y=0;y<R.H;y++)for(let x=0;x<R.W;x++)on[(y+P)*w+x+P]=R.on[y*R.W+x];
+ const c=mk(w,h),x=c.getContext('2d'),out=x.createImageData(w,h),o=out.data,core=hexRgb(shade(col,.5)),base=hexRgb(col),edge=[10,6,18];
+ const put=(i,rgb,a)=>{o[i*4]=rgb[0];o[i*4+1]=rgb[1];o[i*4+2]=rgb[2];o[i*4+3]=a};
+ for(let yy=0;yy<h;yy++)for(let xx=0;xx<w;xx++){const i=yy*w+xx;if(on[i])continue;let n=0;
+  for(let dy=-1;dy<=1&&!n;dy++)for(let dx=-1;dx<=1;dx++){const X=xx+dx,Y=yy+dy;if(X>=0&&Y>=0&&X<w&&Y<h&&on[Y*w+X]){n=1;break}}
+  if(n)put(i,edge,240)}
+ for(let yy=0;yy<h;yy++)for(let xx=0;xx<w;xx++){const i=yy*w+xx;if(on[i])put(i,(yy-P)<R.H*.5?core:base,255)}
+ x.putImageData(out,0,0);return SIGNC[k]=c}
 function textCanvas(text,col,size,font){
  const k='T'+text+col+size+(font||'');if(SIGNC[k])return SIGNC[k];
- const t=mk(4,4),tx=t.getContext('2d'),fnt=size+'px '+(font||'Silkscreen, monospace');tx.font=fnt;
+ if(!font){const sc=size>12?2:1,R=pfRaster(text,sc),c=mk(R.W+2,R.H+2),x=c.getContext('2d'),out=x.createImageData(R.W+2,R.H+2),o=out.data,rgb=hexRgb(col.length===7||col.length===4?col:'#ffffff');
+  for(let y=0;y<R.H;y++)for(let xx=0;xx<R.W;xx++)if(R.on[y*R.W+xx]){const i=((y+1)*(R.W+2)+xx+1)*4;o[i]=rgb[0];o[i+1]=rgb[1];o[i+2]=rgb[2];o[i+3]=255}
+  x.putImageData(out,0,0);return SIGNC[k]=c}
+ const t=mk(4,4),tx=t.getContext('2d'),fnt=size+'px '+font;tx.font=fnt;
  const w=Math.ceil(tx.measureText(text).width)+2,c=mk(w,size+3),x=c.getContext('2d');x.font=fnt;x.textBaseline='top';x.fillStyle=col;x.fillText(text,1,1);return SIGNC[k]=c}
 
 /* ================= THEMES ================= */
@@ -4409,6 +4469,40 @@ UI.b_pArchiv=function(){const t=this.archTab||'flyer',nA=Object.keys(SAVE.ach).l
 {const _gm=goMenu;goMenu=function(){G.remix=false;_gm()}}
 {const _d=defSprites;defSprites=function(){_d();SPR.flyer=bmp(['1111111','1222221','1233321','1244421','1222221','1255521','1222221','1111111'],{1:'#ff8ad8',2:'#fff4e8',3:'#ff2fd6',4:'#2ff3ff',5:'#1a1a22'})}}
 
+/* =====================================================================
+   TECHNOID – Logo „Vinyl-O“ (animiert) für Startbildschirm und Menü
+   ===================================================================== */
+const BRAND={name:'TECHNOID'};
+const LFONT={T:['111111','111111','..11..','..11..','..11..','..11..','..11..','..11..'],E:['111111','111111','11....','11111.','11111.','11....','111111','111111'],
+ C:['.11111','111111','11....','11....','11....','11....','111111','.11111'],H:['11..11','11..11','11..11','111111','111111','11..11','11..11','11..11'],
+ N:['11..11','111.11','111111','111111','11.111','11..11','11..11','11..11'],O:['.1111.','111111','11..11','11..11','11..11','11..11','111111','.1111.'],
+ I:['1111','1111','.11.','.11.','.11.','.11.','1111','1111'],D:['11111.','111111','11..11','11..11','11..11','11..11','111111','11111.']};
+const CHROME=['#ffffff','#ffe6ff','#ffa8f2','#ff4fd8','#c822ae','#ff4fd8','#ffbcf6','#ffffff'];
+function logoWidth(s){let w=0;for(const ch of BRAND.name)w+=(LFONT[ch][0].length+1)*s;return w-s}
+function drawVinyl(x,cx,cy,r,lab,t){
+ x.fillStyle='#0c0c12';x.beginPath();x.arc(cx,cy,r,0,TAU);x.fill();x.strokeStyle='#2a2a40';x.lineWidth=1;
+ for(let k=r-2;k>r*.45;k-=2){x.beginPath();x.arc(cx,cy,k,0,TAU);x.stroke()}
+ x.strokeStyle='rgba(255,255,255,.35)';x.lineWidth=2;x.beginPath();x.arc(cx,cy,r*.72,t*3,t*3+.7);x.stroke();
+ x.strokeStyle='#ff4fd8';x.lineWidth=Math.max(1,r/7);x.beginPath();x.arc(cx,cy,r,0,TAU);x.stroke();
+ x.fillStyle=lab;x.beginPath();x.arc(cx,cy,r*.38,0,TAU);x.fill();
+ x.fillStyle='#ffffff';x.fillRect(Math.round(cx+Math.cos(t*3)*r*.22)-1,Math.round(cy+Math.sin(t*3)*r*.22)-1,2,2);x.fillRect(cx-1,cy-1,2,2)}
+/* Logo auf ein Canvas zeichnen (s = Pixelgröße der Buchstaben) */
+function drawLogo(cv,t,eq){const x=cv.getContext('2d'),W=cv.width,H=cv.height;x.clearRect(0,0,W,H);x.imageSmoothingEnabled=false;
+ const s=Math.max(2,Math.floor(W/54)),w=logoWidth(s),X=Math.round((W-w)/2),Y=Math.round(s*1.5);let ox=0,cx=X;
+ x.shadowColor='#ff2fd6';x.shadowBlur=s*3.5;
+ for(const ch of BRAND.name){const g=LFONT[ch];if(ch==='O')ox=cx;else g.forEach((row,j)=>{for(let i=0;i<row.length;i++)if(row[i]==='1'){x.fillStyle=CHROME[j];x.fillRect(cx+i*s,Y+j*s,s,s)}});cx+=(g[0].length+1)*s}
+ x.shadowBlur=0;const r=s*4.1;drawVinyl(x,ox+s*3,Y+s*4,r,'#2ff3ff',t);
+ x.shadowColor='#2ff3ff';x.shadowBlur=s*2;x.fillStyle='#2ff3ff';x.fillRect(ox+s*3-1,Y+s*4-1,2,2);
+ // Equalizer
+ if(eq){const n=24,bw=w/n,base=Y+s*8+s*7.5;for(let k=0;k<n;k++){const h=Math.max(1,Math.min(s*6,Math.round((eq[k%eq.length])*s*1.15)));
+  for(let q=0;q<h;q++){const lv=q/s;x.fillStyle=lv>4.4?'#ff2fd6':lv>2.6?'#ffe23a':'#2ff3ff';if(q%3<2)x.fillRect(Math.round(X+k*bw),base-q,Math.max(1,Math.round(bw)-2),1)}}}
+ x.shadowBlur=0}
+const EQ=new Array(24).fill(1);
+function brandTick(dt){const cvs=document.querySelectorAll('canvas.logoC');if(!cvs.length)return;
+ const bpm=128,ph=(performance.now()/1000*bpm/60)%1,kick=Math.pow(1-ph,3);
+ for(let k=0;k<EQ.length;k++){const tgt=1+kick*(2.5+3*Math.abs(Math.sin(k*1.7)))+Math.random()*1.4+(Math.sin(performance.now()/300+k*.6)+1)*.9;EQ[k]+=(tgt-EQ[k])*Math.min(1,dt*14)}
+ for(const cv of cvs){if(cv.offsetParent===null)continue;drawLogo(cv,performance.now()/1000,cv.dataset.eq==='0'?null:EQ)}}
+
 /* ================= INPUT ================= */
 const KEYMAP={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',ArrowDown:'down',KeyS:'down',ArrowUp:'jump',KeyW:'jump',Space:'jump',
  KeyJ:'shoot',KeyX:'shoot',KeyC:'shoot',KeyK:'drop',KeyF:'drop',ShiftLeft:'dash',ShiftRight:'dash',KeyL:'dash',KeyQ:'prev',KeyE:'next',KeyI:'aimUp',
@@ -4486,6 +4580,7 @@ function frame(now){
   render();
   if(UI.cur==='pWardrobe')UI.drawPreview();
   if(UI.cur==='pMenu')UI.drawMenuDancer();
+  if(UI.cur==='pMenu'||UI.cur==='pSplash')brandTick(dt);
  }catch(err){console.error(err)}
  IN.pressed.clear();
 }
@@ -4505,5 +4600,5 @@ window.KN={G,SAVE:()=>SAVE,start:i=>startLevel(i),boss(){const A=G.level.arena;G
 boot();
 
 </script>
-
+<script>if('serviceWorker' in navigator&&location.protocol==='https:'&&window.top===window)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </body></html>
