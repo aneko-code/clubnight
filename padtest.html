@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pad-Test</title>
+<style>
+:root{--bg:#07040f;--ink:#f6f0ff;--dim:#a99cc8;--mag:#ff2fd6;--cyan:#2ff3ff;--lime:#b6ff3a;--red:#ff4a5a;--panel:#140c28}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:20px/1.4 ui-monospace,Menlo,Consolas,monospace;padding:24px}
+h1{margin:0 0 4px;font-size:34px;color:#fff;text-shadow:0 0 12px var(--mag)}
+.sub{color:var(--dim);margin:0 0 20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.card{background:var(--panel);border:2px solid rgba(190,160,255,.25);padding:16px}
+.card h2{margin:0 0 10px;font-size:18px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.status{font-size:26px;font-weight:700}
+.ok{color:var(--lime)}.no{color:var(--red)}.wait{color:var(--cyan)}
+.btns{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.b{background:#22183e;text-align:center;padding:8px 2px;font-size:15px;border:2px solid transparent}
+.b.on{background:var(--mag);color:#fff;border-color:#fff}
+.axis{display:flex;align-items:center;gap:10px;margin:6px 0}
+.axis span{width:90px;color:var(--dim);font-size:15px}
+.bar{flex:1;height:14px;background:#22183e;position:relative}
+.bar i{position:absolute;top:0;bottom:0;left:50%;width:4px;margin-left:-2px;background:var(--cyan)}
+#log{height:220px;overflow:auto;font-size:15px;color:var(--dim);margin:0;white-space:pre-wrap}
+.ua{font-size:13px;color:var(--dim);word-break:break-all}
+</style>
+</head>
+<body>
+<h1>Pad-Test</h1>
+<p class="sub">Drück eine Taste am Controller. Grün = Clubnight bekommt das Gamepad.</p>
+
+<div class="grid">
+  <div class="card">
+    <h2>Gamepad API</h2>
+    <div id="api" class="status wait">prüfe …</div>
+    <div id="pad" style="margin-top:8px;color:var(--dim);font-size:15px">noch kein Controller gemeldet</div>
+  </div>
+  <div class="card">
+    <h2>Tasten (Gamepad)</h2>
+    <div id="btns" class="btns"></div>
+  </div>
+  <div class="card">
+    <h2>Sticks / Achsen</h2>
+    <div id="axes"></div>
+  </div>
+  <div class="card">
+    <h2>Tastatur-Events</h2>
+    <div id="keyStatus" class="status wait">keine bisher</div>
+    <pre id="log"></pre>
+  </div>
+</div>
+<p class="ua" id="ua"></p>
+
+<script>
+const NAMES=['✕','○','□','△','L1','R1','L2','R2','Create','Options','L3','R3','↑','↓','←','→','PS','Pad','Mic'];
+const $=s=>document.querySelector(s);
+const api=$('#api'),padEl=$('#pad'),btnsEl=$('#btns'),axesEl=$('#axes'),log=$('#log');
+$('#ua').textContent='Browser: '+navigator.userAgent;
+
+if(!navigator.getGamepads){api.textContent='nicht vorhanden';api.className='status no'}
+else{api.textContent='vorhanden – warte auf Tastendruck';api.className='status wait'}
+
+function addLog(t){log.textContent=(t+'\n'+log.textContent).slice(0,3000)}
+let keySeen=false;
+addEventListener('keydown',e=>{
+  if(!keySeen){keySeen=true;$('#keyStatus').textContent='kommen an';$('#keyStatus').className='status ok'}
+  addLog('keydown  code='+e.code+'  key='+e.key+'  keyCode='+e.keyCode);
+  if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' ','Enter'].includes(e.key))e.preventDefault();
+});
+addEventListener('gamepadconnected',e=>addLog('gamepadconnected: '+e.gamepad.id));
+addEventListener('gamepaddisconnected',e=>addLog('gamepaddisconnected: '+e.gamepad.id));
+
+let built=-1;
+function loop(){
+  const pads=navigator.getGamepads?navigator.getGamepads():[];
+  let gp=null;for(const p of pads)if(p&&p.connected){gp=p;break}
+  if(gp){
+    api.textContent='funktioniert ✓';api.className='status ok';
+    padEl.textContent=gp.id+' · mapping: '+(gp.mapping||'keins')+' · '+gp.buttons.length+' Tasten';
+    if(built!==gp.buttons.length+gp.axes.length*100){
+      built=gp.buttons.length+gp.axes.length*100;
+      btnsEl.innerHTML=gp.buttons.map((_,i)=>'<div class="b" id="b'+i+'">'+(NAMES[i]||i)+'</div>').join('');
+      axesEl.innerHTML=gp.axes.map((_,i)=>'<div class="axis"><span>Achse '+i+'</span><div class="bar"><i id="a'+i+'"></i></div></div>').join('');
+    }
+    gp.buttons.forEach((b,i)=>{const el=document.getElementById('b'+i);if(el)el.classList.toggle('on',b.pressed||b.value>.5)});
+    gp.axes.forEach((v,i)=>{const el=document.getElementById('a'+i);if(el)el.style.left=(50+v*50)+'%'});
+  }
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
