@@ -4452,7 +4452,7 @@ document.querySelectorAll('#touch button').forEach(b=>{const k=b.dataset.k;
  b.addEventListener('pointerdown',on);b.addEventListener('pointerup',off);b.addEventListener('pointercancel',off);b.addEventListener('lostpointercapture',off)});
 addEventListener('touchstart',()=>{IN.touchMode=true;if(G.state==='play')UI.showTouch(true)},{passive:true});
 function pollPad(){
- const pads=navigator.getGamepads?navigator.getGamepads():[];let gp=null;for(const p of pads)if(p&&p.connected){gp=p;break}
+ let pads=[];if(!IN.padOff&&navigator.getGamepads){try{pads=navigator.getGamepads()||[]}catch(e){IN.padOff=true}}let gp=null;for(const p of pads)if(p&&p.connected){gp=p;break}
  if(!gp){IN.padX=0;IN.padY=0;IN.padAim=null;IN.padJump=false;IN.padShoot=false;return}
  const bt=i=>!!(gp.buttons[i]&&gp.buttons[i].pressed),ax=gp.axes[0]||0,ay=gp.axes[1]||0,prev=IN._pad,now={};
  let x=Math.abs(ax)>.3?ax:0;if(bt(14))x=-1;if(bt(15))x=1;IN.padX=x===0?0:Math.sign(x);
