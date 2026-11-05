@@ -263,6 +263,14 @@ canvas.logoC.sm{width:min(70vw,calc(15vh*320/104));height:auto;margin-left:-.4em
 .map.m2 .node .dot{clip-path:polygon(50% 0,100% 100%,0 100%);border-radius:0;width:1.3em;height:1.1em;padding-top:.25em}
 .map.m2 .node.done .dot{background:#3affd8;box-shadow:0 0 12px #3affd8;color:#06121a}.map.m2 .node.next .dot{background:#ffe23a;color:#06121a}
 @media (prefers-reduced-motion:reduce){.geo .flow{animation:none}}
+.duel{max-width:min(46em,94vw);border-top:3px solid var(--gc)}.dhead{display:flex;flex-direction:column;gap:.2em}.dhead h2{margin:0;color:var(--gc);text-shadow:0 0 12px var(--gc)}
+.dscore{display:flex;justify-content:space-between;font-family:var(--f-lab);font-size:.72em;margin-top:.4em}.dscore i{display:inline-block;width:.8em;height:.8em;margin:0 .15em;background:rgba(255,255,255,.12);vertical-align:middle}.dscore i.on{background:var(--pc);box-shadow:0 0 8px var(--pc)}
+.dsay{font-size:1.15em;line-height:1.4;padding:.8em 1em;background:rgba(255,255,255,.06);border-left:3px solid var(--gc)}.dsay b{color:var(--gc)}
+.dopts{display:flex;flex-direction:column;gap:.45em}.dopt div{line-height:1.35;text-align:left}.dyou{color:var(--cyan);font-style:italic}
+.dres{font-size:1.1em;padding:.5em 0}.dres.won{color:var(--gold)}.dres.lost{color:var(--red)}
+#pIntro{background:#000;align-items:center;justify-content:center;flex-direction:column;gap:1em}#introC{width:min(96vw,calc(78vh*16/9));height:auto;image-rendering:pixelated;box-shadow:0 0 40px rgba(255,47,214,.25)}
+.icap{min-height:3.2em;max-width:min(90vw,52em);text-align:center;font-size:clamp(14px,2.6vh,22px);line-height:1.45;color:#fff;text-shadow:0 2px 6px #000}
+.iskip{position:absolute;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom))}
 @media (max-width:760px){.flyer{display:none}.stage canvas{width:min(100%,40vh)}.mlist{width:min(22em,92vw)}.tourwrap,.ward{grid-template-columns:1fr}.trees{grid-template-columns:1fr}.res{grid-template-columns:repeat(2,1fr)}}
 @media (max-height:520px){.logo{font-size:clamp(34px,15vh,80px)}.btn{padding:.42em .9em}.mlist{gap:.32em}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -300,6 +308,8 @@ canvas.logoC.sm{width:min(70vw,calc(15vh*320/104));height:auto;margin-left:-.4em
   </section>
   <section id="pTour" class="scr sub dim" hidden></section>
   <section id="pShop" class="scr sub dim" hidden></section>
+  <section id="pDuel" class="scr center" hidden></section>
+  <section id="pIntro" class="scr" hidden></section>
   <section id="pArchiv" class="scr sub dim" hidden></section>
   <section id="pSkills" class="scr sub dim" hidden></section>
   <section id="pWardrobe" class="scr sub dim" hidden></section>
@@ -4897,6 +4907,176 @@ function brandTick(dt){const cvs=document.querySelectorAll('canvas.logoC');if(!c
  for(let k=0;k<EQ.length;k++){const tgt=1+kick*(2.5+3*Math.abs(Math.sin(k*1.7)))+Math.random()*1.4+(Math.sin(performance.now()/300+k*.6)+1)*.9;EQ[k]+=(tgt-EQ[k])*Math.min(1,dt*14)}
  for(const cv of cvs){if(cv.offsetParent===null)continue;drawLogo(cv,performance.now()/1000,cv.dataset.eq==='0'?null:EQ)}}
 
+/* =====================================================================
+   HUMOR: Wortgefechte gegen Minibosse (à la Monkey Island), Sprüche-Flut,
+   animiertes Comic-Intro
+   ===================================================================== */
+
+/* ---------- Beleidigung → passende Antwort ---------- */
+const DUEL=[
+ ['Dein Beat ist so monoton, ich schlaf gleich ein!','Dann leg dich hin – auf dem Floor ist eh kein Platz für dich.'],
+ ['Vier Viertel? Das kann sogar mein Toaster!','Dann lad deinen Toaster ein – der hat mehr Rhythmus als du.'],
+ ['Du siehst aus wie ein Garderobenhaken in Schwarz!','Und du wie die Jacke, die keiner mehr abholen will.'],
+ ['Ich hab schon Feueralarme mit mehr Melodie gehört!','Klar – die gingen ja auch immer los, wenn du gesungen hast.'],
+ ['Deine Kick klingt wie ein nasser Schuh auf Linoleum!','Komisch, dein Fuß wippt trotzdem mit.'],
+ ['Selbst meine Oma hat mehr Bass als du!','Grüß sie schön – sie stand gestern neben mir am Floor.'],
+ ['Mit dir würde nicht mal ein Metronom tanzen!','Ein Metronom ist immerhin pünktlicher als dein Einsatz.'],
+ ['Du hast so viel Stil wie ein Bierdeckel!','Und du saugst genauso schnell alles auf, was man dir erzählt.'],
+ ['Deine Playlist hat ja nur ein einziges Lied!','Dafür läuft es zehn Stunden – das nennt man Ausdauer.'],
+ ['Bei deinem Set sind die Leute eingeschlafen!','Die hatten sich vorher deinen Soundcheck angehört.'],
+ ['Die Tür hätte dich niemals reinlassen dürfen!','Mich hat sie durchgewunken – über dich lacht sie heute noch.'],
+ ['Dein Tanzstil sieht aus wie ein Kampf mit einer Fliege!','Und die Fliege tanzt trotzdem besser als du.'],
+ ['Dein Synthesizer klingt wie ein kaputtes Modem!','Passend – du hängst ja auch noch in den Neunzigern fest.'],
+ ['Hast du dein Outfit im Dunkeln angezogen?','Natürlich. Hier drin ist es immer dunkel, Anfänger.'],
+ ['Dein Drop kommt später als die Nachtbahn!','Dafür kommt er überhaupt – im Gegensatz zu deinen Fans.'],
+ ['Dich bemerkt nicht mal die Nebelmaschine!','Im Nebel sieht man wenigstens dein Gesicht nicht.'],
+ ['Sonnenbrille um drei Uhr nachts? Peinlich!','Die schützt mich vor deinem Glitzerhemd.'],
+ ['Mein Hamster hat mehr Groove als du!','Dann soll er auflegen – sein Laufrad ist schon mal rund.'],
+ ['Techno ist doch nur Lärm mit Stromrechnung!','Und deine Musik ist Stille, die zu laut geraten ist.'],
+ ['Du tanzt, als hättest du Schluckauf!','Und du singst, als hättest du ihn verschluckt.'],
+ ['Ohne Refrain merkt sich keiner deine Musik!','Muss auch keiner – man spürt sie im Bauch.'],
+ ['Ich wette, du kennst nicht mal einen Akkord!','Einen reicht – den spiel ich dafür sechs Stunden lang.']
+];
+const DUELERS=['Schunkel-Sabine','Scat-Kalle','Leichtmatrose Lutz','Luftgitarren-Lars','Trompeten-Traudl','Lasso-Lothar','Fanclub-Fiona','Tenor Toni','Triangel-Theo','Radio-Rüdiger',
+ 'Vokuhila-Volker','Hands-up-Heike','B-Seiten-Bente','Chorknabe Konstantin','Lil Echo','Bariton Bodo','Jazzhand-Jacqueline','Tante Tamburin','DJ Perreo-Pepe','Influencer-Ina'];
+const DUEL_HIT=['Argh! Woher kennst du den?!','Autsch – direkt ins Herz-Bumm-Bumm.','Das … war gemein gut.','Okay, der saß.','Hmpf! Glück gehabt.'];
+const DUEL_MISS=['Haha! Das war so lahm wie ein Schunkelwalzer.','Pfff – das sagt meine Oma auch immer.','Ist das alles? Da gähnt ja die Nebelmaschine.','Daneben! Wie dein letzter Drop.','Schwach. Probier’s mal mit Worten.'];
+const DUEL_WIN=['Ich … ich geh mich kurz in der Garderobe verstecken.','Na gut, du darfst durch. Aber ich tanz nicht mit! … Vielleicht ein bisschen.','Das erzähl ich niemandem. NIEMANDEM!','Mama, der Techno ist gemein zu mir!'];
+
+/* Minibosse: einmal pro Level im zweiten Bereich – kommen nur mit Worten vorbei */
+GSEG.duel=(x,H)=>{const w=280,L=H.L;H.ground(x,w);
+ L.npcs.push({x:x+170,y:FLOOR_Y-22,kind:'duelist',name:DUELERS[L.i%DUELERS.length],ph:H.r()*4,won:false});
+ const wall={x:x+196,y:-40,w:8,h:FLOOR_Y+40,type:'solid',kind:'duelwall',dyn:true,duel:true};wall.draw=drawDuelRope;L.solids.push(wall);L.movers.push(wall);
+ H.coinArc(x+60,x+150,FLOOR_Y-30,8);return w};
+for(const th in TOURS){const z=TOURS[th].z[1];if(z&&!z.s.includes('duel'))z.s.splice(Math.min(1,z.s.length),0,'duel')}
+function drawDuelRope(p,e,X,Y,m){if(m.off)return;const gy=FLOOR_Y+(Y-m.y),ac=G.level.th.accent;
+ for(const sx of[X-4,X+8]){p.fillStyle='#c8a040';p.fillRect(sx,gy-30,3,30);p.fillStyle='#ffe080';p.fillRect(sx-1,gy-32,5,3)}
+ p.fillStyle='#b01a3a';for(let k=0;k<12;k++)p.fillRect(X-2+k,gy-26+Math.round(Math.sin(k/12*Math.PI)*4),1,3);
+ p.fillStyle=ac;e.fillStyle=ac;p.fillRect(X-6,gy-48,20,10);e.fillRect(X-6,gy-48,20,1);p.fillStyle='#14101e';p.fillRect(X-5,gy-47,18,8);
+ const c=neonSign('VS',ac,8);p.drawImage(c,X+4-c.width/2,gy-48)}
+/* Duellanten zeichnen und auslösen */
+{const _de=drawExtras;drawExtras=function(cx,cy,beat,pulse){_de(cx,cy,beat,pulse);const L=G.level;if(!L)return;const p=RD.p,e=RD.e;
+ for(const n of L.npcs){if(n.kind!=='duelist')continue;const sx=n.x-cx;if(sx<-30||sx>VW+30)continue;const g=GENRES[L.def.genre],dance=n.won?'dance':'idle';
+  drawHumanoid(p,e,sx-3,n.y-3+cy,{look:g.look,facing:n.won?(Math.floor(beat/2)%2?1:-1):-1,anim:dance,t:G.t+n.ph,pulse:n.won?pulse:0});
+  if(!n.won){RD.nameTags.push({x:n.x+5,y:n.y-10,text:'MINIBOSS · '+n.name.toUpperCase()});addL(n.x+5,n.y+6,50,g.color,.8)}}}}
+function duelTick(){const L=G.level,p=G.player;if(!L||!p||p.dead||G.state!=='play')return;
+ for(const n of L.npcs)if(n.kind==='duelist'&&!n.won&&!n.busy&&p.x>n.x-80&&p.x<n.x+20){n.busy=true;startDuel(n);break}}
+
+/* ---------- Wortgefecht ---------- */
+const DU={n:null,me:0,op:0,ins:null,opts:[],msg:'',phase:'ask',used:[]};
+function startDuel(n){G.state='duel';IN.clear();UI.showTouch(false);AU.muffle(true);AU.sfx('horn');
+ Object.assign(DU,{n,me:0,op:0,msg:'Halt! Hier kommst du nur mit Worten vorbei. Wortgefecht – wer zuerst drei Treffer landet!',phase:'intro',used:[]});UI.show('pDuel')}
+function duelNext(){const free=DUEL.map((_,k)=>k).filter(k=>!DU.used.includes(k));const k=free[Math.floor(Math.random()*free.length)];DU.used.push(k);DU.ins=k;
+ const wrong=DUEL.map((_,j)=>j).filter(j=>j!==k).sort(()=>Math.random()-.5).slice(0,2);DU.opts=[k,...wrong].sort(()=>Math.random()-.5);DU.phase='ask';DU.msg=DUEL[k][0];UI.b_pDuel()}
+function duelPick(j){if(DU.phase!=='ask')return;const ok=DU.opts[j]===DU.ins;DU.reply=DUEL[DU.opts[j]][1];
+ if(ok){DU.me++;DU.msg=pick(DUEL_HIT);AU.sfx('vinylGet')}else{DU.op++;DU.msg=pick(DUEL_MISS);AU.sfx('hurt')}
+ DU.phase=DU.me>=3?'won':DU.op>=3?'lost':'res';UI.b_pDuel()}
+function duelEnd(){const n=DU.n;UI.hideAll();AU.muffle(false);UI.showTouch(true);G.state='play';IN.clear();
+ if(DU.phase==='won'){n.won=true;const L=G.level;for(const s of L.solids)if(s.duel&&Math.abs(s.x-n.x)<60)s.off=true;
+  SAVE.coins+=60;G.stats.coins+=60;SAVE.st.duels=(SAVE.st.duels||0)+1;popup(n.x+5,n.y-20,'+60 WORTGEFECHT GEWONNEN!','#ffe23a',true);
+  burst(n.x+5,n.y,30,['#ffe23a','#ff2fd6','#2ff3ff','#ffffff'],{speed:120,g:150,life:.9,kind:'confetti'});bubble(n,pick(DUEL_WIN),3.2);persist()}
+ else{const p=G.player;p.x=n.x-110;p.vx=0;n.busy=false;bubble(n,'Komm wieder, wenn du schlagfertiger bist!',2.6)}}
+UI.panels.push('pDuel','pIntro');
+UI.b_pDuel=function(){const g=GENRES[LEVELS[G.li].genre],pips=(n,c)=>[0,1,2].map(k=>`<i class="${k<n?'on':''}" style="--pc:${c}"></i>`).join('');
+ let body='';
+ if(DU.phase==='intro')body=`<button class="btn" data-act="duelgo" data-focus><div>Na warte! ▸</div></button>`;
+ else if(DU.phase==='ask')body=`<div class="dopts">${DU.opts.map((o,j)=>`<button class="btn dopt" data-act="duelpick" data-j="${j}" ${j===0?'data-focus':''}><div>„${esc(DUEL[o][1])}“</div></button>`).join('')}</div>`;
+ else if(DU.phase==='res')body=`<div class="dyou">Du: „${esc(DU.reply)}“</div><button class="btn" data-act="duelgo" data-focus><div>Nächste Runde ▸</div></button>`;
+ else body=`<div class="dyou">Du: „${esc(DU.reply)}“</div><div class="dres ${DU.phase}">${DU.phase==='won'?'🏆 Wortgefecht gewonnen! +60 Wertmarken':'Verloren … Zurück auf Anfang – beim nächsten Mal kennst du die Sprüche!'}</div><button class="btn" data-act="duelend" data-focus><div>${DU.phase==='won'?'Weiterfeiern ▸':'Nochmal anlaufen'}</div></button>`;
+ $('#pDuel').innerHTML=`<div class="card box duel" style="--gc:${g.color}"><div class="dhead"><span class="lab">Miniboss · ${esc(g.label)}</span><h2>${esc(DU.n.name)}</h2>
+  <div class="dscore"><span>Du ${pips(DU.me,'#2ff3ff')}</span><span>${pips(DU.op,g.color)} ${esc(DU.n.name.split(' ')[0])}</span></div></div>
+  <div class="dsay"><b>${esc(DU.n.name)}:</b> „${esc(DU.msg)}“</div>${DU.phase==='ask'?'<div class="lab">Deine Antwort:</div>':''}${body}</div>`};
+{const _a=UI.act;UI.act=function(a,el){
+ if(a==='duelgo'){duelNext();AU.sfx('ui');return}if(a==='duelpick'){duelPick(+el.dataset.j);return}if(a==='duelend'){duelEnd();return}
+ if(a==='story'){this.sub('pIntro');return}if(a==='introskip'){introFinish();return}
+ return _a.call(this,a,el)}}
+{const _b=UI.back;UI.back=function(){if(this.cur==='pDuel')return;if(this.cur==='pIntro'){introFinish();return}return _b.call(this)}}
+
+/* ---------- Sprüche-Flut ---------- */
+const MORE_LINES={schlager:['Atemlos? Nur beim Treppensteigen!','Hände zum Himmel – nicht zum Bass!','Ich hab Glitzer, und ich weiß, wie man ihn wirft!'],
+ jazz:['Das war eine Synkope. Du würdest es nicht verstehen.','Ich improvisiere nicht, ich lebe!','Schuba-du-bi-du-WAH!'],
+ shanty:['Wellerman kommt gleich – mit Verstärkung!','Rum? Nein danke, ich hab Rhythmus.','Ich hab mehr Seemannsgarn als du Platten!'],
+ metal:['Mein Verstärker geht bis elf!','Pyro ist kein Hobby, Pyro ist Lifestyle!','Ich hab Haare, die mehr headbangen als du!'],
+ volks:['Prost, Gemütlichkeit – und zwar zackig!','Die Lederhose kneift, aber ich kämpfe!','Humba humba täterä!'],
+ country:['Yeehaw heißt auf Techno „Unz unz“!','Mein Pferd parkt in der zweiten Reihe!','Ich hab Stiefel, die sind älter als dein Club!'],
+ boyband:['Wir sind fünf und tragen alle Weiß!','Ich kann dramatisch auf die Knie fallen!','Key Change in drei, zwei, eins!'],
+ opera:['Ich singe dieses Haus jetzt einfach kaputt!','Die Arie dauert nur noch 40 Minuten!','Mi-mi-mi-MIIII!'],
+ classic:['Das ist erst der erste Satz von neun!','Bitte nicht zwischen den Sätzen klatschen!','Mein Taktstock ist schärfer als dein Drop!'],
+ kommerz:['Diese Nachricht wird präsentiert von: mir!','Nur heute: drei Refrains zum Preis von einem!','Skippen? Ab 4,99 im Monat!'],
+ ostrock:['Ich hab schon gerockt, da war Techno noch ein Faxgerät!','Vokuhila ist kein Haarschnitt, sondern eine Haltung!','Feuerzeug hoch – das Licht reicht für alle!'],
+ euro:['Hands up! Nein, die ANDEREN Hände!','Gleich kommt der Rap-Part – bleib stark!','Ich trag Plateau aus Überzeugung!'],
+ indie:['Ich war hier, bevor es cool war.','Mein Jutebeutel hat mehr Bands als dein Plattenkoffer!','Das klingt mir zu sehr nach Spaß.'],
+ orgel:['Achtung, ich ziehe alle Register!','Diese Fuge hat mehr Ebenen als dein Parkhaus!','Halleluja – mit Hall!'],
+ autotune:['Ich sing gar nicht schief, das ist Kunst!','Skrrrt – das war mein Einparken.','Yeah, yeah, yeah – Strophe vorbei!'],
+ barber:['Bitte einmal vierstimmig hinsetzen!','Mein Schnurrbart ist ein eigenes Instrument!','Huuummm … das war der Einsatz!'],
+ musical:['Und jetzt alle: dramatische Pause!','Das war erst die Ouvertüre!','Ich sterbe gleich – aber singend!'],
+ kinder:['Wer nicht klatscht, muss Gemüse essen!','Und jetzt alle: Ententanz!','Das ist ein Schlaflied – schlaf jetzt!'],
+ reggaeton:['¡Más perreo, menos techno!','Mein Bass hat einen eigenen Fanclub!','Despacito – aber in schnell!'],
+ algo:['Basierend auf deinem Verhalten empfehle ich: aufgeben.','Du hast diesen Song 0-mal gehört. Traurig.','Werbung in 5 … 4 … 3 …']};
+for(const k in MORE_LINES)if(GENRES[k])GENRES[k].lines=GENRES[k].lines.concat(MORE_LINES[k]);
+const RAVER_LINES=['Hat jemand meine Jacke gesehen? Die schwarze.','Nur noch ein Track, dann geh ich. Versprochen.','Wie spät ist es? Egal.','Ich geh nur kurz Wasser holen. Seit 2019.',
+ 'Ist das hier die Schlange fürs Klo oder für die Bar?','Mein Kumpel ist irgendwo da drin. Glaub ich.','Ich hab ein Akkordeon gehört. Ich hab Angst.','Wer hat den Schlager reingelassen?!',
+ 'Mein Fitnesstracker zeigt 40.000 Schritte. Ich war nie draußen.','Ich kenn den DJ! … Also, vom Sehen.','Ist das Nebel oder brennt was? Egal, tanzen!','Montag? Nie gehört.',
+ 'Ich hab meine Würde an der Garderobe abgegeben. Marke 42.','Psst – der Bass war gerade ein bisschen schief.','Der Drop kommt gleich. Ich spür’s im Knie.','Ich trink nur Wasser. Viel Wasser. SEHR VIEL WASSER.'];
+const RESPAWN_LINES=['Kurz an der Bar gewesen.','Das war nur der Soundcheck.','Neustart – wie ein guter Remix.','Hingefallen? Nein, das war ein Tanzmove.','Gleich nochmal, aber mit Stil.','Die Tanzfläche war rutschig. Ehrlich.'];
+const CP_LINES={Garderobe:'Jacke abgegeben, Würde behalten.',Toiletten:'Spiegel-Check: immer noch fabelhaft.',Raucherbereich:'Kurz Luft schnappen. Also … Luft.',Wasserbar:'Hydriert und motiviert!'};
+function chatterTick(dt){const L=G.level,p=G.player;if(!L||!p||G.state!=='play')return;G.chatT=(G.chatT===undefined?6:G.chatT)-dt;if(G.chatT>0)return;G.chatT=9+Math.random()*8;
+ const near=L.npcs.filter(n=>(n.kind==='queue'||n.kind==='gogo')&&Math.abs(n.x-p.x)<220);
+ if(near.length){bubble(pick(near),pick(RAVER_LINES),3.2);return}
+ const cr=L.crowd.filter(c=>Math.abs(c.x-p.x)<200&&Math.abs(c.x-p.x)>30);if(cr.length){const c=pick(cr);bubble({x:c.x-3,y:FLOOR_Y-c.h-2,w:6,alive:true},pick(RAVER_LINES),3.2)}}
+{const _rp=respawnPlayer;respawnPlayer=function(){_rp();const p=G.player;if(p)popup(p.x+5,p.y-12,pick(RESPAWN_LINES),'#ffd0f0')}}
+{const _t=UI.toast.bind(UI);UI.toast=function(m){const k=Object.keys(CP_LINES).find(c=>m.startsWith(c+' ·'));_t(k?m+' – '+CP_LINES[k]:m)}}
+{const _za=zoneAmbTick;zoneAmbTick=function(dt){_za(dt);duelTick();chatterTick(dt)}}
+
+/* ---------- Animiertes Comic-Intro ---------- */
+const STORY=[
+ {d:5.5,t:'Deutschland, kurz nach Mitternacht. In den Clubs läuft Techno. Alles ist gut.',s:'party'},
+ {d:6,t:'Bis König Kommerz auftaucht. „Zu lang! Zu laut! Und viel zu wenig Werbung!“',s:'king'},
+ {d:6.5,t:'Er schickt seine Genre-Bosse in jeden Club und auf jedes Festival. Ab sofort gilt: Schunkeln statt Stampfen.',s:'bosses'},
+ {d:5.5,t:'Die Raver sind fassungslos. „Ist das … ein AKKORDEON?!“',s:'shock'},
+ {d:6,t:'Nur eine Person kann den Beat retten. Bewaffnet mit Bass, Platten und einem Doppelsprung.',s:'hero'},
+ {d:4.5,t:'„Moment … ich wollte eigentlich nur kurz Wasser holen.“',s:'hero2'},
+ {d:4,t:'',s:'logo'}];
+const IN2={t:0,si:0,cv:null,typed:0};
+UI.b_pIntro=function(){$('#pIntro').innerHTML=`<canvas id="introC" width="480" height="270"></canvas><div class="icap" id="icap"></div><button class="btn ghost iskip" data-act="introskip" data-focus><div>Überspringen ▸</div></button>`;
+ Object.assign(IN2,{t:0,si:0,typed:0,cv:$('#introC')});AU.init();AU.resume();AU.play(menuSong())};
+function introFinish(){SAVE.storySeen=true;persist();AU.setGenre(null);AU.solo=false;AU.techAmt=1;UI.show('pMenu')}
+function introTick(dt){if(!IN2.cv)return;IN2.t+=dt;let sc=STORY[IN2.si];if(IN2.t>sc.d){IN2.t=0;IN2.si++;IN2.typed=0;if(IN2.si>=STORY.length){introFinish();return}sc=STORY[IN2.si];
+  if(sc.s==='king'){AU.sfx('horn')}if(sc.s==='bosses'){AU.setGenre(GENRES.schlager.music,7);AU.genreAmt=1}if(sc.s==='shock')AU.sfx('warn');if(sc.s==='hero'){AU.setGenre(null);AU.sfx('checkpoint')}if(sc.s==='logo')AU.sfx('buy')}
+ IN2.typed=Math.min(sc.t.length,IN2.typed+dt*48);const cap=$('#icap');if(cap)cap.textContent=sc.t.slice(0,Math.floor(IN2.typed));
+ drawIntroScene(IN2.cv,sc.s,IN2.t,sc.d)}
+function drawIntroScene(cv,s,t,d){const x=cv.getContext('2d'),W=480,H=270;x.imageSmoothingEnabled=false;const T=performance.now()/1000,beat=T*2.13,pul=Math.pow(1-(beat%1),3);
+ const sky=(a,b)=>{const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,a);g.addColorStop(1,b);x.fillStyle=g;x.fillRect(0,0,W,H)};
+ const crowd=(y,n,mood,col)=>{for(let k=0;k<n;k++){const lx=10+k*(W-20)/n,look=NPCLOOKS[k%NPCLOOKS.length],jump=mood==='party'&&((beat+k*.37)%1)<.4?-3:0;
+   x.save();x.translate(Math.round(lx),Math.round(y-22+jump*2+(k%3)*4));x.scale(2,2);drawHumanoid(x,null,0,0,{look,facing:k%2?1:-1,anim:mood==='party'?'dance':'idle',t:T+k,pulse:mood==='party'?pul:0});x.restore();
+   if(mood==='shock'&&k%3===0){x.fillStyle='#ffffff';x.fillRect(lx+6,y-40,14,12);x.fillStyle='#ff2f5a';x.font='8px Silkscreen, monospace';x.fillText(k%2?'?!':'!?',lx+8,y-31)}}};
+ const lasers=(cols)=>{x.save();x.globalCompositeOperation='lighter';for(let k=0;k<6;k++){const a=Math.sin(T*1.3+k)*.9;x.strokeStyle=cols[k%cols.length];x.globalAlpha=.35;x.lineWidth=2;x.beginPath();x.moveTo(W/2,10);x.lineTo(W/2+Math.sin(a)*500,10+Math.cos(a)*500);x.stroke()}x.restore()};
+ const fadeIn=Math.min(1,t*2),fadeOut=Math.min(1,(d-t)*2);
+ switch(s){
+  case'party':sky('#120628','#050210');lasers(['#ff2fd6','#2ff3ff','#ffe23a']);x.fillStyle='#1a0e2a';x.fillRect(0,200,W,70);
+   for(let k=0;k<20;k++){const h=8+Math.abs(Math.sin(T*6+k))*30*pul;x.fillStyle=k%3?'#2ff3ff':'#ff2fd6';x.fillRect(150+k*9,60-h/2,6,h)}crowd(176,12,'party');break;
+  case'king':{sky('#2a1a06','#0a0602');const sp=x.createRadialGradient(W/2,150,0,W/2,150,150);sp.addColorStop(0,'rgba(255,220,120,.55)');sp.addColorStop(1,'rgba(255,220,120,0)');x.fillStyle=sp;x.fillRect(0,0,W,H);
+   x.fillStyle='#3a2a0a';x.fillRect(0,215,W,55);const by=Math.round(140-Math.max(0,1-t*1.2)*120);drawBig(x,null,W/2-20,by,{look:BOSSES.kommerz.look,facing:1,t:T,pose:t>2?'point':'idle',pulse:pul});
+   for(let k=0;k<14;k++){const a=k*.9+T*2;x.fillStyle=k%2?'#ffe23a':'#ff2fd6';x.fillRect(W/2+Math.cos(a)*(60+k*6),120+Math.sin(a)*40,4,4)}
+   if(t>1.5){x.fillStyle='#ffffff';x.fillRect(W/2+30,70,140,34);x.fillStyle='#1a1428';x.font='8px Silkscreen, monospace';x.fillText('ZU LANG! ZU LAUT!',W/2+38,84);x.fillText('MEHR WERBUNG!',W/2+38,96)}break}
+  case'bosses':{sky('#1a0a24','#06020c');x.fillStyle='#120818';x.fillRect(0,210,W,60);const ks=['schlager','jazz','metal','volks','country','opera','ostrock','euro'];
+   ks.forEach((k,j)=>{const show=t*2.2-j*.35;if(show<0)return;const bx=14+j*58,by=Math.round(130+Math.max(0,1-show)*60);drawBig(x,null,bx,by,{look:BOSSES[k].look,facing:j%2?-1:1,t:T+j,pose:Math.sin(T*3+j)>0?'raise':'idle',pulse:pul});
+    x.fillStyle=GENRES[k].color;x.font='8px Silkscreen, monospace';x.fillText(GENRES[k].label.toUpperCase().slice(0,9),bx-2,205)});break}
+  case'shock':sky('#0a0414','#020104');x.fillStyle='#1a0e2a';x.fillRect(0,200,W,70);crowd(176,12,'shock');
+   x.save();x.translate(W/2,90+Math.sin(T*8)*3);x.fillStyle='#c02020';x.fillRect(-40,-24,80,48);for(let k=0;k<8;k++){x.fillStyle='#f0f0f0';x.fillRect(-34+k*9,-24,3,48)}x.fillStyle='#111';x.fillRect(-40,-24,6,48);x.restore();
+   x.fillStyle='#ff2f5a';x.font='16px Silkscreen, monospace';if(Math.floor(T*4)%2)x.fillText('!!!',W/2+50,70);break;
+  case'hero':case'hero2':{sky('#14062a','#05020c');lasers(['#2ff3ff','#ff2fd6']);x.fillStyle='#1a0e2a';x.fillRect(0,210,W,60);
+   const sp=x.createRadialGradient(W/2,190,0,W/2,190,110);sp.addColorStop(0,'rgba(255,47,214,.5)');sp.addColorStop(1,'rgba(255,47,214,0)');x.fillStyle=sp;x.fillRect(0,0,W,H);
+   x.save();x.translate(W/2-24,104);x.scale(3,3);drawHumanoid(x,null,0,0,{look:playerLook(),facing:1,anim:s==='hero'?'dance':'idle',t:T,pulse:pul});x.restore();
+   if(s==='hero2'){x.save();x.translate(W/2+30,150);x.scale(2,2);x.drawImage(SPR.water,0,0);x.restore();x.fillStyle='#ffffff';x.fillRect(W/2+44,92,22,16);x.fillStyle='#1a1428';x.font='8px Silkscreen, monospace';x.fillText('?',W/2+52,104)}break}
+  case'logo':{sky('#0a0418','#020108');lasers(['#ff2fd6','#2ff3ff','#ffe23a']);const lc=mk(540,176);drawLogo(lc,T,EQ);x.drawImage(lc,W/2-180,60,360,117);
+   x.fillStyle='#2ff3ff';x.font='8px Silkscreen, monospace';const tx='RETTE DEN BEAT!';x.fillText(tx,W/2-x.measureText(tx).width/2,200);break}}
+ x.fillStyle=`rgba(0,0,0,${1-Math.min(fadeIn,fadeOut)})`;x.fillRect(0,0,W,H)}
+{const _ui=UI.init.bind(UI);UI.init=function(){_ui();$('#btnEnter').addEventListener('click',()=>{if(!SAVE.storySeen)setTimeout(()=>UI.show('pIntro'),30)})}}
+{const _op=UI.b_pOptions.bind(UI);UI.b_pOptions=function(){_op();const box=$('#pOptions .card')||$('#pOptions');if(box)box.insertAdjacentHTML('beforeend','<div class="opt"><span>Story</span><button class="btn ghost" data-act="story"><div>Intro ansehen</div></button></div>')}}
+/* Erfolg für Wortgefechte */
+ACH.push({id:'duel1',name:'Schlagfertig',desc:'Gewinne dein erstes Wortgefecht.',rw:500,ok:()=>(SAVE.st.duels||0)>=1},{id:'duel20',name:'Großmaul vom Dienst',desc:'Gewinne 20 Wortgefechte.',rw:5000,ok:()=>(SAVE.st.duels||0)>=20});
+
 /* ================= INPUT ================= */
 const KEYMAP={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',ArrowDown:'down',KeyS:'down',ArrowUp:'jump',KeyW:'jump',Space:'jump',
  KeyJ:'shoot',KeyX:'shoot',KeyC:'shoot',KeyK:'drop',KeyF:'drop',ShiftLeft:'dash',ShiftRight:'dash',KeyL:'dash',KeyQ:'prev',KeyE:'next',KeyI:'aimUp',
@@ -4975,6 +5155,7 @@ function frame(now){
   if(UI.cur==='pWardrobe')UI.drawPreview();
   if(UI.cur==='pMenu')UI.drawMenuDancer();
   if(UI.cur==='pMenu'||UI.cur==='pSplash')brandTick(dt);
+  if(UI.cur==='pIntro')introTick(dt);
  }catch(err){console.error(err)}
  IN.pressed.clear();
 }

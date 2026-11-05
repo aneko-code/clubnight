@@ -1,5 +1,5 @@
 /* TECHNOID Service Worker – offline spielbar, Updates kommen beim nächsten Start mit Netz */
-const CACHE='technoid-202611052051';
+const CACHE='technoid-202611052118';
 const CORE=['./','index.html','manifest.webmanifest','icons/icon-180.png','icons/icon-192.png','icons/icon-512.png','icons/icon-maskable-512.png','icons/favicon-32.png','icons/favicon-64.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k.startsWith('technoid-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
