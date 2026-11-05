@@ -1003,6 +1003,9 @@ function menuSong(){return AU.makeSong({bpm:121,root:46,scale:'dorian',style:{ac
 const SPR={},TINT={},LSPR={};
 function bmp(rows,pal){const h=rows.length,w=Math.max(...rows.map(r=>r.length));const c=mk(w,h),x=g2(c);for(let j=0;j<h;j++){const r=rows[j];for(let i=0;i<r.length;i++){const col=pal[r[i]];if(col){x.fillStyle=col;x.fillRect(i,j,1,1)}}}return c}
 function tint(name,color){const k=name+color;if(TINT[k])return TINT[k];const s=SPR[name];const c=mk(s.width,s.height),x=g2(c);x.drawImage(s,0,0);x.globalCompositeOperation='source-in';x.fillStyle=color;x.fillRect(0,0,c.width,c.height);return TINT[k]=c}
+/* Weicher Volumen-Glow statt harter Kästen */
+function vGlow(v,cx,cy,rx,ry,col,a){v.save();v.globalAlpha=Math.min(1,a);v.drawImage(lightSprite(col),cx-rx,cy-ry,rx*2,ry*2);v.restore()}
+function vBand(v,x0,x1,cy,hh,col,a){const g=v.createLinearGradient(0,cy-hh,0,cy+hh),c=hexRgb(col);g.addColorStop(0,`rgba(${c},0)`);g.addColorStop(.5,`rgba(${c},${a})`);g.addColorStop(1,`rgba(${c},0)`);v.save();v.fillStyle=g;v.fillRect(x0,cy-hh,x1-x0,hh*2);v.restore()}
 function lightSprite(color){
  if(LSPR[color])return LSPR[color];const c=mk(64,64),x=c.getContext('2d'),[r,g,b]=hexRgb(color);
  const gr=x.createRadialGradient(32,32,0,32,32,32);gr.addColorStop(0,`rgba(${r},${g},${b},1)`);gr.addColorStop(.22,`rgba(${r},${g},${b},.6)`);gr.addColorStop(.55,`rgba(${r},${g},${b},.18)`);gr.addColorStop(1,`rgba(${r},${g},${b},0)`);
@@ -2235,7 +2238,7 @@ HAZHIT.piston=(h,s,p)=>{const headY=20+s.d*(FLOOR_Y-20-26);if(s.d>.5&&p.x+p.w>h.
  if(s.active&&!h.slammed){h.slammed=true;if(Math.abs(h.x-G.player.x)<VW)addShake(4);burst(h.x+h.w/2,FLOOR_Y-4,10,['#ffb030','#ffffff'],{a:-Math.PI/2,spread:2.6,speed:90,life:.4,em:true})}if(!s.active)h.slammed=false};
 HAZDRAW.pyro=(h,sx,cx,cy,beat,pulse)=>{const p=RD.p,e=RD.e,v=RD.v,s=hazardState(h),gy=FLOOR_Y-4+cy;p.fillStyle='#1a1a20';p.fillRect(sx-2,gy,h.w+4,5);p.fillStyle='#ff7a1a';p.fillRect(sx,gy+1,h.w,1);
  if(s.active){const hh=78*(.7+.3*Math.sin(G.t*40));for(let k=0;k<hh;k+=2){const w=Math.max(2,h.w-Math.floor(k/8)),c=k<12?'#fff0a0':k<40?'#ffb030':'#ff4a1a';p.fillStyle=c;e.fillStyle=c;const ox=Math.round(Math.sin(k*.4+G.t*30)*2);p.fillRect(sx+(h.w-w)/2+ox,gy-k,w,2);e.fillRect(sx+(h.w-w)/2+ox,gy-k,w,2)}
-  v.fillStyle='rgba(255,140,40,.25)';v.fillRect(sx-10,gy-90,h.w+20,90);addL(h.x+h.w/2,FLOOR_Y-40,90,'#ff8a2a',1.2)}
+  vGlow(v,sx+h.w/2,gy-34,30,62,'#ff8c28',.55);vGlow(v,sx+h.w/2,gy-8,22,18,'#ffd070',.5);addL(h.x+h.w/2,FLOOR_Y-40,90,'#ff8a2a',1.2)}
  else if(s.warn&&Math.floor(G.t*20)%2){e.fillStyle='#ff7a1a';e.fillRect(sx,gy-1,h.w,1)}};
 HAZDRAW.piston=(h,sx,cx,cy,beat,pulse)=>{const p=RD.p,e=RD.e,s=hazardState(h),headY=Math.round(20+s.d*(FLOOR_Y-20-26))+cy;
  p.fillStyle='#5a5a62';p.fillRect(sx+h.w/2-5,cy,10,headY-cy);p.fillStyle='#8a8a94';p.fillRect(sx+h.w/2-5,cy,2,headY-cy);
@@ -2245,7 +2248,7 @@ HAZDRAW.piston=(h,sx,cx,cy,beat,pulse)=>{const p=RD.p,e=RD.e,s=hazardState(h),he
 HAZDRAW.pit_lava=(h,sx,cx,cy,beat,pulse)=>{const p=RD.p,e=RD.e,v=RD.v,wy=FLOOR_Y+4+cy;p.fillStyle='#2a0a04';p.fillRect(sx,FLOOR_Y-5+cy,h.w,VH);
  for(let k=0;k<h.w;k+=2){const yy=Math.round(Math.sin(G.t*1.6+k*.12)*1.5),c=((k+Math.floor(G.t*20))%14<7)?'#ff7a1a':'#ffb030';p.fillStyle=c;e.fillStyle=c;p.fillRect(sx+k,wy+yy,2,6);e.fillRect(sx+k,wy+yy,2,6)}
  p.fillStyle='#ffd060';e.fillStyle='#ffe090';for(let k=0;k<6;k++){const bx=sx+((k*37+Math.floor(G.t*7)*13)%h.w),by=wy+2+((k*5)%6);p.fillRect(bx,by,2,2);e.fillRect(bx,by,2,2)}
- v.fillStyle='rgba(255,110,30,.18)';v.fillRect(sx,FLOOR_Y-60+cy,h.w,70);for(let xx=0;xx<h.w;xx+=50)addL(h.x+xx+25,FLOOR_Y+4,60,'#ff6a1a',1)};
+ vBand(v,sx,sx+h.w,FLOOR_Y-6+cy,30,'#ff6e1e',.22);for(let xx=0;xx<h.w;xx+=50)addL(h.x+xx+25,FLOOR_Y+4,60,'#ff6a1a',1)};
 
 /* =====================================================================
    DYNAMISCHE EFFEKTE
@@ -4185,11 +4188,11 @@ function drawWorldDyn(L,cx,cy,beat,pulse,inten,newBeat,sec){
     p.fillStyle='#ffd24a';for(let k=0;k<h.w;k+=10){p.fillRect(sx+k,FLOOR_Y-6+cy,5,1)}}}
   else if(h.type==='laser'){const s=hazardState(h),top=18+cy,bot=FLOOR_Y+cy;
    p.fillStyle='#22222a';p.fillRect(sx-3,top-4,h.w+6,6);p.fillRect(sx-3,bot-6,h.w+6,6);p.fillStyle='#ff3a3a';p.fillRect(sx,top+1,h.w,1);p.fillRect(sx,bot-6,h.w,1);
-   if(s.active){const c='#ff2a4a';p.fillStyle=c;e.fillStyle=c;p.fillRect(sx+1,top+2,2,bot-top-8);e.fillRect(sx,top+2,4,bot-top-8);p.fillStyle='#ffffff';p.fillRect(sx+1,top+2,1,bot-top-8);v.fillStyle='rgba(255,40,80,.25)';v.fillRect(sx-4,top,12,bot-top);
+   if(s.active){const c='#ff2a4a';p.fillStyle=c;e.fillStyle=c;p.fillRect(sx+1,top+2,2,bot-top-8);e.fillRect(sx,top+2,4,bot-top-8);p.fillStyle='#ffffff';p.fillRect(sx+1,top+2,1,bot-top-8);{const g=v.createLinearGradient(sx-8,0,sx+12,0);g.addColorStop(0,'rgba(255,40,80,0)');g.addColorStop(.5,'rgba(255,40,80,.28)');g.addColorStop(1,'rgba(255,40,80,0)');v.fillStyle=g;v.fillRect(sx-8,top,20,bot-top)}
     for(let yy=40;yy<FLOOR_Y;yy+=40)addL(h.x+2,yy,30,c,.8)}
    else if(s.warn&&Math.floor(G.t*20)%2){e.fillStyle='rgba(255,60,80,.6)';e.fillRect(sx+1,top+2,1,bot-top-8)}}
   else if(h.type==='vent'){const s=hazardState(h),gy=FLOOR_Y-3+cy;p.fillStyle='#18181e';p.fillRect(sx,gy,h.w,4);p.fillStyle='#3a3a44';for(let k=1;k<h.w;k+=3)p.fillRect(sx+k,gy+1,1,2);
-   if(s.active){v.fillStyle='rgba(220,235,255,.35)';v.fillRect(sx+2,gy-110,h.w-4,110);addL(h.x+h.w/2,FLOOR_Y-40,50,'#e8f0ff',.9)}else if(s.warn){e.fillStyle='#e8f0ff';e.fillRect(sx+h.w/2-1,gy-2,2,1)}}
+   if(s.active){vGlow(v,sx+h.w/2,gy-50,h.w*.9,70,'#dcebff',.6);addL(h.x+h.w/2,FLOOR_Y-40,50,'#e8f0ff',.9)}else if(s.warn){e.fillStyle='#e8f0ff';e.fillRect(sx+h.w/2-1,gy-2,2,1)}}
  }
  // Arena-Tor
  for(const s of L.solids)if(s.gate&&!s.off){const sx=Math.round(s.x-cx);for(let k=0;k<3;k++){const c=th.accent;p.fillStyle=c;e.fillStyle=c;const xx=sx+k*2;p.fillRect(xx,20+cy,1,FLOOR_Y-20);e.fillRect(xx,20+cy,1,FLOOR_Y-20)}addL(s.x+3,FLOOR_Y-60,60,th.accent,.7)}
@@ -4281,7 +4284,7 @@ function drawEB(cx,cy,beat){
   if(q.kind==='beam'){const A=G.level.arena,x0=(q.dir>0?q.x:A.x)-cx,x1=(q.dir>0?A.x+A.w:q.x)-cx,yy=Math.round(q.y+cy);
    if(q.t<q.warn){if(Math.floor(G.t*16)%2){p.fillStyle=q.col;e.fillStyle=q.col;p.fillRect(x0,yy,x1-x0,1);e.fillRect(x0,yy,x1-x0,1)}}
    else{const k=1-Math.min(1,(q.t-q.warn)/q.act)*.4;p.fillStyle=q.col;p.fillRect(x0,yy-5,x1-x0,11);e.fillStyle=q.col;e.fillRect(x0,yy-6,x1-x0,13);p.fillStyle='#ffffff';e.fillStyle='#ffffff';p.fillRect(x0,yy-2,x1-x0,5);e.fillRect(x0,yy-2,x1-x0,5);
-    v.fillStyle=rgba(q.col,.3*k);v.fillRect(x0,yy-14,x1-x0,29);for(let xx=x0;xx<x1;xx+=50)addL(xx+cx,q.y,40,q.col,1)}continue}
+    vBand(v,x0,x1,yy,16,q.col,.32*k);for(let xx=x0;xx<x1;xx+=50)addL(xx+cx,q.y,40,q.col,1)}continue}
   const s=SPR[q.type]||SPR.heart,sx=Math.round(q.x-cx-s.width/2),sy=Math.round(q.y+cy-s.height/2);p.drawImage(s,sx,sy);e.globalAlpha=q.homing?.9:.55;e.drawImage(s,sx,sy);e.globalAlpha=1;
   if(q.homing&&Math.floor(G.t*10)%2){e.strokeStyle=gc;e.lineWidth=1;e.strokeRect(sx-1.5,sy-1.5,s.width+3,s.height+3)}
   if(nl++<40)addL(q.x,q.y,16,gc,.5)}
