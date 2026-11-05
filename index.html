@@ -4963,5 +4963,5 @@ window.KN={G,SAVE:()=>SAVE,start:i=>startLevel(i),boss(){const A=G.level.arena;G
 boot();
 
 </script>
-<script>if('serviceWorker' in navigator&&location.protocol==='https:'&&window.top===window)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>if('serviceWorker' in navigator&&location.protocol==='https:'&&window.top===window)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{});let once=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(once||!navigator.serviceWorker.controller)return;once=true;if(typeof G==='undefined'||G.state!=='play')location.reload()})});</script>
 </body></html>
