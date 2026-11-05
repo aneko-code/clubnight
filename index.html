@@ -3436,16 +3436,16 @@ const KT={
  k_roll(x,H){const w=380,r=H.r;H.ground(x,w);kRoller(H,x+20,w-40,70+H.diff*40+r()*20,r()*2);if(r()<.5+H.diff*.3)kRoller(H,x+20,w-40,55+r()*30,1+r(),{ow:16,oh:12});
   const a=60+Math.floor(r()*60);H.plat(x+a,FLOOR_Y-58,64);H.plat(x+a+150,FLOOR_Y-70-Math.floor(r()*30),64);H.coinArc(x+a,x+a+210,FLOOR_Y-96,14);H.L.vinylSpots.push({x:x+a+182,y:FLOOR_Y-120});
   H.spawn('walker',x+w-50);if(H.diff>.5)H.spawn('flyer',x+w/2,FLOOR_Y-140);return w},
- k_press(x,H){const n=3+(H.diff>.6?1:0)+Math.floor(H.r()*2),w=80+n*70,per=2.4-H.diff*.6;H.ground(x,w);
+ k_press(x,H){const n=(H.diff<.2?2:3)+(H.diff>.6?1:0)+(H.diff>.9?1:0),w=80+n*70,per=2.6-H.diff*.8;H.ground(x,w);
   for(let k=0;k<n;k++){kCrusher(H,x+40+k*70,34,per,k*per/n*(H.r()<.5?1:-1));H.coin(x+57+k*70,FLOOR_Y-14)}if(H.diff>.4)H.spawn('walker',x+w-30);return w},
- k_gate(x,H){const w=380,per=3.2-H.diff*.7;H.ground(x,w);kGate(H,x+110,per,0);kGate(H,x+270,per,per*(.3+H.r()*.4));
+ k_gate(x,H){const w=380,per=3.4-H.diff*.9;H.ground(x,w);if(H.diff<.15){kGate(H,x+190,per,0);H.spawn('walker',x+300);H.coinArc(x+150,x+230,FLOOR_Y-30,6);return w}kGate(H,x+110,per,0);kGate(H,x+270,per,per*(.3+H.r()*.4));if(H.diff>.85)kRoller(H,x+130,130,90,0,{ow:14,oh:12});
   H.spawn('thrower',x+190);H.spawn('walker',x+330);H.coinArc(x+130,x+250,FLOOR_Y-30,8);if(H.r()<.5)H.plat(x+170,FLOOR_Y-70,50);return w},
  k_swing(x,H){// Schaukeln schwingen gegenläufig mit gleichem Takt und berühren sich nie
   const n=2+(H.diff>.5?1:0),pw=36,S=150,len=FLOOR_Y-20-50,reach=Math.floor((S-pw-14)/2),amp=Math.asin(reach/len),sp=1.5+H.r()*.35,m=reach+pw/2+12,w=100+2*m+(n-1)*S;
   H.ground(x,50);H.ground(x+w-50,50);kPit(H,x+50,w-100);
   for(let k=0;k<n;k++){const px=x+50+m+k*S;kSwing(H,px,20,len,amp,sp,k*Math.PI,pw);H.coin(px,FLOOR_Y-84)}
   H.spawn('flyer',x+w/2,FLOOR_Y-160);H.L.vinylSpots.push({x:x+w/2,y:FLOOR_Y-150});return w},
- k_rain(x,H){const w=380;H.ground(x,w);kDrop(H,x+20,w-40,1.1-H.diff*.35);H.plat(x+70,FLOOR_Y-52,60);H.plat(x+250,FLOOR_Y-52,60);H.solid(x+170,FLOOR_Y-24,40,24,'podium');
+ k_rain(x,H){const w=380;H.ground(x,w);kDrop(H,x+20,w-40,1.3-H.diff*.55);if(H.diff>.85)kDrop(H,x+40,w-80,1.2);H.plat(x+70,FLOOR_Y-52,60);H.plat(x+250,FLOOR_Y-52,60);H.solid(x+170,FLOOR_Y-24,40,24,'podium');
   H.zone(x+20,x+w-20,1);H.spawn('walker',x+120);H.spawn('hopper',x+300);H.coinArc(x+40,x+340,FLOOR_Y-40,16);return w},
  k_wind(x,H){const w=400;H.ground(x,60);H.ground(x+w-60,60);kPit(H,x+60,w-120);kFan(H,x+60,w-120,-1,38+H.diff*26);
   H.plat(x+76,FLOOR_Y-30,40);mover(H,x+128,FLOOR_Y-44,44,'h',20,1.1,0);H.plat(x+230,FLOOR_Y-36,40);mover(H,x+286,FLOOR_Y-40,44,'v',18,1.4,1);H.coinArc(x+90,x+320,FLOOR_Y-80,20);return w},
@@ -3454,12 +3454,12 @@ const KT={
  k_climb(x,H){const w=380;H.ground(x,w);H.solid(x+170,FLOOR_Y-130,70,130,'mezz');mover(H,x+110,FLOOR_Y-80,44,'v',58,1.1,0);crumble(H,x+250,FLOOR_Y-96,34);crumble(H,x+300,FLOOR_Y-60,34);
   H.L.hazards.push({type:'crusher',x:x+190,w:30,per:2.6,ph:1,sty:ks(H).crush,by:FLOOR_Y-130});H.coinArc(x+176,x+234,FLOOR_Y-142,4);H.L.vinylSpots.push({x:x+205,y:FLOOR_Y-160});H.spawn('thrower',x+205,FLOOR_Y-130-22);return w},
  k_crumble(x,H){const n=4+(H.diff>.6?1:0),w=100+n*50;H.ground(x,50);H.ground(x+w-50,50);kPit(H,x+50,w-100);
-  for(let k=0;k<n;k++)crumble(H,x+60+k*50,FLOOR_Y-24-((k%2)*24),34);kDrop(H,x+50,w-100,1.4-H.diff*.4);H.coinArc(x+60,x+w-60,FLOOR_Y-70,20);return w},
+  for(let k=0;k<n;k++)crumble(H,x+60+k*50,FLOOR_Y-24-((k%2)*24),34);if(H.diff>.45)kDrop(H,x+50,w-100,1.4-H.diff*.4);H.coinArc(x+60,x+w-60,FLOOR_Y-70,20);return w},
  k_combo(x,H){const w=420;H.ground(x,w);kRoller(H,x+20,180,80,0);kGate(H,x+220,2.8,1);kCrusher(H,x+290,34,2.2,.5);
   H.plat(x+60,FLOOR_Y-60,60);H.coinArc(x+40,x+380,FLOOR_Y-40,16);H.spawn('hopper',x+370);if(H.diff>.5)H.spawn('flyer',x+150,FLOOR_Y-140);return w},
  k_swingpress(x,H){const w=440;H.ground(x,w);kCrusher(H,x+36,34,2,0);kCrusher(H,x+350,34,2,1);{const len=FLOOR_Y-20-52,reach=110;kSwing(H,x+210,20,len,Math.asin(reach/len)*.92,1.6,0,40)}
   H.coinArc(x+150,x+260,FLOOR_Y-140,14);H.L.vinylSpots.push({x:x+200,y:FLOOR_Y-160});H.spawn('walker',x+200);return w},
- k_bounce(x,H){const w=380;H.ground(x,w);bpad(H,x+60);bpad(H,x+250);H.plat(x+30,FLOOR_Y-150,70);H.plat(x+150,FLOOR_Y-170,80);H.plat(x+280,FLOOR_Y-140,70);kDrop(H,x+20,w-40,1.6);
+ k_bounce(x,H){const w=380;H.ground(x,w);bpad(H,x+60);bpad(H,x+250);H.plat(x+30,FLOOR_Y-150,70);H.plat(x+150,FLOOR_Y-170,80);H.plat(x+280,FLOOR_Y-140,70);if(H.diff>.4)kDrop(H,x+20,w-40,1.6);
   H.coinArc(x+40,x+340,FLOOR_Y-190,12);H.L.vinylSpots.push({x:x+190,y:FLOOR_Y-190});H.spawn('thrower',x+190,FLOOR_Y-170-22);return w}
 };
 Object.assign(GSEG,KT);
@@ -3509,12 +3509,34 @@ const ZUNIQ={
  sonar:[['turf'],['sonard'],['mhall','laser']],
  tml:[[],['tree','lake'],['fstage']]
 };
-for(const th in TOURS){const zu=ZUNIQ[th];if(!zu||!KSET[th])continue;const rest=Object.keys(KT).filter(k=>!KSET[th].includes(k)),off=th.length%Math.max(1,rest.length),ks2=KSET[th].concat(rest.slice(off),rest.slice(0,off));const fest=THEMES[th]&&THEMES[th].festival,per=fest?[3,3,4]:[2,3,3];let ki=0;
+/* ---------- Ablauf: Schritt für Schritt neue Elemente, am Ende schwer ---------- */
+const INTRO=['k_roll','k_bounce','k_gate','k_crumble','k_rain','k_press','k_swing','k_jets','k_wind','k_climb','k_combo','k_swingpress'];
+const KHINT={k_roll:'NEU: Rollende Hindernisse – im richtigen Moment drüberspringen!',k_bounce:'NEU: Sprungboxen – drauf landen und hoch hinaus!',
+ k_gate:'NEU: Schranken – warte, bis das Licht grün ist!',k_crumble:'NEU: Bröckelplattformen – nicht stehen bleiben!',
+ k_rain:'NEU: Fallende Objekte – achte auf die rote Markierung am Boden!',k_press:'NEU: Pressen – loslaufen, sobald sie oben sind!',
+ k_swing:'NEU: Schaukeln – springen, wenn sie sich nahekommen!',k_jets:'NEU: Düsen – CO2 schleudert dich hoch, Feuer tut weh!',
+ k_wind:'NEU: Gebläse – gegen den Wind mit kurzen Sprüngen!',k_climb:'NEU: Aufzüge und Mauern – mit dem Lift nach oben!',
+ k_combo:'NEU: Kombinationen – jetzt kommt alles zusammen!',k_swingpress:'NEU: Schaukel zwischen Pressen – Timing ist alles!'};
+const KCOUNT=[3,4,4,5,5,6,6,6,7,7, 7,7,8,8,8,9,9,9,10,10];
+const KD=i=>i<10?i/9*.7:.62+(i-10)/9*.45;   // Schwierigkeit der Hindernisse: 0 … 1.07
+for(const t of Object.keys(KT)){const f=KT[t];
+ GSEG[t]=(x,H)=>{const d=H.diff;H.diff=KD(H.L.i);const w=f(x,H);H.diff=d;return w};
+ GSEG[t+'~e']=(x,H)=>{const d=H.diff;H.diff=Math.min(KD(H.L.i),.12);const w=f(x,H);H.diff=d;if(!H.menu)(H.L.hints=H.L.hints||[]).push({x:x-30,text:KHINT[t]});return w}}
+for(const th in TOURS){const zu=ZUNIQ[th],li=LEVELS.findIndex(l=>l.theme===th);if(!zu||li<0)continue;
  if(th==='natureone'){TOURS[th].z[0].n='Hunsrück-Wald';TOURS[th].z[0].f='Rund um das Festivalgelände: Wald und Hügel des Hunsrücks.'}
- TOURS[th].z.forEach((z,k)=>{const kits=[];for(let n=0;n<per[k];n++)kits.push(ks2[(ki++)%ks2.length]);const u=zu[k].slice(),out=[];
-  // abwechselnd: Club-Segment, Hindernis, …
-  while(u.length||kits.length){if(u.length)out.push(u.shift());if(kits.length)out.push(kits.shift())}z.s=out})}
-
+ const unl=INTRO.slice(0,Math.min(li+1,INTRO.length)),pref=(KSET[th]||[]).filter(k=>unl.includes(k)).concat(unl.filter(k=>!(KSET[th]||[]).includes(k)).reverse());
+ if(li<6){const used=new Set(zu.flat());for(const b of['truss','stacks','dance','stairs'])if(!used.has(b)&&pref.length<4)pref.push(b)}
+ const N=KCOUNT[li]||8,seq=[];if(li<INTRO.length)seq.push(INTRO[li]+'~e');
+ // neueste Elemente öfter, ältere als Mischung; nie zweimal direkt hintereinander
+ let pi=0;const newest=unl.slice(-3);while(seq.length<N){let c=(seq.length%3===1&&li<12)?newest[(seq.length>>1)%newest.length]:pref[pi++%pref.length];if(seq.length&&seq[seq.length-1].split('~')[0]===c)c=pref[pi++%pref.length];if(pref.length>1&&seq.length&&seq[seq.length-1].split('~')[0]===c){if(++pi>500)break;continue}seq.push(c)}
+ // letzte Abschnitte = schwerste Kombination
+ if(li>=10){seq[seq.length-1]='k_combo';if(seq[seq.length-2]==='k_combo')seq[seq.length-2]='k_climb'}
+ const per=[Math.max(1,Math.round(N*.25)),Math.round(N*.35)];per.push(N-per[0]-per[1]);let ki=0;
+ TOURS[th].z.forEach((z,k)=>{const kits=seq.slice(ki,ki+per[k]);ki+=per[k];const u=zu[k].slice(),out=[];
+  while(u.length||kits.length){if(kits.length&&(!out.length||k===0&&out.length===0))out.push(kits.shift());if(u.length)out.push(u.shift());if(kits.length)out.push(kits.shift())}z.s=out})}
+/* Hinweis-Einblendung beim ersten Kontakt mit einem neuen Element */
+{const _sl2=startLevel;startLevel=function(i){_sl2(i);G.hintI=0}}
+function hintTick(){const L=G.level,p=G.player;if(!L||!L.hints||!p)return;const h=L.hints[G.hintI||0];if(h&&p.x>h.x){G.hintI=(G.hintI||0)+1;G.zoneB={n:'NEU',f:h.text.replace(/^NEU: /,''),t:0,hint:1};AU.sfx('checkpoint')}}
 /* ---------- neue Fallobjekt-Sprites ---------- */
 {const _d=defSprites;defSprites=function(){_d();
  SPR.crown=bmp(['.1.1.1.','1222221','1233321','1222221','.1.1.1.'],{1:'#c8a020',2:'#ffd84a',3:'#c82a2a'});
@@ -3524,7 +3546,7 @@ for(const th in TOURS){const zu=ZUNIQ[th];if(!zu||!KSET[th])continue;const rest=
 }}
 
 {const _pl=postLevel;postLevel=function(L){_pl(L);applyZones(L)}}
-function zoneAmbTick(dt){const L=G.level,p=G.player;if(!L||!L.tour||!p){G.zAmb=null;return}let a=L.th.amb;for(const z of L.tour)if(p.x>=z.x0&&z.amb)a=z.amb;
+function zoneAmbTick(dt){hintTick();const L=G.level,p=G.player;if(!L||!L.tour||!p){G.zAmb=null;return}let a=L.th.amb;for(const z of L.tour)if(p.x>=z.x0&&z.amb)a=z.amb;
  G.zAmb=G.zAmb&&G.zAmbL===L?mixHex(G.zAmb,a,Math.min(1,dt*2.5)):a;G.zAmbL=L}
 
 /* ================= GAME STATE ================= */
