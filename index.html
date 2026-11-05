@@ -267,6 +267,11 @@ canvas.logoC.sm{width:min(70vw,calc(15vh*320/104));height:auto;margin-left:-.4em
 .dscore{display:flex;justify-content:space-between;font-family:var(--f-lab);font-size:.72em;margin-top:.4em}.dscore i{display:inline-block;width:.8em;height:.8em;margin:0 .15em;background:rgba(255,255,255,.12);vertical-align:middle}.dscore i.on{background:var(--pc);box-shadow:0 0 8px var(--pc)}
 .dsay{font-size:1.15em;line-height:1.4;padding:.8em 1em;background:rgba(255,255,255,.06);border-left:3px solid var(--gc)}.dsay b{color:var(--gc)}
 .dopts{display:flex;flex-direction:column;gap:.45em}.dopt div{line-height:1.35;text-align:left}.dyou{color:var(--cyan);font-style:italic}
+.mini .mtxt{margin:0;line-height:1.45}.mini .dim{color:var(--dim)}.mscore{display:flex;gap:1em;align-items:center}.mscore i{display:inline-block;width:.8em;height:.8em;margin:0 .15em;border:1px solid var(--pc);vertical-align:middle}.mscore i.on{background:var(--pc);box-shadow:0 0 8px var(--pc)}
+.mbar{position:relative;height:2.4em;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);overflow:hidden}.mzone{position:absolute;top:0;bottom:0;background:rgba(58,255,154,.35);border-left:2px solid #3aff9a;border-right:2px solid #3aff9a;box-shadow:0 0 14px rgba(58,255,154,.5) inset}
+.mcur{position:absolute;top:-2px;bottom:-2px;width:4px;margin-left:-2px;background:#fff;box-shadow:0 0 10px #fff,0 0 20px var(--gc)}.btn.big div{font-size:1.5em;letter-spacing:.2em;text-align:center;width:100%}
+.pads{display:grid;grid-template-columns:repeat(4,1fr);gap:.5em}.pads.wait .pad{pointer-events:none;opacity:.75}.pad{min-height:5.5em;border-color:var(--pc)!important}.pad div{display:flex;flex-direction:column;align-items:center;gap:.2em;width:100%}.pad b{font-size:1.6em;color:var(--pc)}
+.pad.lit{background:var(--pc)!important;box-shadow:0 0 24px var(--pc);opacity:1!important}.pad.lit b{color:#000}@media (max-width:640px){.pads{grid-template-columns:repeat(2,1fr)}}
 .over{max-width:min(36em,94vw);border-top:3px solid var(--gc)}.over h2{margin:0;color:var(--red)}
 .dres{font-size:1.1em;padding:.5em 0}.dres.won{color:var(--gold)}.dres.lost{color:var(--red)}
 #pIntro{background:#000;align-items:center;justify-content:center;flex-direction:column;gap:1em}#introC{width:min(96vw,calc(78vh*16/9));height:auto;image-rendering:pixelated;box-shadow:0 0 40px rgba(255,47,214,.25)}
@@ -312,6 +317,7 @@ canvas.logoC.sm{width:min(70vw,calc(15vh*320/104));height:auto;margin-left:-.4em
   <section id="pDuel" class="scr center" hidden></section>
   <section id="pIntro" class="scr" hidden></section>
   <section id="pOver" class="scr center dim" hidden></section>
+  <section id="pMini" class="scr center dim" hidden></section>
   <section id="pArchiv" class="scr sub dim" hidden></section>
   <section id="pSkills" class="scr sub dim" hidden></section>
   <section id="pWardrobe" class="scr sub dim" hidden></section>
@@ -4969,7 +4975,55 @@ const DUEL=[
  ['Techno ist doch nur Lärm mit Stromrechnung!','Und deine Musik ist Stille, die zu laut geraten ist.'],
  ['Du tanzt, als hättest du Schluckauf!','Und du singst, als hättest du ihn verschluckt.'],
  ['Ohne Refrain merkt sich keiner deine Musik!','Muss auch keiner – man spürt sie im Bauch.'],
- ['Ich wette, du kennst nicht mal einen Akkord!','Einen reicht – den spiel ich dafür sechs Stunden lang.']
+ ['Ich wette, du kennst nicht mal einen Akkord!','Einen reicht – den spiel ich dafür sechs Stunden lang.'],
+ ['Deine Lichtshow hat die Leuchtkraft einer Kühlschranklampe!','Dann stell dich davor – zu deinem kalten Charme passt sie perfekt.'],
+ ['Ich hab Klingeltöne gehört, die mehr Bass hatten als du!','Dann geh ran – vielleicht ruft endlich mal jemand an, der dich buchen will.'],
+ ['Du schwitzt ja jetzt schon wie eine Nebelmaschine!','Ich mache wenigstens Atmosphäre – du nur dicke Luft.'],
+ ['Dein Set ist so lang wie eine Steuererklärung!','Und genauso lohnend: Am Ende gibt’s was zurück – Gänsehaut.'],
+ ['Ich hab mehr Platten im Regal als du Haare auf dem Kopf!','Stimmt – und beide verstauben bei dir seit 1987.'],
+ ['Mit deinen Stiefeln tanzt du wie ein Möbelpacker!','Dafür trage ich die Party, während du noch Kartons beschriftest.'],
+ ['Selbst das Garderobenticket hat mehr Persönlichkeit als du!','Das Ticket hat wenigstens eine Nummer – du hast nicht mal einen Hit.'],
+ ['Dein Bass bringt nicht mal einen Wackelpudding zum Wackeln!','Der hat bei deinem Gesang einfach schon vorher aufgegeben.'],
+ ['Du hast den Rhythmus einer kaputten Waschmaschine!','Danke – im Schleudergang war ich schon immer unschlagbar.'],
+ ['Deine Musik passt in jeden Fahrstuhl!','Dann steig ein – ich fahr dich direkt runter in den Techno-Keller.'],
+ ['Ich habe einen goldenen Preis! Was hast du?','Einen Stempel auf der Hand – und der ist wenigstens nicht gekauft.'],
+ ['Du klingst wie ein Staubsauger mit Schluckauf!','Und du wie der Staub, den er gerade nicht erwischt.'],
+ ['Auf deinen Partys tanzt nur der Hausmeister!','Er weiß eben, wo der gute Sound ist – im Keller.'],
+ ['Dein Tanzschritt heißt wohl „Rückenschmerz“?','Nein, „Der Wischmopp“ – damit putze ich gleich mit dir den Floor.'],
+ ['Der Kaugummi unterm Tresen hält länger durch als du!','Klar – der klebt da ja auch schon seit deinem letzten Hit.'],
+ ['Deine Boxen sind kleiner als meine Ohrringe!','Und trotzdem klappern deine Ohrringe im Takt meiner Boxen.'],
+ ['Mit der Frisur kommst du nicht mal am Spiegel vorbei!','Der Spiegel lässt mich durch – bei dir ist er gesprungen.'],
+ ['Dein Drop ist so süß wie ein Gummibärchen!','Und wie bei Gummibärchen will am Ende jeder noch einen.'],
+ ['Du bist so unterirdisch wie dein Kellerclub!','Unterirdisch sind die Wurzeln – deine sind leider aus Plastik.'],
+ ['Gleich erledige ich dich mit einem Ohrwurm!','Keine Sorge – mein Gehörschutz hat schon deine Hits überlebt.'],
+ ['Deine Platte hat einen Sprung – genau wie du!','Ein Sprung? Das nennt man Loop. Lern erst mal die Fachbegriffe.'],
+ ['Mein Publikum singt alle Texte mit!','Bei vier Wörtern pro Lied ist das ja auch keine Kunst.'],
+ ['Du hast den Charme einer Taschenkontrolle!','Danke – und gleich durchsuche ich deine Ausreden.'],
+ ['Dein ganzes Lied ist kürzer als meine Atempause!','Deine Atempausen sind ja auch das Beste an deinen Liedern.'],
+ ['Selbst der Rauchmelder ignoriert deinen Auftritt!','Der hat sich nach deinem letzten Ständchen freiwillig abgeschaltet.'],
+ ['Ich hab schon Tauben gesehen, die eleganter tanzen!','Die gurren aber wenigstens im Takt – du nicht.'],
+ ['Dein Name steht ganz klein auf dem Flyer!','Dafür ganz groß auf der Gästeliste – deiner auf der Warteliste.'],
+ ['Deine Lieblingsfarbe ist bestimmt Grau!','Schwarz. Grau ist nur, was von deiner Karriere übrig ist.'],
+ ['Kopfhörer um den Hals – trägst du die zur Deko?','Nein, die schützen mich, falls du gleich ein Solo singst.'],
+ ['Ich hab zwölf Millionen Klicks!','Ja – alle von deiner Mutter, auf Dauerschleife.'],
+ ['Deine Clubnacht endet wohl beim ersten Sonnenstrahl!','Da fängt sie erst richtig an – du liegst um acht schon im Bett.'],
+ ['Du weißt nicht mal, wo bei deinem Mischpult vorne ist!','Vorne ist da, wo die Leute tanzen – bei dir also nirgends.'],
+ ['Dein Bassist ist ein Laptop!','Dafür verstimmt er sich nicht – im Gegensatz zu deiner Gitarre.'],
+ ['In deinem Club ist es dunkler als in meinem Kühlschrank!','In deinem Kühlschrank liegt auch nur alte Milch – wie deine Hits.'],
+ ['Ich bin seit dreißig Jahren in den Charts!','Das erklärt den Staub auf deiner Paillettenjacke.'],
+ ['Mit Techno gewinnt man keinen Blumentopf!','Blumentöpfe gibt’s beim Schlagerwettbewerb – hier gibt’s Gänsehaut.'],
+ ['Deine Visuals sehen aus wie ein Bildschirmschoner!','Und du wie die Fehlermeldung davor.'],
+ ['Ich habe einen Fanclub mit 500 Mitgliedern!','Ich weiß – 499 davon sind Tante Gerda mit Zweitkonten.'],
+ ['Ich brauche keine Ohrstöpsel – ich BIN die Lautstärke!','Dann bist du wohl auch der Grund, warum alle welche tragen.'],
+ ['Wenn du auflegst, legen sich die Leute schlafen!','Auflegen, nicht hinlegen – aber den Unterschied kennst du ja nicht.'],
+ ['Meine Fans tragen T-Shirts mit meinem Gesicht!','Damit sie es sich nicht live ansehen müssen.'],
+ ['In deinem Club gibt’s nicht mal einen Spiegel auf dem Klo!','Brauch ich nicht – ich hab den Beat, du hast nur das Ego.'],
+ ['Von Harmonie hast du doch keine Ahnung!','Doch: Bass, Kick und Hi-Hat – die streiten sich nie.'],
+ ['Deine Plattenkiste wiegt mehr als dein Talent!','Kein Wunder – da liegt dein Album als Briefbeschwerer drin.'],
+ ['Meine Nebelmaschine ist heißer als dein ganzes Set!','Die läuft nur heiß, weil sie versucht, dich zu verstecken.'],
+ ['Du kannst ja nicht mal bis drei zählen – wie beim Walzer!','Eins, zwei, drei – und schon bist du raus.'],
+ ['Bei mir klatscht das Publikum im Takt!','Auf eins und drei – das tut sogar mir weh.'],
+ ['Mein Tourbus ist größer als dein Club!','Kein Wunder – in deinem Bus wohnt ja auch dein Ego.']
 ];
 const DUELERS=['Schunkel-Sabine','Scat-Kalle','Leichtmatrose Lutz','Luftgitarren-Lars','Trompeten-Traudl','Lasso-Lothar','Fanclub-Fiona','Tenor Toni','Triangel-Theo','Radio-Rüdiger',
  'Vokuhila-Volker','Hands-up-Heike','B-Seiten-Bente','Chorknabe Konstantin','Lil Echo','Bariton Bodo','Jazzhand-Jacqueline','Tante Tamburin','DJ Perreo-Pepe','Influencer-Ina'];
@@ -5156,6 +5210,91 @@ function drawSecret(cx,cy){const L=G.level,s=L&&L.secret;if(!s||s.a<.02)return;c
 {const _dp=drawParts;drawParts=function(cx,cy){_dp(cx,cy);if(G.level&&G.state!=='menu')drawSecret(cx,cy)}}
 ACH.push({id:'secret1',name:'Hinter der Wand',desc:'Finde deinen ersten Geheimraum.',rw:500,ok:()=>SAVE.secrets.some(Boolean)},
  {id:'secretAll',name:'Ortskundig',desc:'Finde alle '+SECRET_N+' Geheimräume.',rw:5000,ok:()=>SAVE.secrets.filter(Boolean).length>=SECRET_N});
+
+/* =====================================================================
+   BOSS-MINISPIEL: Oben auf dem Pult im Bossraum. Gewonnen = Boss −2 Balken
+   ===================================================================== */
+const MINI_DMG=.2,MINI_CD_WIN=30,MINI_CD_LOSE=12;
+const MG={kind:'beat',phase:'intro',t:0,round:0,hits:0,miss:0,zone:[0,0],pos:0,raf:0,last:0,seq:[],inp:[],lives:2,show:-1,msg:'',won:false};
+const PADS=[{n:'Kick',c:'#ff2fd6',s:'kickgun'},{n:'Snare',c:'#2ff3ff',s:'note'},{n:'Hi-Hat',c:'#ffe23a',s:'laser'},{n:'Bass',c:'#7aff5a',s:'wave'}];
+const MINI_WIN=['Mein Mischpult! Wer hat dir das erlaubt?!','Hey! Das war MEIN Refrain!','Nicht der Fader! Alles, nur nicht der Fader!','Aua – das ging direkt in die Gehörgänge!'];
+const MINI_LOSE=['Hahaha! Finger weg von meinem Pult!','Das Pult gehört mir – du darfst Konfetti fegen.','Daneben! Wie dein Haarschnitt.'];
+
+/* Pult-Position: die höchste Plattform im Bossraum */
+{const _pl=postLevel;postLevel=function(L){_pl(L);const A=L.arena;if(!A||L.menu)return;
+ let best=null;for(const s of L.solids)if(s.type==='oneway'&&!s.dyn&&s.x>=A.x&&s.x+s.w<=A.x+A.w&&(!best||s.y<best.y))best=s;
+ L.mix=best?{x:best.x+best.w/2-12,y:best.y,w:24}:{x:A.x+A.w/2-12,y:FLOOR_Y,w:24}}}
+{const _sl=startLevel;startLevel=function(i){_sl(i);G.mixCD=0;G.mixHint=false}}
+{const _rp=respawnPlayer;respawnPlayer=function(){_rp();G.mixCD=0}}
+function miniTick(dt){const L=G.level,b=G.boss,p=G.player,m=L&&L.mix;if(!m||!b||!G.bossStarted||G.done||b.state!=='fight'||!p||p.dead)return;
+ if(!G.mixHint){G.mixHint=true;UI.toast('Tipp: Spring aufs Pult ganz oben – Minispiel gewinnen = Boss −2 Balken!')}
+ if(G.mixCD>0){G.mixCD-=dt;return}
+ if(p.onGround&&p.y+p.h<=m.y+2&&p.x+p.w>m.x-6&&p.x<m.x+m.w+6)startMini()}
+{const _u=updatePlay;updatePlay=function(dt){_u(dt);if(G.state==='play')miniTick(dt)}}
+
+/* Pult zeichnen */
+{const _de=drawExtras;drawExtras=function(cx,cy,beat,pulse){_de(cx,cy,beat,pulse);const L=G.level,m=L&&L.mix;if(!m||!G.bossStarted||G.done)return;
+ const p=RD.p,e=RD.e,X=Math.round(m.x-cx),Y=m.y+cy;if(X<-40||X>VW+40)return;const ready=!(G.mixCD>0),col=ready?'#3aff9a':'#ff3a5a';
+ p.fillStyle='#14121a';p.fillRect(X,Y-10,m.w,10);p.fillStyle='#2a2634';p.fillRect(X+1,Y-9,m.w-2,3);
+ for(let k=0;k<4;k++){const on=ready&&Math.floor(beat*2+k)%4===0;p.fillStyle=on?PADS[k].c:'#3a3644';e.fillStyle=PADS[k].c;p.fillRect(X+3+k*5,Y-5,3,3);if(on)e.fillRect(X+3+k*5,Y-5,3,3)}
+ p.fillStyle='#8a8a94';p.fillRect(X+2,Y-12,1,2);p.fillRect(X+m.w-3,Y-12,1,2);
+ if(ready){const a=.5+.5*pulse;e.globalAlpha=a;e.fillStyle=col;e.fillRect(X,Y-10,m.w,1);e.globalAlpha=1;addL(m.x+m.w/2,m.y-8,50,col,.7*a);
+  const c=neonSign('MIX',col,7);p.drawImage(c,Math.round(X+m.w/2-c.width/2),Y-24-Math.round(Math.sin(G.t*3)*1.5));e.drawImage(c,Math.round(X+m.w/2-c.width/2),Y-24-Math.round(Math.sin(G.t*3)*1.5))}
+ else{const f=1-G.mixCD/(MG.won?MINI_CD_WIN:MINI_CD_LOSE);p.fillStyle='#3a1a24';p.fillRect(X,Y-14,m.w,2);p.fillStyle=col;p.fillRect(X,Y-14,Math.round(m.w*Math.max(0,Math.min(1,f))),2)}}}
+
+/* ---------- Ablauf ---------- */
+function startMini(){G.state='mini';$('#bossCard').classList.remove('on');IN.clear();UI.showTouch(false);AU.muffle(true);AU.sfx('horn');
+ Object.assign(MG,{kind:G.li%2?'pads':'beat',phase:'intro',round:0,hits:0,miss:0,lives:2,seq:[],inp:[],show:-1,won:false,msg:''});UI.show('pMini')}
+function miniGo(){if(MG.kind==='beat'){MG.phase='play';beatRound()}else{MG.phase='show';padsRound()}}
+function miniStop(){cancelAnimationFrame(MG.raf);clearTimeout(MG.to)}
+function miniFinish(won){miniStop();MG.won=won;MG.phase='end';AU.sfx(won?'vinylGet':'hurt');UI.b_pMini()}
+function miniEnd(){miniStop();const b=G.boss,p=G.player;UI.hideAll();AU.muffle(false);UI.showTouch(true);G.state='play';IN.clear();
+ G.mixCD=MG.won?MINI_CD_WIN:MINI_CD_LOSE;p.inv=Math.max(p.inv,1.4);p.vy=-120;
+ if(b&&b.state==='fight'){if(MG.won){const d=b.maxHp*MINI_DMG;popup(b.x+b.w/2,b.y-14,'−2 BALKEN!','#3aff9a',true);G.flash=.35;addShake(8);bubble(b,pick(MINI_WIN),2.4);
+   SAVE.st.minis=(SAVE.st.minis||0)+1;hitBoss(d,b.x+b.w/2,b.y+b.h/2,true);persist()}
+  else bubble(b,pick(MINI_LOSE),2.2)}}
+
+/* Spiel A: Beat-Match – im grünen Bereich drücken (5 Runden, 3 Treffer nötig) */
+function beatRound(){const r=MG.round,w=Math.max(.09,.2-r*.025-G.li*.003);const c=.15+Math.random()*(.7-w);MG.zone=[c,c+w];MG.t=Math.random()*2;MG.sp=.75+r*.16+G.li*.02;MG.last=performance.now();UI.b_pMini();
+ const loop=now=>{const dt=Math.min(.05,(now-MG.last)/1000);MG.last=now;MG.t+=dt*MG.sp;const ph=MG.t%2;MG.pos=ph<1?ph:2-ph;
+  const el=$('#mCur');if(el)el.style.left=(MG.pos*100)+'%';if(MG.phase==='play')MG.raf=requestAnimationFrame(loop)};MG.raf=requestAnimationFrame(loop)}
+function beatHit(){if(MG.phase!=='play')return;miniStop();const ok=MG.pos>=MG.zone[0]&&MG.pos<=MG.zone[1];if(ok){MG.hits++;AU.sfx('kickgun');MG.msg='Treffer! Sauber reingemixt.'}else{MG.miss++;AU.sfx('deny');MG.msg='Daneben – das war ein Trainwreck.'}
+ MG.round++;if(MG.hits>=3)return miniFinish(true);if(MG.miss>=3||MG.round>=5)return miniFinish(false);MG.phase='res';UI.b_pMini();MG.to=setTimeout(()=>{MG.phase='play';beatRound()},650)}
+
+/* Spiel B: Sample-Pads – Folge merken und nachspielen (3 Runden, 2 Leben) */
+function padsRound(){const len=3+MG.round+(G.li>=10?1:0);if(MG.seq.length!==len)MG.seq=Array.from({length:len},()=>Math.floor(Math.random()*4));MG.inp=[];MG.phase='show';MG.show=-1;MG.msg='Hör genau hin …';UI.b_pMini();
+ let k=0;const step=()=>{MG.show=-1;padLight();MG.to=setTimeout(()=>{if(k>=MG.seq.length){MG.phase='input';MG.msg='Jetzt du!';UI.b_pMini();return}
+   MG.show=MG.seq[k++];AU.sfx(PADS[MG.show].s);padLight();MG.to=setTimeout(step,Math.max(260,520-G.li*12))},140)};MG.to=setTimeout(step,500)}
+function padLight(){document.querySelectorAll('#pMini .pad').forEach((b,i)=>b.classList.toggle('lit',i===MG.show))}
+function padHit(i){if(MG.phase!=='input')return;AU.sfx(PADS[i].s);const b=document.querySelectorAll('#pMini .pad')[i];if(b){b.classList.add('lit');setTimeout(()=>b.classList.remove('lit'),160)}
+ if(MG.seq[MG.inp.length]!==i){MG.lives--;AU.sfx('deny');if(MG.lives<=0)return miniFinish(false);MG.msg='Falsches Pad! Noch einmal von vorn …';MG.phase='res';UI.b_pMini();MG.to=setTimeout(padsRound,900);return}
+ MG.inp.push(i);if(MG.inp.length===MG.seq.length){MG.round++;MG.seq=[];if(MG.round>=3)return miniFinish(true);MG.msg='Genau so! Nächste Runde wird länger …';MG.phase='res';UI.b_pMini();MG.to=setTimeout(padsRound,800)}}
+addEventListener('keydown',e=>{if(UI.cur!=='pMini'||e.repeat)return;const n={Digit1:0,Digit2:1,Digit3:2,Digit4:3,Numpad1:0,Numpad2:1,Numpad3:2,Numpad4:3}[e.code];
+ if(n!==undefined&&MG.kind==='pads'){e.preventDefault();padHit(n)}
+ if(MG.kind==='beat'&&MG.phase==='play'&&(e.code==='Space'||e.code==='Enter'||e.code==='ArrowUp'||e.code==='KeyW')){e.preventDefault();beatHit()}});
+
+/* ---------- Panel ---------- */
+UI.panels.push('pMini');
+UI.b_pMini=function(){const b=G.boss,g=b?b.g:GENRES[LEVELS[G.li].genre],beat=MG.kind==='beat';
+ const title=beat?'Beat-Match':'Sample-Pads',lab=`Minispiel · ${esc(g.label)} raus, Techno rein`;let body='';
+ const pips=(n,max,c)=>Array.from({length:max},(_,k)=>`<i class="${k<n?'on':''}" style="--pc:${c}"></i>`).join('');
+ if(MG.phase==='intro')body=`<p class="mtxt">${beat?`Der Regler läuft hin und her. Drück <b>DROP!</b>, wenn er im grünen Feld ist. <b>3 Treffer</b> aus 5 Versuchen – dann fliegt ${esc(b?b.def.name:'der Boss')} raus.`:`Die Pads leuchten in einer Reihenfolge auf. Spiel sie nach (Tasten <b>1–4</b> oder antippen). <b>3 Runden</b>, 2 Fehler erlaubt.`}</p>
+  <p class="mtxt dim">Gewonnen: Boss verliert <b>2 Balken</b>.</p><button class="btn" data-act="minigo" data-focus><div>Los geht’s ▸</div></button>`;
+ else if(MG.phase==='end')body=`<div class="dres ${MG.won?'won':'lost'}">${MG.won?'🎛️ Gewonnen! Der Boss verliert 2 Balken.':'Verloren … Das Pult lädt neu auf – versuch’s gleich nochmal.'}</div><button class="btn" data-act="miniend" data-focus><div>Zurück in den Kampf ▸</div></button>`;
+ else if(beat)body=`<div class="mscore">Treffer ${pips(MG.hits,3,'#3aff9a')} <span class="dim">Runde ${Math.min(5,MG.round+1)}/5</span></div>
+  <div class="mbar"><div class="mzone" style="left:${MG.zone[0]*100}%;width:${(MG.zone[1]-MG.zone[0])*100}%"></div><div id="mCur" class="mcur" style="left:${MG.pos*100}%"></div></div>
+  <div class="mtxt">${esc(MG.msg||' ')}</div><button class="btn big" data-act="minihit" data-focus><div>DROP!</div></button>`;
+ else body=`<div class="mscore">Runde ${pips(MG.round,3,'#3aff9a')} <span class="dim">Leben ${pips(MG.lives,2,'#ff2fd6')}</span></div>
+  <div class="mtxt">${esc(MG.msg)}</div><div class="pads ${MG.phase==='input'?'':'wait'}">${PADS.map((q,i)=>`<button class="btn pad" data-act="minipad" data-j="${i}" style="--pc:${q.c}" ${i===0?'data-focus':''}><div><b>${i+1}</b>${q.n}</div></button>`).join('')}</div>`;
+ $('#pMini').innerHTML=`<div class="card box duel mini" style="--gc:${g.color}"><div class="dhead"><span class="lab">${lab}</span><h2>🎛️ ${title}</h2></div>${body}</div>`;
+ if(MG.kind==='pads')padLight()};
+{const _a=UI.act;UI.act=function(a,el){
+ if(a==='minigo'){miniGo();return}if(a==='minihit'){beatHit();return}if(a==='minipad'){padHit(+el.dataset.j);return}if(a==='miniend'){miniEnd();return}
+ return _a.call(this,a,el)}}
+{const _b=UI.back;UI.back=function(){if(this.cur==='pMini')return;return _b.call(this)}}
+{const _p=pauseGame;pauseGame=function(){if(G.state==='mini')return;return _p.apply(this,arguments)}}
+ACH.push({id:'mini1',name:'Pult-Pirat',desc:'Gewinne ein Boss-Minispiel.',rw:800,ok:()=>(SAVE.st.minis||0)>=1},
+ {id:'mini20',name:'Resident am Pult',desc:'Gewinne 20 Boss-Minispiele.',rw:6000,ok:()=>(SAVE.st.minis||0)>=20});
 
 /* ================= INPUT ================= */
 const KEYMAP={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',ArrowDown:'down',KeyS:'down',ArrowUp:'jump',KeyW:'jump',Space:'jump',
