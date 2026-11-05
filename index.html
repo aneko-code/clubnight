@@ -267,6 +267,7 @@ canvas.logoC.sm{width:min(70vw,calc(15vh*320/104));height:auto;margin-left:-.4em
 .dscore{display:flex;justify-content:space-between;font-family:var(--f-lab);font-size:.72em;margin-top:.4em}.dscore i{display:inline-block;width:.8em;height:.8em;margin:0 .15em;background:rgba(255,255,255,.12);vertical-align:middle}.dscore i.on{background:var(--pc);box-shadow:0 0 8px var(--pc)}
 .dsay{font-size:1.15em;line-height:1.4;padding:.8em 1em;background:rgba(255,255,255,.06);border-left:3px solid var(--gc)}.dsay b{color:var(--gc)}
 .dopts{display:flex;flex-direction:column;gap:.45em}.dopt div{line-height:1.35;text-align:left}.dyou{color:var(--cyan);font-style:italic}
+.over{max-width:min(36em,94vw);border-top:3px solid var(--gc)}.over h2{margin:0;color:var(--red)}
 .dres{font-size:1.1em;padding:.5em 0}.dres.won{color:var(--gold)}.dres.lost{color:var(--red)}
 #pIntro{background:#000;align-items:center;justify-content:center;flex-direction:column;gap:1em}#introC{width:min(96vw,calc(78vh*16/9));height:auto;image-rendering:pixelated;box-shadow:0 0 40px rgba(255,47,214,.25)}
 .icap{min-height:3.2em;max-width:min(90vw,52em);text-align:center;font-size:clamp(14px,2.6vh,22px);line-height:1.45;color:#fff;text-shadow:0 2px 6px #000}
@@ -310,6 +311,7 @@ canvas.logoC.sm{width:min(70vw,calc(15vh*320/104));height:auto;margin-left:-.4em
   <section id="pShop" class="scr sub dim" hidden></section>
   <section id="pDuel" class="scr center" hidden></section>
   <section id="pIntro" class="scr" hidden></section>
+  <section id="pOver" class="scr center dim" hidden></section>
   <section id="pArchiv" class="scr sub dim" hidden></section>
   <section id="pSkills" class="scr sub dim" hidden></section>
   <section id="pWardrobe" class="scr sub dim" hidden></section>
@@ -3720,7 +3722,7 @@ function hurtPlayer(srcX,force){
 function killPlayer(){
  const p=G.player;p.dead=true;p.deadT=1.9;AU.sfx('die');addShake(10);
  for(let k=0;k<26;k++){const a=k/26*TAU;part({x:p.x+5,y:p.y+11,vx:Math.cos(a)*120,vy:Math.sin(a)*120-40,g:200,life:1,col:k%2?p.look.glow:'#ffffff',s:2,em:true,kind:k%3?'rect':'note'})}
- UI.toast('K.O. – zurück zur Garderobe');
+ if(G.bossStarted&&G.boss&&!G.done){const left=Math.max(0,4-(G.bossTries||0));UI.toast(left>0?'K.O. – noch '+left+(left===1?' Versuch':' Versuche')+' gegen den Boss':'K.O. – das war der letzte Versuch!')}else UI.toast('K.O. – zurück zur Garderobe');
 }
 function respawnPlayer(){
  const old=G.player,r=G.respawn;G.player=makePlayer(r.x,r.y,old);G.player.inv=1.6;G.player.ammo.note=Math.max(G.player.ammo.note,50);
@@ -5076,6 +5078,24 @@ function drawIntroScene(cv,s,t,d){const x=cv.getContext('2d'),W=480,H=270;x.imag
 {const _op=UI.b_pOptions.bind(UI);UI.b_pOptions=function(){_op();const box=$('#pOptions .card')||$('#pOptions');if(box)box.insertAdjacentHTML('beforeend','<div class="opt"><span>Story</span><button class="btn ghost" data-act="story"><div>Intro ansehen</div></button></div>')}}
 /* Erfolg für Wortgefechte */
 ACH.push({id:'duel1',name:'Schlagfertig',desc:'Gewinne dein erstes Wortgefecht.',rw:500,ok:()=>(SAVE.st.duels||0)>=1},{id:'duel20',name:'Großmaul vom Dienst',desc:'Gewinne 20 Wortgefechte.',rw:5000,ok:()=>(SAVE.st.duels||0)>=20});
+
+/* ---------- Boss: maximal 5 Versuche, dann beginnt das Level von vorn ---------- */
+const BOSS_TRIES=5;
+{const _sl3=startLevel;startLevel=function(i){_sl3(i);G.bossTries=0}}
+{const _rp2=respawnPlayer;respawnPlayer=function(){
+ if(G.boss&&G.bossStarted&&G.boss.state!=='dying'&&!G.done){G.bossTries=(G.bossTries||0)+1;
+  if(G.bossTries>=BOSS_TRIES){G.state='over';IN.clear();UI.showTouch(false);AU.muffle(true);AU.sfx('deny');$('#bossCard').classList.remove('on');UI.show('pOver');return}}
+ _rp2()}}
+UI.panels.push('pOver');
+UI.b_pOver=function(){const b=G.boss,g=b?b.g:GENRES[LEVELS[G.li].genre],L=LEVELS[G.li];
+ $('#pOver').innerHTML=`<div class="card box over" style="--gc:${g.color}"><span class="lab">${esc(L.short||L.club)} · Endgegner</span><h2>Fünf Versuche verbraucht!</h2>
+  <div class="dsay"><b>${esc(b?b.def.name:'Boss')}:</b> „${esc(pick(['Hahaha! Fünf zu null für '+g.label+'!','Komm wieder, wenn du einen Refrain gelernt hast!','Tschüss! Und schließ die Tür leise, da läuft ein Walzer.','War das schon alles? Ich hab noch nicht mal den zweiten Refrain gesungen!']))}“</div>
+  <p style="margin:0;color:var(--dim)">Das Level beginnt von vorn – Wertmarken und Gold-Vinyls, die du schon hast, bleiben dir.</p>
+  <button class="btn" data-act="restart" data-focus><div>Level neu starten<small>Diesmal klappt’s</small></div></button>
+  <button class="btn ghost" data-act="menu"><div>Hauptmenü</div></button></div>`};
+{const _b2=UI.back;UI.back=function(){if(this.cur==='pOver')return;return _b2.call(this)}}
+{const _h2=drawHUD;drawHUD=function(){_h2();if(G.state!=='play'||!G.boss||!G.bossStarted||G.done||G.boss.gone)return;const d=RD.d,S=RD.S,used=G.bossTries||0,x0=RD.W/2-115*S,y0=RD.H-42*S;d.save();
+ hudText(d,'VERSUCHE',x0,y0,4.4,'#c8bce8');for(let k=0;k<BOSS_TRIES;k++){const on=k<BOSS_TRIES-used;d.fillStyle=on?'#ff2fd6':'rgba(255,255,255,.15)';d.fillRect(x0+(30+k*7)*S,y0-4*S,5*S,5*S)}d.restore()}}
 
 /* ================= INPUT ================= */
 const KEYMAP={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',ArrowDown:'down',KeyS:'down',ArrowUp:'jump',KeyW:'jump',Space:'jump',
