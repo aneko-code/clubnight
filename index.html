@@ -1457,10 +1457,13 @@ function genLevel(i,menu){
   if(th.disco)L.discos.push({x:AX+AW/2,y:34});
   if(XARENA[def.theme])XARENA[def.theme](AX,AW,H);
   L.w=AX+AW+90}
- // Gold-Vinyls
- const vs=L.vinylSpots.slice().sort((a,b)=>a.x-b.x);
- if(!menu){const idx=vs.length>=3?[Math.floor(vs.length*.15),Math.floor(vs.length*.5),Math.floor(vs.length*.85)]:[0,1,2];
-  const used=new Set();idx.forEach((id,k)=>{let j=clamp(id,0,vs.length-1);while(used.has(j)&&j<vs.length-1)j++;used.add(j);const v=vs[j]||{x:400+k*900,y:FLOOR_Y-60};L.pickups.push({type:'gold',x:v.x,y:v.y,gid:k})})}
+ // Gold-Vinyls: zuerst schwere Orte (Geheimraum, Nische unter dem Oberdeck, unter der Presse), sonst späte, knifflige Stellen
+ if(!menu){const hs=(L.hardSpots||[]).slice().sort((a,b)=>a.p-b.p),picks=[];
+  for(const h of hs){if(picks.length<3&&!picks.some(q=>Math.abs(q.x-h.x)<150))picks.push(h)}
+  const vs=L.vinylSpots.slice().sort((a,b)=>b.x-a.x);   // hinten zuerst = schwerer
+  for(const v of vs){if(picks.length>=3)break;if(!picks.some(q=>Math.abs(q.x-v.x)<300))picks.push(v)}
+  for(let k=0;picks.length<3;k++)picks.push({x:L.w*.3+k*600,y:FLOOR_Y-150});
+  picks.sort((a,b)=>a.x-b.x).forEach((v,k)=>L.pickups.push({type:'gold',x:v.x,y:v.y,gid:k}))}
  // Spots / Lichter
  const inR=(a,v)=>a.some(q=>v>=q.x0&&v<=q.x1);
  if(th.ceil)for(let sx=90;sx<L.w;sx+=150+Math.floor(r()*70)){if(inR(L.noSpots,sx))continue;const out=inR(L.noCeil,sx);L.spots.push({x:sx,y:out?30:13,k:L.spots.length,ph:r()*TAU,sp:.5+r()*.7,pole:out})}
@@ -3463,7 +3466,7 @@ const KT={
   H.plat(x+76,FLOOR_Y-30,40);mover(H,x+128,FLOOR_Y-44,44,'h',20,1.1,0);H.plat(x+230,FLOOR_Y-36,40);mover(H,x+286,FLOOR_Y-40,44,'v',18,1.4,1);H.coinArc(x+90,x+320,FLOOR_Y-80,20);return w},
  k_jets(x,H){const n=4+(H.diff>.5?1:0),w=100+n*60;H.ground(x,w);for(let k=0;k<n;k++)kJet(H,x+50+k*60,k*.5);
   H.plat(x+70,FLOOR_Y-96,80);H.plat(x+w-150,FLOOR_Y-130,80);H.coinArc(x+80,x+w-80,FLOOR_Y-150,10);H.L.vinylSpots.push({x:x+w-110,y:FLOOR_Y-150});H.spawn('flyer',x+w/2,FLOOR_Y-170);return w},
- k_climb(x,H){const w=380;H.ground(x,w);H.solid(x+170,FLOOR_Y-130,70,130,'mezz');mover(H,x+110,FLOOR_Y-80,44,'v',58,1.1,0);crumble(H,x+250,FLOOR_Y-96,34);crumble(H,x+300,FLOOR_Y-60,34);
+ k_climb(x,H){const w=520;H.ground(x,w);H.solid(x+170,FLOOR_Y-130,70,130,'mezz');H.plat(x+240,FLOOR_Y-130,150,'metal');mover(H,x+110,FLOOR_Y-80,44,'v',58,1.1,0);crumble(H,x+400,FLOOR_Y-96,34);crumble(H,x+450,FLOOR_Y-60,34);H.coinArc(x+250,x+380,FLOOR_Y-142,8);H.spawn('thrower',x+330,FLOOR_Y-130-22);H.coin(x+300,FLOOR_Y-20);H.coin(x+330,FLOOR_Y-20);
   H.L.hazards.push({type:'crusher',x:x+190,w:30,per:2.6,ph:1,sty:ks(H).crush,by:FLOOR_Y-130});H.coinArc(x+176,x+234,FLOOR_Y-142,4);H.L.vinylSpots.push({x:x+205,y:FLOOR_Y-160});H.spawn('thrower',x+205,FLOOR_Y-130-22);return w},
  k_crumble(x,H){const n=4+(H.diff>.6?1:0),w=100+n*50;H.ground(x,50);H.ground(x+w-50,50);kPit(H,x+50,w-100);
   for(let k=0;k<n;k++)crumble(H,x+60+k*50,FLOOR_Y-24-((k%2)*24),34);if(H.diff>.45)kDrop(H,x+50,w-100,1.4-H.diff*.4);H.coinArc(x+60,x+w-60,FLOOR_Y-70,20);return w},
@@ -3529,6 +3532,32 @@ const KHINT={k_roll:'NEU: Rollende Hindernisse – im richtigen Moment drübersp
  k_swing:'NEU: Schaukeln – springen, wenn sie sich nahekommen!',k_jets:'NEU: Düsen – CO2 schleudert dich hoch, Feuer tut weh!',
  k_wind:'NEU: Gebläse – gegen den Wind mit kurzen Sprüngen!',k_climb:'NEU: Aufzüge und Mauern – mit dem Lift nach oben!',
  k_combo:'NEU: Kombinationen – jetzt kommt alles zusammen!',k_swingpress:'NEU: Schaukel zwischen Pressen – Timing ist alles!'};
+/* ---------- Oberdeck: hochfahren, oben eine Weile weiter – und unten wartet noch was ---------- */
+const DECK_Y=FLOOR_Y-120;
+KT.k_deck=(x,H)=>{const w=900,d=H.diff,L=H.L;H.ground(x,w);
+ mover(H,x+60,FLOOR_Y-74,44,'v',58,1.1,0);H.solid(x+110,DECK_Y,40,120,'mezz');   // Aufzug + Wand: unten geht's nicht weiter
+ H.plat(x+150,DECK_Y,180,'metal');crumble(H,x+344,DECK_Y,34);H.plat(x+392,DECK_Y,370,'metal');
+ // oben: Presse, Drehkreuz, Gegner
+ L.hazards.push({type:'crusher',x:x+470,w:34,per:2.6-d*.5,ph:.3,sty:ks(H).crush,by:DECK_Y});
+ spinner(H,x+640,DECK_Y-30,26,{sp:1.5+d*.8,ph:.5});
+ if(d>.5)L.hazards.push({type:'crusher',x:x+560,w:30,per:2.3-d*.4,ph:1.4,sty:ks(H).crush,by:DECK_Y});
+ H.spawn('thrower',x+250,DECK_Y-22);if(d>.25)H.spawn('flyer',x+560,DECK_Y-70);if(d>.7)H.spawn('thrower',x+720,DECK_Y-22);
+ H.coinArc(x+170,x+320,DECK_Y-14,10);H.coinArc(x+410,x+740,DECK_Y-14,14);
+ (L.hardSpots=L.hardSpots||[]).push({x:x+487,y:DECK_Y-58,p:2});                   // mitten unter der Presse
+ // unten: Rückweg in die Nische unter dem Deck
+ H.coin(x+300,FLOOR_Y-20);H.coin(x+420,FLOOR_Y-20);H.coin(x+540,FLOOR_Y-20);
+ L.pickups.push({type:'notes',x:x+230,y:FLOOR_Y-16});H.spawn('walker',x+380);if(d>.4)H.spawn('hopper',x+520);
+ L.hardSpots.push({x:x+178,y:FLOOR_Y-24,p:1});
+ if(!H.menu&&L.i===0)(L.hints=L.hints||[]).push({x:x+10,text:'NEU: Aufzug zum Oberdeck – oben geht es weiter. Und unten? Später mal zurückschauen!'});
+ return w};
+/* Geheimraum hinter einer Wand (alle 3 Level) */
+KT.k_secret=(x,H)=>{const w=360,L=H.L,rx=x+40,rw=240;H.ground(x,w);
+ H.solid(x+14,FLOOR_Y-50,40,50,'stack');H.plat(rx,FLOOR_Y-114,rw,'metal');
+ L.secret={x:rx,w:rw,y0:22,y1:FLOOR_Y-108,a:1,found:false};
+ for(let k=0;k<12;k++)H.coin(rx+40+k*14,FLOOR_Y-132-((k%2)*8));
+ L.pickups.push({type:'notes',x:rx+30,y:FLOOR_Y-126},{type:'bolt',x:rx+rw-30,y:FLOOR_Y-126});
+ (L.hardSpots=L.hardSpots||[]).push({x:rx+rw/2,y:FLOOR_Y-150,p:0});
+ H.spawn('walker',x+200);H.spawn('walker',x+300);return w};
 const KCOUNT=[3,4,4,5,5,6,6,6,7,7, 7,7,8,8,8,9,9,9,10,10];
 const KD=i=>i<10?i/9*.7:.62+(i-10)/9*.45;   // Schwierigkeit der Hindernisse: 0 … 1.07
 for(const t of Object.keys(KT)){const f=KT[t];
@@ -3545,7 +3574,10 @@ for(const th in TOURS){const zu=ZUNIQ[th],li=LEVELS.findIndex(l=>l.theme===th);i
  if(li>=10){seq[seq.length-1]='k_combo';if(seq[seq.length-2]==='k_combo')seq[seq.length-2]='k_climb'}
  const per=[Math.max(1,Math.round(N*.25)),Math.round(N*.35)];per.push(N-per[0]-per[1]);let ki=0;
  TOURS[th].z.forEach((z,k)=>{const kits=seq.slice(ki,ki+per[k]);ki+=per[k];const u=zu[k].slice(),out=[];
-  while(u.length||kits.length){if(kits.length&&(!out.length||k===0&&out.length===0))out.push(kits.shift());if(u.length)out.push(u.shift());if(kits.length)out.push(kits.shift())}z.s=out})}
+  while(u.length||kits.length){if(kits.length&&(!out.length||k===0&&out.length===0))out.push(kits.shift());if(u.length)out.push(u.shift());if(kits.length)out.push(kits.shift())}z.s=out;
+  if(k===1){z.s.splice(Math.max(1,z.s.length-1),0,'k_deck')}
+  if(k===2&&li>=11)z.s.splice(1,0,'k_deck');
+  if(k===2&&li%3===2)z.s.splice(Math.min(2,z.s.length),0,'k_secret')})}
 /* Hinweis-Einblendung beim ersten Kontakt mit einem neuen Element */
 {const _sl2=startLevel;startLevel=function(i){_sl2(i);G.hintI=0}}
 function hintTick(){const L=G.level,p=G.player;if(!L||!L.hints||!p)return;const h=L.hints[G.hintI||0];if(h&&p.x>h.x){G.hintI=(G.hintI||0)+1;G.zoneB={n:'NEU',f:h.text.replace(/^NEU: /,''),t:0,hint:1};AU.sfx('checkpoint')}}
@@ -4854,7 +4886,7 @@ UI.b_pArchiv=function(){const t=this.archTab||'flyer',nA=Object.keys(SAVE.ach).l
    :`<div class="fcard"><span class="lab">${i+1} · ${SAVE.completed[i]||levelPlayable(i)?esc(l.short||l.club):'???'}</span><h3>???</h3><p>Versteckt – meist ganz oben oder hinter einem schweren Sprung.</p></div>`}).join('')}</div>`;
  else if(t==='ach')body=`<div class="agrid">${ACH.map(a=>`<div class="acard ${SAVE.ach[a.id]?'on':''}"><b>${SAVE.ach[a.id]?'🏆':'🔒'} ${esc(a.name)}</b><span>${esc(a.desc)}</span><i>${a.rw?'+'+fmtN(a.rw)+' Wertmarken':'Titel'}</i></div>`).join('')}</div>`;
  else{const s=SAVE.st,row=(n,v)=>`<div><b>${v}</b>${n}</div>`;
-  body=`<div class="sgrid2 card">${row('Level gerettet',nCompleted(0,NLV)+'/'+NLV)}${row('Gold-Vinyls',nGold()+'/'+NLV*3)}${row('Vintage-Flyer',nFly()+'/'+NLV)}${row('White Labels',nStp('rx')+'/'+NLV)}
+  body=`<div class="sgrid2 card">${row('Level gerettet',nCompleted(0,NLV)+'/'+NLV)}${row('Gold-Vinyls',nGold()+'/'+NLV*3)}${row('Vintage-Flyer',nFly()+'/'+NLV)}${row('White Labels',nStp('rx')+'/'+NLV)}${row('Geheimräume',SAVE.secrets.filter(Boolean).length+'/'+SECRET_N)}
    ${row('Ohne Treffer',nStp('nh'))}${row('Unter Richtzeit',nStp('sp'))}${row('K.O.s',fmtN(s.kills))}${row('Beste Combo','×'+s.combo)}
    ${row('Bass-Drops',fmtN(s.drops))}${row('Verdiente Wertmarken',fmtN(s.earned))}${row('Resident-DJs getroffen',Object.keys(SAVE.metDJ).length+'/'+DJCOUNT)}${row('Erfolge',nA+'/'+ACH.length)}</div>
    <div class="card stlist"><span class="lab">Stempelkarte</span>${LEVELS.map((l,i)=>`<div class="strow"><span>${i+1} · ${esc(l.short||l.club)}</span>${stampsOf(i).map(s=>`<i class="${s.on?'on':''}" title="${esc(s.n)}"></i>`).join('')}</div>`).join('')}</div>`}
@@ -5096,6 +5128,34 @@ UI.b_pOver=function(){const b=G.boss,g=b?b.g:GENRES[LEVELS[G.li].genre],L=LEVELS
 {const _b2=UI.back;UI.back=function(){if(this.cur==='pOver')return;return _b2.call(this)}}
 {const _h2=drawHUD;drawHUD=function(){_h2();if(G.state!=='play'||!G.boss||!G.bossStarted||G.done||G.boss.gone)return;const d=RD.d,S=RD.S,used=G.bossTries||0,x0=RD.W/2-115*S,y0=RD.H-42*S;d.save();
  hudText(d,'VERSUCHE',x0,y0,4.4,'#c8bce8');for(let k=0;k<BOSS_TRIES;k++){const on=k<BOSS_TRIES-used;d.fillStyle=on?'#ff2fd6':'rgba(255,255,255,.15)';d.fillRect(x0+(30+k*7)*S,y0-4*S,5*S,5*S)}d.restore()}}
+
+/* ---------- Geheimräume (alle 3 Level) ---------- */
+const SECRET_N=LEVELS.filter((_,i)=>i%3===2).length;
+{const _e=ensureX;ensureX=function(S){_e(S);S.secrets=padArr(S.secrets,NLV,false);return S}}ensureX(SAVE);
+const SECRET_LINES=['Psst! Der Backstage-Kühlschrank. Bedien dich.','Geheimer Chillout-Raum gefunden – hier pennt sogar der Lichttechniker.','Du hast die Garderobe der Garderobe gefunden!','Hinter der Wand: die verschollene Plattenkiste von 1994.','Geheimraum! Die Security tut so, als hätte sie dich nicht gesehen.','Willkommen im Raum, den es offiziell nicht gibt.'];
+function secretTick(dt){const L=G.level,p=G.player,s=L&&L.secret;if(!s||!p)return;
+ const inside=p.x+p.w>s.x&&p.x<s.x+s.w&&p.y+p.h<=s.y1+4&&p.y>s.y0-10;
+ s.a+=((inside?.12:1)-s.a)*Math.min(1,dt*6);
+ if(inside&&!s.found&&!p.dead){s.found=true;const first=!SAVE.secrets[G.li];SAVE.secrets[G.li]=true;AU.sfx('checkpoint');
+  if(first){SAVE.coins+=250;G.stats.coins+=250;popup(p.x,p.y-10,'+250','#ffcf3a')}
+  G.zoneB={n:'GEHEIMRAUM',f:pick(SECRET_LINES),t:0,hint:1};burst(p.x+p.w/2,p.y,16,['#ffcf3a','#ff2fd6','#2ff3ff'],{speed:90,life:.6,em:true});persist()}}
+{const _u=updatePlay;updatePlay=function(dt){_u(dt);if(G.state==='play')secretTick(dt)}}
+function drawSecret(cx,cy){const L=G.level,s=L&&L.secret;if(!s||s.a<.02)return;const X=Math.round(s.x-cx),w=s.w;if(X>VW||X+w<0)return;
+ const p=RD.p,Y=s.y0+cy,h=s.y1-s.y0,th=L.th,base=mixHex(th.amb||'#20182a','#1a1620',.6);
+ p.save();p.globalAlpha=s.a;p.fillStyle=shade(base,-.2);p.fillRect(X,Y,w,h);
+ for(let yy=0;yy<h;yy+=8){p.fillStyle=shade(base,.08);p.fillRect(X,Y+yy,w,1);for(let xx=((yy/8)%2)*12;xx<w;xx+=24){p.fillStyle=shade(base,-.35);p.fillRect(X+xx,Y+yy+1,1,7)}}
+ p.fillStyle='#0c0a10';p.fillRect(X,Y+h-6,w,6);p.fillStyle=shade(th.accent,-.4);p.fillRect(X,Y+h-6,w,1);
+ // Säulen
+ p.fillStyle='#14121a';p.fillRect(X+4,Y+h,6,FLOOR_Y-s.y1);p.fillRect(X+w-10,Y+h,6,FLOOR_Y-s.y1);
+ // Plakat + Riss (Hinweis)
+ p.fillStyle='#d8d0c0';p.fillRect(X+30,Y+30,34,44);p.fillStyle=th.accent;p.fillRect(X+33,Y+33,28,20);p.fillStyle='#2a2430';p.fillRect(X+33,Y+57,28,2);p.fillRect(X+33,Y+62,20,2);
+ const fl=.5+.5*Math.sin(G.t*3);p.fillStyle=rgba('#ffe6a0',.25+.35*fl);for(let k=0;k<26;k++)p.fillRect(X+w-70+Math.round(Math.sin(k*1.7)*3),Y+h-34-k*2,1,2);
+ p.fillStyle=rgba('#ffffff',.35);const q=['.11.','1..1','..1.','.1..','....','.1..'];q.forEach((r,j)=>{for(let i=0;i<4;i++)if(r[i]==='1')p.fillRect(X+w-58+i*2,Y+h-30+j*2,2,2)});
+ p.restore();if(s.a<.6)addL(s.x+s.w/2,(s.y0+s.y1)/2,120,'#ffcf3a',.5*(1-s.a))
+ if(s.a>.3){RD.e.clearRect(X,Y,w,h);RD.v.clearRect(X,Y,w,h)}}
+{const _dp=drawParts;drawParts=function(cx,cy){_dp(cx,cy);if(G.level&&G.state!=='menu')drawSecret(cx,cy)}}
+ACH.push({id:'secret1',name:'Hinter der Wand',desc:'Finde deinen ersten Geheimraum.',rw:500,ok:()=>SAVE.secrets.some(Boolean)},
+ {id:'secretAll',name:'Ortskundig',desc:'Finde alle '+SECRET_N+' Geheimräume.',rw:5000,ok:()=>SAVE.secrets.filter(Boolean).length>=SECRET_N});
 
 /* ================= INPUT ================= */
 const KEYMAP={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',ArrowDown:'down',KeyS:'down',ArrowUp:'jump',KeyW:'jump',Space:'jump',
