@@ -3440,9 +3440,11 @@ const KT={
   for(let k=0;k<n;k++){kCrusher(H,x+40+k*70,34,per,k*per/n*(H.r()<.5?1:-1));H.coin(x+57+k*70,FLOOR_Y-14)}if(H.diff>.4)H.spawn('walker',x+w-30);return w},
  k_gate(x,H){const w=380,per=3.2-H.diff*.7;H.ground(x,w);kGate(H,x+110,per,0);kGate(H,x+270,per,per*(.3+H.r()*.4));
   H.spawn('thrower',x+190);H.spawn('walker',x+330);H.coinArc(x+130,x+250,FLOOR_Y-30,8);if(H.r()<.5)H.plat(x+170,FLOOR_Y-70,50);return w},
- k_swing(x,H){const n=2+(H.diff>.5?1:0),w=120+n*110;H.ground(x,50);H.ground(x+w-50,50);kPit(H,x+50,w-100);
-  for(let k=0;k<n;k++){const px=x+100+k*110,len=FLOOR_Y-20-48-Math.floor(H.r()*10);kSwing(H,px,20,len,.42+H.r()*.12,1.5+H.r()*.4,k*1.4,36);H.coin(px,FLOOR_Y-80)}
-  H.spawn('flyer',x+w/2,FLOOR_Y-150);H.L.vinylSpots.push({x:x+w/2,y:FLOOR_Y-150});return w},
+ k_swing(x,H){// Schaukeln schwingen gegenläufig mit gleichem Takt und berühren sich nie
+  const n=2+(H.diff>.5?1:0),pw=36,S=150,len=FLOOR_Y-20-50,reach=Math.floor((S-pw-14)/2),amp=Math.asin(reach/len),sp=1.5+H.r()*.35,m=reach+pw/2+12,w=100+2*m+(n-1)*S;
+  H.ground(x,50);H.ground(x+w-50,50);kPit(H,x+50,w-100);
+  for(let k=0;k<n;k++){const px=x+50+m+k*S;kSwing(H,px,20,len,amp,sp,k*Math.PI,pw);H.coin(px,FLOOR_Y-84)}
+  H.spawn('flyer',x+w/2,FLOOR_Y-160);H.L.vinylSpots.push({x:x+w/2,y:FLOOR_Y-150});return w},
  k_rain(x,H){const w=380;H.ground(x,w);kDrop(H,x+20,w-40,1.1-H.diff*.35);H.plat(x+70,FLOOR_Y-52,60);H.plat(x+250,FLOOR_Y-52,60);H.solid(x+170,FLOOR_Y-24,40,24,'podium');
   H.zone(x+20,x+w-20,1);H.spawn('walker',x+120);H.spawn('hopper',x+300);H.coinArc(x+40,x+340,FLOOR_Y-40,16);return w},
  k_wind(x,H){const w=400;H.ground(x,60);H.ground(x+w-60,60);kPit(H,x+60,w-120);kFan(H,x+60,w-120,-1,38+H.diff*26);
@@ -3455,7 +3457,7 @@ const KT={
   for(let k=0;k<n;k++)crumble(H,x+60+k*50,FLOOR_Y-24-((k%2)*24),34);kDrop(H,x+50,w-100,1.4-H.diff*.4);H.coinArc(x+60,x+w-60,FLOOR_Y-70,20);return w},
  k_combo(x,H){const w=420;H.ground(x,w);kRoller(H,x+20,180,80,0);kGate(H,x+220,2.8,1);kCrusher(H,x+290,34,2.2,.5);
   H.plat(x+60,FLOOR_Y-60,60);H.coinArc(x+40,x+380,FLOOR_Y-40,16);H.spawn('hopper',x+370);if(H.diff>.5)H.spawn('flyer',x+150,FLOOR_Y-140);return w},
- k_swingpress(x,H){const w=420;H.ground(x,w);kCrusher(H,x+80,34,2,0);kCrusher(H,x+290,34,2,1);kSwing(H,x+200,20,FLOOR_Y-20-52,.5,1.7,0,40);H.plat(x+20,FLOOR_Y-70,50);H.plat(x+350,FLOOR_Y-70,50);
+ k_swingpress(x,H){const w=440;H.ground(x,w);kCrusher(H,x+36,34,2,0);kCrusher(H,x+350,34,2,1);{const len=FLOOR_Y-20-52,reach=110;kSwing(H,x+210,20,len,Math.asin(reach/len)*.92,1.6,0,40)}
   H.coinArc(x+150,x+260,FLOOR_Y-140,14);H.L.vinylSpots.push({x:x+200,y:FLOOR_Y-160});H.spawn('walker',x+200);return w},
  k_bounce(x,H){const w=380;H.ground(x,w);bpad(H,x+60);bpad(H,x+250);H.plat(x+30,FLOOR_Y-150,70);H.plat(x+150,FLOOR_Y-170,80);H.plat(x+280,FLOOR_Y-140,70);kDrop(H,x+20,w-40,1.6);
   H.coinArc(x+40,x+340,FLOOR_Y-190,12);H.L.vinylSpots.push({x:x+190,y:FLOOR_Y-190});H.spawn('thrower',x+190,FLOOR_Y-170-22);return w}
