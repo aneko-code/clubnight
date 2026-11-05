@@ -3386,12 +3386,12 @@ MOVSKIN.kswing=(p,e,X,Y,w,m,beat)=>{const v=m.mv,cx=G.cam.x,PX=Math.round(v.ox-c
  e.fillStyle=ac;e.globalAlpha=.5;e.fillRect(X,Y,w,1);e.globalAlpha=1};
 
 /* ---------- Gefahren: Roller, Presse, Fallobjekte, Wind ---------- */
-const rollerX=h=>{const span=h.w-h.ow,u=(G.t*h.sp/Math.max(60,span)*60+h.ph)%2;return h.x+(u<1?u:2-u)*span};
+const rollerX=h=>{const span=Math.max(20,h.w-h.ow),u=((G.t*h.sp/span+h.ph)%2+2)%2;return h.x+(u<1?u:2-u)*span};
 HAZHIT.roller=(h,s,p)=>{const X=rollerX(h),Y=FLOOR_Y-h.oh;if(p.x+p.w>X+2&&p.x<X+h.ow-2&&p.y+p.h>Y+3&&p.y<FLOOR_Y)hurtPlayer(X+h.ow/2)};
 HAZDRAW.roller=(h,sx,cx,cy,beat,pulse)=>{const p=RD.p,e=RD.e,X=Math.round(rollerX(h)-cx),Y=FLOOR_Y-h.oh+cy,w=h.ow,hh=h.oh,s=h.sty,rot=Math.floor(G.t*10)%4,ac=G.level.th.accent;
  p.fillStyle='rgba(0,0,0,.35)';p.fillRect(X+1,FLOOR_Y+cy-1,w-2,2);
  switch(s){
-  case'keg':p.fillStyle='#8a5028';p.fillRect(X,Y+1,w,hh-2);p.fillStyle='#b8743a';p.fillRect(X+2,Y+2,w-4,3);p.fillStyle='#4a4a50';for(let k=0;k<3;k++)p.fillRect(X+((rot+k*6)%w),Y,1,hh);break;
+  case'keg':p.fillStyle='#8a5028';p.fillRect(X,Y+1,w,hh-2);p.fillStyle='#b8743a';p.fillRect(X+2,Y+2,w-4,3);p.fillStyle='#4a4a50';p.fillRect(X+3,Y,1,hh);p.fillRect(X+w-4,Y,1,hh);p.fillStyle='#d8945a';p.fillRect(X+((rot*3)%(w-4))+2,Y+2,2,hh-4);break;
   case'car':case'trabi':{const c=s==='trabi'?'#8ab0c8':'#c83a3a';p.fillStyle=c;p.fillRect(X,Y+6,w,hh-9);p.fillRect(X+3,Y+1,w-7,6);p.fillStyle='#9fd8ff';p.fillRect(X+5,Y+2,5,4);p.fillStyle='#111';p.fillRect(X+2,Y+hh-4,5,4);p.fillRect(X+w-7,Y+hh-4,5,4);p.fillStyle='#ffe8a0';e.fillStyle='#ffe8a0';p.fillRect(X+w-2,Y+8,2,2);e.fillRect(X+w-2,Y+8,2,2);break}
   case'bale':p.fillStyle='#d8b048';p.fillRect(X,Y+2,w,hh-2);p.fillStyle='#b08a30';for(let k=0;k<w;k+=3)p.fillRect(X+k,Y+2+((k+rot)%4),1,hh-4);p.fillStyle='#6a4a20';p.fillRect(X+5,Y+2,1,hh-2);p.fillRect(X+w-6,Y+2,1,hh-2);break;
   case'case':p.fillStyle='#1a1a20';p.fillRect(X,Y,w,hh);p.fillStyle='#8a8a94';p.fillRect(X,Y,w,1);p.fillRect(X,Y+hh-1,w,1);p.fillRect(X,Y,1,hh);p.fillRect(X+w-1,Y,1,hh);p.fillStyle=ac;e.fillStyle=ac;p.fillRect(X+3,Y+5,w-6,2);e.fillRect(X+3,Y+5,w-6,2);break;
