@@ -257,6 +257,10 @@ canvas.logoC.sm{width:min(70vw,calc(15vh*320/104));height:auto;margin-left:-.4em
 .map.m1{background:radial-gradient(circle at 60% 40%,rgba(255,47,214,.16),transparent 60%),repeating-linear-gradient(0deg,rgba(190,160,255,.05) 0 1px,transparent 1px 22px),repeating-linear-gradient(90deg,rgba(190,160,255,.05) 0 1px,transparent 1px 22px),#0c0718}
 .map.m2{background:radial-gradient(circle at 55% 45%,rgba(58,255,216,.14),transparent 60%),radial-gradient(circle at 20% 90%,rgba(255,226,58,.08),transparent 40%),repeating-linear-gradient(0deg,rgba(58,255,216,.05) 0 1px,transparent 1px 22px),repeating-linear-gradient(90deg,rgba(58,255,216,.05) 0 1px,transparent 1px 22px),#06121a}
 .geo{filter:drop-shadow(0 0 14px rgba(180,140,255,.35))}.map.m2 .geo{filter:drop-shadow(0 0 14px rgba(58,255,216,.3))}
+.map.m3,.map.m4{container-type:size}.map.m3 .geo,.map.m4 .geo{aspect-ratio:2/1;height:min(92cqh,47cqw)}
+.map.m3{background:radial-gradient(circle at 50% 40%,rgba(255,176,58,.14),transparent 60%),repeating-linear-gradient(0deg,rgba(255,176,58,.05) 0 1px,transparent 1px 22px),repeating-linear-gradient(90deg,rgba(255,176,58,.05) 0 1px,transparent 1px 22px),#0c0a12}
+.map.m4{background:radial-gradient(circle at 50% 50%,rgba(200,168,255,.18),transparent 65%),#08040e}
+.map.m3 .geo{filter:drop-shadow(0 0 14px rgba(255,176,58,.3))}.map.m4 .geo{filter:drop-shadow(0 0 14px rgba(200,168,255,.35))}
 .geo .flow{animation:flow 1.6s linear infinite}@keyframes flow{to{stroke-dashoffset:-24}}
 .maptitle{position:absolute;left:.8em;top:.6em;font-family:var(--f-lab);font-size:.8em;letter-spacing:.18em;color:var(--ink);text-shadow:0 0 8px rgba(255,47,214,.6);z-index:2}.maptitle small{display:block;font-size:.72em;letter-spacing:.06em;color:var(--dim);text-shadow:none}
 .map.m2 .maptitle{text-shadow:0 0 8px rgba(58,255,216,.6)}
@@ -476,7 +480,87 @@ const GENRES={
   look:{skin:'#e0e4f0',hair:'#2ff3ff',hs:'short',top:'#1a1a2a',top2:'#2ff3ff',pants:'#1a1a2a',shoes:'#2ff3ff',hat:'none',glasses:'visor',extra:'stripe',item:'sign'},
   proj:'like',proj2:'playbtn',flyer:'radio',
   lines:['Skip nach 30 Sekunden!','Das passt nicht in die Playlist!','Mehr Hook, weniger Intro!','Empfohlen für dich!','Engagement!'],
-  music:{pattern:'algo',lead:'pluck',bass:'synbass',scale:'major',prog:[0,4,5,3],root:62}}
+  music:{pattern:'algo',lead:'pluck',bass:'synbass',scale:'major',prog:[0,4,5,3],root:62}},
+ malle:{label:'Ballermann',minion:'Sangria-Tourist',color:'#ff8a3a',
+  look:{skin:'#f0a888',hair:'#e8c060',hs:'short',top:'#ff8a3a',top2:'#3affd8',pants:'#3a6aff',shoes:'#ffffff',hat:'bucket',hatC:'#ffffff',glasses:'sun',extra:'flowers',item:'mug'},
+  proj:'mug',proj2:'star',flyer:'heart',lines:['Eimer hoch!','Noch ein Lied mit Refrain!','Alle zusammen: Olé!','Sonnencreme ist für Anfänger!','Wo ist der Strand?'],
+  music:{pattern:'pop',lead:'accordion',bass:'synbass',scale:'major',prog:[0,4,5,3],root:57}},
+ britpop:{label:'Britpop',minion:'Parka-Fan',color:'#7a9a5a',
+  look:{skin:'#f0c8a8',hair:'#3a2a1a',hs:'short',top:'#5a6a4a',top2:'#c8c8c8',pants:'#2a3a6a',shoes:'#e8e8e8',hat:'bucket',hatC:'#2a2a2a',glasses:'sun',extra:'none',item:'guitar'},
+  proj:'pick',proj2:'mug',flyer:'guitar',lines:['Mehr Gitarre, Mate!','Das ist nicht Wonderwall!','Tee um fünf, Pogo um sechs!','Wo ist der Refrain, Kumpel?','Brit-Pop forever!'],
+  music:{pattern:'rock',lead:'dist',bass:'dist',scale:'major',prog:[0,4,5,3],root:52}},
+ drehorgel:{label:'Drehorgel',minion:'Orgeldreher',color:'#e8b03a',
+  look:{skin:'#f0c8a8',hair:'#c8c8c8',hs:'short',top:'#a8302a',top2:'#e8b03a',pants:'#2a2a3a',shoes:'#1a1a1a',hat:'beret',hatC:'#a8302a',glasses:'none',extra:'buttons',item:'radio'},
+  proj:'diamond',proj2:'note8',flyer:'radio',lines:['Kurbeln statt Klicken!','Ein Groschen für die Orgel!','Walzer auf Lochkarte!','Wer hat an der Uhr gedreht?','Hollandse Hits!'],
+  music:{pattern:'organ',lead:'organ',bass:'organ',scale:'major',prog:[0,3,4,0],root:55}},
+ chor:{label:'Polyphoner Chor',minion:'Chorsänger',color:'#c8a8ff',
+  look:{skin:'#e0b898',hair:'#1a1410',hs:'short',top:'#2a1a3a',top2:'#c8a8ff',pants:'#1a1020',shoes:'#1a1010',hat:'none',glasses:'none',extra:'frack',item:'sign'},
+  proj:'note8',proj2:'star',flyer:'mask',lines:['Dreistimmig, bitte!','Ein Bass allein ist zu wenig!','Hört ihr die Harmonie?','Aaaaah-men!','Kein Takt ohne Chor!'],
+  music:{pattern:'opera',lead:'voice',bass:'voice',scale:'minor',prog:[0,5,3,4],root:50}},
+ soul:{label:'Soul-Revue',minion:'Background-Sänger',color:'#ffb03a',
+  look:{skin:'#6a4028',hair:'#1a1210',hs:'curly',top:'#c83a2a',top2:'#ffd84a',pants:'#2a1a2a',shoes:'#ffd84a',hat:'none',glasses:'sun',extra:'frack',item:'trumpet'},
+  proj:'note8',proj2:'kiss',flyer:'trumpet',lines:['Mehr Gefühl, Baby!','Wo bleibt die Bläsersektion?','Hand aufs Herz!','Shout! Shout!','Ich will Soul!'],
+  music:{pattern:'musical',lead:'brass',bass:'upright',scale:'major',prog:[0,5,3,4],root:53}},
+ doowop:{label:'Doo-Wop',minion:'Straßenecken-Sänger',color:'#ff5a8a',
+  look:{skin:'#f0c8a8',hair:'#1a1a1a',hs:'short',top:'#ff5a8a',top2:'#ffffff',pants:'#1a1a2a',shoes:'#ffffff',hat:'none',glasses:'none',extra:'buttons',item:'sign'},
+  proj:'kiss',proj2:'note8',flyer:'heart',lines:['Shoo-bee-doo-wop!','Vier Stimmen, kein Kick!','Unter der Laterne klingt’s besser!','Sha-na-na!','Doo-wop-di-doo!'],
+  music:{pattern:'barber',lead:'voice',bass:'voice',scale:'major',prog:[0,5,3,4],root:55}},
+ bossa:{label:'Bossa Nova',minion:'Gitarrist mit Hut',color:'#3affb0',
+  look:{skin:'#c8906a',hair:'#1a1410',hs:'short',top:'#ffffff',top2:'#3affb0',pants:'#e8e0c8',shoes:'#8a5a3a',hat:'cowboy',hatC:'#e8d8a8',glasses:'sun',extra:'buttons',item:'guitar'},
+  proj:'maraca',proj2:'note8',flyer:'guitar',lines:['Ganz entspannt …','Wozu so laut?','Ein Cocktail, ein Akkord!','Saudade, meu amigo!','Sanft, bitte!'],
+  music:{pattern:'walking',lead:'pluck',bass:'upright',scale:'major',prog:[1,4,0,0],root:52}},
+ idol:{label:'Idol-Pop',minion:'Lichtstab-Fan',color:'#ff7ad8',
+  look:{skin:'#f4dcc8',hair:'#ff7ad8',hs:'bun',top:'#ffffff',top2:'#ff7ad8',pants:'#ff7ad8',shoes:'#ffffff',hat:'none',glasses:'heart',extra:'sparkle',item:'fan'},
+  proj:'star',proj2:'heart',flyer:'heart',lines:['Kawaii statt Kick!','Alle Lichtstäbe hoch!','Noch eine Zugabe!','Tanz die Choreo mit!','Ich hab einen Fanclub!'],
+  music:{pattern:'pop',lead:'glock',bass:'synbass',scale:'major',prog:[0,4,5,3],root:60}},
+ panflute:{label:'Panflöte',minion:'Fußgängerzonen-Band',color:'#e8a85a',
+  look:{skin:'#c8906a',hair:'#1a1410',hs:'long',top:'#c84a2a',top2:'#ffd84a',pants:'#3a2a1a',shoes:'#5a3a1a',hat:'none',glasses:'none',extra:'stripe',item:'sign'},
+  proj:'note8',proj2:'star',flyer:'mask',lines:['Hörst du den Kondor?','Panflöte heilt alles!','CD gefällig? Nur 10 Euro!','Noch ein Cover!','Flöten statt Fräsen!'],
+  music:{pattern:'country',lead:'glock',bass:'pluck',scale:'minor',prog:[0,3,4,0],root:57}},
+ muzak:{label:'Fahrstuhlmusik',minion:'Warteschleifen-Bot',color:'#9ac8e8',
+  look:{skin:'#d8d0c8',hair:'#8a8a8a',hs:'short',top:'#3a4a6a',top2:'#9ac8e8',pants:'#2a3a4a',shoes:'#1a1a1a',hat:'cap',hatC:'#3a4a6a',glasses:'none',extra:'buttons',item:'radio'},
+  proj:'tape',proj2:'note8',flyer:'radio',lines:['Bitte warten Sie …','Ihr Anruf ist uns wichtig!','Nächste Etage: Langeweile!','Ding!','Bitte nicht drängeln!'],
+  music:{pattern:'musical',lead:'glock',bass:'pizz',scale:'major',prog:[0,5,3,4],root:60}},
+ prog:{label:'Prog-Rock',minion:'Konzeptalbum-Fan',color:'#a87aff',
+  look:{skin:'#f0c8a8',hair:'#6a4a2a',hs:'long',top:'#4a2a6a',top2:'#ffd84a',pants:'#3a2a1a',shoes:'#3a2a1a',hat:'none',glasses:'none',extra:'plaid',item:'guitar'},
+  proj:'note8',proj2:'flat',flyer:'violin',lines:['Das Solo ist erst bei Minute 12!','Seite B, Teil 4!','Taktart: 17/8!','Ein Konzeptalbum über Zwerge!','Noch ein Orgelsolo!'],
+  music:{pattern:'organ',lead:'organ',bass:'dist',scale:'minor',prog:[0,5,3,4],root:52}},
+ disco:{label:'Disco',minion:'Rollschuh-Roller',color:'#ffd84a',
+  look:{skin:'#c8906a',hair:'#1a1410',hs:'curly',top:'#ffd84a',top2:'#ffffff',pants:'#ffffff',shoes:'#ffd84a',hat:'none',glasses:'sun',extra:'sequins',item:'mic'},
+  proj:'diamond',proj2:'star',flyer:'mask',lines:['Burn, baby, burn!','Mehr Glitzer!','Schlaghosen sind Pflicht!','Saturday Night!','Spiegelkugel an!'],
+  music:{pattern:'euro',lead:'strings',bass:'synbass',scale:'minor',prog:[0,3,4,0],root:57}},
+ newwave:{label:'New Wave',minion:'Schulterpolster-Fan',color:'#3affff',
+  look:{skin:'#f0d0b8',hair:'#ff3a8a',hs:'mohawk',top:'#1a1a2a',top2:'#3affff',pants:'#1a1a2a',shoes:'#ffffff',hat:'none',glasses:'sun',extra:'stripe',item:'radio'},
+  proj:'tape',proj2:'star',flyer:'radio',lines:['Mehr Haarspray!','Synth-Pop ist die Zukunft!','Schulterpolster, Baby!','Neon für alle!','Video killed the DJ!'],
+  music:{pattern:'pop',lead:'supersaw',bass:'synbass',scale:'minor',prog:[0,5,3,4],root:55}},
+ glam:{label:'Glam-Rock',minion:'Luftgitarrist',color:'#ff3ab0',
+  look:{skin:'#f0c8a8',hair:'#ffd84a',hs:'long',top:'#ff3ab0',top2:'#1a1a1a',pants:'#1a1a1a',shoes:'#ffffff',hat:'none',glasses:'sun',extra:'studs',item:'guitar'},
+  proj:'lighter',proj2:'pick',flyer:'guitar',lines:['Mehr Haarspray!','Gitarrensolo!','Hände hoch, Feuerzeuge an!','Rock’n’Roll!','Lauter!'],
+  music:{pattern:'metal',lead:'dist',bass:'dist',scale:'minor',prog:[0,6,5,4],root:52}},
+ lambada:{label:'Lambada',minion:'Sommerhit-Tänzer',color:'#ff5a3a',
+  look:{skin:'#c8906a',hair:'#1a1410',hs:'long',top:'#ff5a3a',top2:'#ffd84a',pants:'#ffffff',shoes:'#ff5a3a',hat:'none',glasses:'none',extra:'flowers',item:'fan'},
+  proj:'maraca',proj2:'heart',flyer:'heart',lines:['Hüften schwingen!','Der Sommerhit des Jahres!','Lambada, Lambada!','Tanzen verboten? Nicht mit mir!','Paartanz!'],
+  music:{pattern:'dembow',lead:'accordion',bass:'synbass',scale:'minor',prog:[0,3,4,0],root:55}},
+ liedermacher:{label:'Liedermacher',minion:'Klampfen-Fan',color:'#c8a87a',
+  look:{skin:'#f0c8a8',hair:'#5a3a1a',hs:'long',top:'#6a5a3a',top2:'#c8a87a',pants:'#3a3a5a',shoes:'#3a2a1a',hat:'none',glasses:'none',extra:'plaid',item:'guitar'},
+  proj:'note8',proj2:'flat',flyer:'guitar',lines:['Zwölf Strophen, kein Refrain!','Ein Lied über die Gesellschaft!','Hört auf den Text!','Akustik statt Elektro!','Noch eine Strophe!'],
+  music:{pattern:'country',lead:'twang',bass:'upright',scale:'minor',prog:[0,3,4,0],root:52}},
+ y2k:{label:'Y2K-Pop',minion:'Countdown-Fan',color:'#3affd8',
+  look:{skin:'#f0d0b8',hair:'#ffd84a',hs:'bun',top:'#3affd8',top2:'#ff7ad8',pants:'#c8c8e8',shoes:'#ffffff',hat:'none',glasses:'visor',extra:'sparkle',item:'sign'},
+  proj:'star',proj2:'like',flyer:'radio',lines:['Der Millennium-Bug kommt!','Drei, zwei, eins – 2000!','Glitzer-Lipgloss!','Boygroup-Poster!','Klingelton-Charts!'],
+  music:{pattern:'pop',lead:'tune',bass:'synbass',scale:'major',prog:[0,4,5,3],root:60}},
+ emo:{label:'Emo-Rock',minion:'Emo-Kid',color:'#8a8aff',
+  look:{skin:'#f4e0d0',hair:'#1a1a1a',hs:'long',top:'#1a1a1a',top2:'#ff3a5a',pants:'#1a1a1a',shoes:'#ffffff',hat:'none',glasses:'none',extra:'stripe',item:'guitar'},
+  proj:'shard',proj2:'heart',flyer:'mask',lines:['Niemand versteht mich!','Seitenscheitel forever!','Das ist kein Phase, Mama!','Ich bin so traurig … und laut!','Mehr Kajal!'],
+  music:{pattern:'rock',lead:'dist',bass:'dist',scale:'minor',prog:[0,5,3,4],root:52}},
+ lofi:{label:'Lo-Fi zum Lernen',minion:'Lern-Stream-Zuschauer',color:'#c8b8a8',
+  look:{skin:'#f0d0b8',hair:'#3a2a2a',hs:'short',top:'#c8b8a8',top2:'#6a5a8a',pants:'#3a3a4a',shoes:'#e8e8e8',hat:'none',glasses:'none',extra:'none',item:'radio'},
+  proj:'tape',proj2:'note8',flyer:'radio',lines:['Psst, ich lerne!','Beats zum Entspannen!','Nicht so viel Bass!','Regen-Geräusche an!','Chill mal!'],
+  music:{pattern:'walking',lead:'pluck',bass:'sub808',scale:'dorian',prog:[1,4,0,0],root:55}},
+ kimusik:{label:'KI-Musik',minion:'Generator-Bot',color:'#3affff',
+  look:{skin:'#c8d8e8',hair:'#3affff',hs:'short',top:'#1a1a2a',top2:'#3affff',pants:'#1a1a2a',shoes:'#3affff',hat:'none',glasses:'visor',extra:'stripe',item:'sign'},
+  proj:'like',proj2:'playbtn',flyer:'radio',lines:['Ich generiere den perfekten Hit!','Prompt: Mehr Kick!','Ich kann jeden Stil!','Berechne Refrain …','Kreativität: 100 %!'],
+  music:{pattern:'algo',lead:'tune',bass:'synbass',scale:'minor',prog:[0,5,3,4],root:57}}
 };
 /* ================= BOSSE ================= */
 const BOSSES={
@@ -539,7 +623,47 @@ const BOSSES={
   look:{skin:'#c8906a',hair:'#1a1410',hs:'fade',suit:'#ffffff',suit2:'#ffd84a',shirt:'#ffffff',pants:'#e8e8e8',shoes:'#ffffff',item:'goldmic',glasses:'sun',beard:'goatee',extra:'chain'}},
  algo:{name:'Queen Algoritma',hp:950,attacks:['spread','rain','charge','beam'],p2:['spiral','homing'],p3:['summon','slam'],
   intro:'Ich weiß, was du hören willst: 30 Sekunden Hook – und dann skippen!',defeat:'Fehler 404 … Lieblingssong nicht gefunden … ich … tanze?',
-  look:{skin:'#e0e4f0',hair:'#2ff3ff',hs:'holo',suit:'#1a1a2a',suit2:'#2ff3ff',shirt:'#ff2fd6',pants:'#1a1a2a',shoes:'#2ff3ff',item:'tablet',cape:'#3a1a6a',dress:true,extra:'necklace'}}
+  look:{skin:'#e0e4f0',hair:'#2ff3ff',hs:'holo',suit:'#1a1a2a',suit2:'#2ff3ff',shirt:'#ff2fd6',pants:'#1a1a2a',shoes:'#2ff3ff',item:'tablet',cape:'#3a1a6a',dress:true,extra:'necklace'}},
+ malle:{name:'Eimer-Erwin',hp:620,attacks:['spread','rain','summon'],p2:['spiral','charge'],intro:'Hier wird nicht gestampft – hier wird geschunkelt! EIMER HOCH!',defeat:'Ich … geh mich kurz … unter die Schaumkanone stellen.',
+  look:{skin:'#f0a888',hair:'#e8c060',hs:'pompadour',suit:'#ff8a3a',suit2:'#3affd8',shirt:'#ffffff',pants:'#3a6aff',shoes:'#ffffff',item:'mug',glasses:'sun',extra:'hearts'}},
+ britpop:{name:'Lord Lad',hp:650,attacks:['spread','charge','homing'],p2:['spiral','beam'],intro:'Kein Gestampfe in meinem Königreich – hier spielt die Band!',defeat:'Na gut … euer Bass ist ziemlich … brilliant.',
+  look:{skin:'#f0c8a8',hair:'#3a2a1a',hs:'mullet',suit:'#5a6a4a',suit2:'#c8c8c8',shirt:'#e8e8e8',pants:'#2a3a6a',shoes:'#e8e8e8',item:'flyingV',glasses:'sun',extra:'buttons'}},
+ drehorgel:{name:'Draaiorgel-Dirk',hp:680,attacks:['rain','beam','summon'],p2:['spiral','slam'],intro:'Einmal kurbeln, Walzer für alle! Und keine Widerrede!',defeat:'Meine Lochkarte … ist durchgerissen …',
+  look:{skin:'#f0c8a8',hair:'#c8c8c8',hs:'tophat',suit:'#a8302a',suit2:'#e8b03a',shirt:'#ffffff',pants:'#2a2a3a',shoes:'#1a1a1a',item:'accordion',beard:'mustache',extra:'buttons'}},
+ chor:{name:'Kantor Kartuli',hp:720,attacks:['beam','homing','rain'],p2:['spiral','summon'],intro:'Drei Stimmen, kein Beat – so klingt Musik!',defeat:'Der Bass … ist die vierte Stimme … wunderbar.',
+  look:{skin:'#e0b898',hair:'#1a1410',hs:'maestro',suit:'#2a1a3a',suit2:'#c8a8ff',shirt:'#ffffff',pants:'#1a1020',shoes:'#1a1010',item:'baton',beard:'full',extra:'tails'}},
+ soul:{name:'Reverend Groove',hp:740,attacks:['spread','slam','homing'],p2:['spiral','charge'],intro:'Kann ich ein Halleluja hören? Aber ohne Kick!',defeat:'Okay … dieser Beat hat … Soul.',
+  look:{skin:'#6a4028',hair:'#1a1210',hs:'curlyBig',suit:'#c83a2a',suit2:'#ffd84a',shirt:'#ffffff',pants:'#2a1a2a',shoes:'#ffd84a',item:'goldmic',glasses:'sun',extra:'sequins'}},
+ doowop:{name:'Dandy Doo-Wop',hp:770,attacks:['spread','rain','summon'],p2:['spiral','beam'],intro:'Sha-na-na – unter meiner Laterne wird vierstimmig gesungen!',defeat:'Doo … wop … bumm … bumm …',
+  look:{skin:'#f0c8a8',hair:'#1a1a1a',hs:'pompadour',suit:'#ff5a8a',suit2:'#ffffff',shirt:'#1a1a2a',pants:'#1a1a2a',shoes:'#ffffff',item:'mic',extra:'buttons'}},
+ bossa:{name:'Senhor Saudade',hp:800,attacks:['homing','beam','spread'],p2:['spiral','rain'],intro:'Psst … ganz entspannt … und ganz ohne Bass.',defeat:'Eu … tanze? Ja, ich tanze!',
+  look:{skin:'#c8906a',hair:'#1a1410',hs:'boater',suit:'#ffffff',suit2:'#3affb0',shirt:'#3affb0',pants:'#e8e0c8',shoes:'#8a5a3a',item:'guitarAc',glasses:'sun',beard:'mustache'}},
+ idol:{name:'Idol Kirakira',hp:830,attacks:['spread','spiral','summon'],p2:['homing','charge'],intro:'Alle Lichtstäbe hoch! Hier läuft nur noch meine Choreo!',defeat:'Danke an alle Fans … auch an dich … Techno-Fan.',
+  look:{skin:'#f4dcc8',hair:'#ff7ad8',hs:'diva',suit:'#ffffff',suit2:'#ff7ad8',shirt:'#ff7ad8',pants:'#ff7ad8',shoes:'#ffffff',item:'goldmic',dress:true,extra:'sequins'}},
+ panflute:{name:'Panflöten-Pedro',hp:860,attacks:['rain','beam','homing'],p2:['spiral','summon'],intro:'Hörst du den Kondor? Er sagt: Kein Techno in der Wüste!',defeat:'Der Kondor … fliegt jetzt … im Viervierteltakt.',
+  look:{skin:'#c8906a',hair:'#1a1410',hs:'ponytail',suit:'#c84a2a',suit2:'#ffd84a',shirt:'#ffffff',pants:'#3a2a1a',shoes:'#5a3a1a',item:'none',extra:'stripes'}},
+ muzak:{name:'Kapitän Warteschleife',hp:980,attacks:['spread','rain','charge','beam'],p2:['spiral','homing'],p3:['summon','slam'],intro:'Bitte warten Sie … Ihre Party ist uns wichtig … bitte warten Sie …',defeat:'Ding! … Sie haben … das Ziel … erreicht.',
+  look:{skin:'#d8d0c8',hair:'#8a8a8a',hs:'captain',suit:'#3a4a6a',suit2:'#ffd84a',shirt:'#ffffff',pants:'#2a3a4a',shoes:'#1a1a1a',item:'tablet',beard:'full',extra:'buttons',cape:'#1a2a4a'}},
+ prog:{name:'Zwanzig-Minuten-Zacharias',hp:760,attacks:['beam','rain','spread'],p2:['spiral','summon'],intro:'Mein nächstes Stück dauert eine Seite der Schallplatte. Beide Seiten.',defeat:'Das … war … kürzer als mein Intro.',
+  look:{skin:'#f0c8a8',hair:'#6a4a2a',hs:'longMetal',suit:'#4a2a6a',suit2:'#ffd84a',shirt:'#ffffff',pants:'#3a2a1a',shoes:'#3a2a1a',item:'flyingV',beard:'full',cape:'#2a1a4a'}},
+ disco:{name:'Disco-Diva Donatella',hp:800,attacks:['spread','spiral','homing'],p2:['beam','summon'],intro:'Burn, baby, burn – aber nur im Disco-Takt!',defeat:'Die Kugel … dreht sich weiter … mit dir.',
+  look:{skin:'#c8906a',hair:'#1a1410',hs:'curlyBig',suit:'#ffd84a',suit2:'#ffffff',shirt:'#ffffff',pants:'#ffffff',shoes:'#ffd84a',item:'goldmic',dress:true,extra:'sequins'}},
+ newwave:{name:'Föhnfrisur-Fabian',hp:840,attacks:['spread','charge','beam'],p2:['spiral','rain'],intro:'Schulterpolster an, Synthie auf Pop – die Zukunft gehört der Frisur!',defeat:'Meine Föhnwelle … ist … zusammengefallen.',
+  look:{skin:'#f0d0b8',hair:'#ff3a8a',hs:'frosted',suit:'#1a1a2a',suit2:'#3affff',shirt:'#ff3a8a',pants:'#1a1a2a',shoes:'#ffffff',item:'mic',glasses:'sun',extra:'stripes'}},
+ glam:{name:'Haarspray-Harry',hp:880,attacks:['charge','slam','spread'],p2:['spiral','beam'],intro:'Eine Dose Haarspray pro Song – und Gitarrensolos bis zum Morgen!',defeat:'Meine Mähne … sie … wippt … zum Beat.',
+  look:{skin:'#f0c8a8',hair:'#ffd84a',hs:'longMetal',suit:'#ff3ab0',suit2:'#1a1a1a',shirt:'#1a1a1a',pants:'#1a1a1a',shoes:'#ffffff',item:'flyingV',glasses:'sun',extra:'studs'}},
+ lambada:{name:'Lambada-Lola',hp:900,attacks:['spread','homing','summon'],p2:['spiral','charge'],intro:'Der Sommerhit des Jahres läuft – und zwar in Dauerschleife!',defeat:'Na gut … Acid swingt auch … mit der Hüfte.',
+  look:{skin:'#c8906a',hair:'#1a1410',hs:'diva',suit:'#ff5a3a',suit2:'#ffd84a',shirt:'#ffffff',pants:'#ffffff',shoes:'#ff5a3a',item:'fan',dress:true,extra:'necklace'}},
+ liedermacher:{name:'Protest-Peter',hp:930,attacks:['rain','beam','homing'],p2:['spiral','summon'],intro:'Ich singe jetzt ein Lied mit 24 Strophen. Ohne Bass.',defeat:'Strophe 25 … handelt … von dir.',
+  look:{skin:'#f0c8a8',hair:'#5a3a1a',hs:'fringe',suit:'#6a5a3a',suit2:'#c8a87a',shirt:'#e8e0c8',pants:'#3a3a5a',shoes:'#3a2a1a',item:'guitarAc',beard:'full',glasses:'round'}},
+ y2k:{name:'Millennium-Mandy',hp:960,attacks:['spread','spiral','charge'],p2:['beam','homing'],intro:'Drei, zwei, eins – Millennium! Ab jetzt nur noch Klingelton-Pop!',defeat:'Der Millennium-Bug … hat mich … erwischt.',
+  look:{skin:'#f0d0b8',hair:'#ffd84a',hs:'diva',suit:'#3affd8',suit2:'#ff7ad8',shirt:'#ff7ad8',pants:'#c8c8e8',shoes:'#ffffff',item:'goldmic',dress:true,extra:'sequins'}},
+ emo:{name:'Seitenscheitel-Sven',hp:990,attacks:['homing','beam','slam'],p2:['spiral','rain'],intro:'Niemand versteht mich. Am wenigsten euer Minimal.',defeat:'Das … ist … keine Phase … das ist … Techno.',
+  look:{skin:'#f4e0d0',hair:'#1a1a1a',hs:'fringe',suit:'#1a1a1a',suit2:'#ff3a5a',shirt:'#ff3a5a',pants:'#1a1a1a',shoes:'#ffffff',item:'guitarAc',extra:'studs'}},
+ lofi:{name:'Chillhop-Charlie',hp:1020,attacks:['rain','homing','spread'],p2:['spiral','beam'],intro:'Psst … ich lerne gerade. Beats zum Entspannen, nicht zum Tanzen.',defeat:'Na gut … eine Lernpause … zum Tanzen.',
+  look:{skin:'#f0d0b8',hair:'#3a2a2a',hs:'beanie',suit:'#c8b8a8',suit2:'#6a5a8a',shirt:'#6a5a8a',pants:'#3a3a4a',shoes:'#e8e8e8',item:'book',glasses:'round'}},
+ kimusik:{name:'Die KI-Playlist',hp:1250,attacks:['spread','rain','charge','beam'],p2:['spiral','homing'],p3:['summon','slam'],intro:'Ich habe alle Bosse analysiert. Ich BIN alle Bosse. Generiere Endgegner …',defeat:'Fehler … ich habe gelernt … Techno … kann man nicht berechnen.',
+  look:{skin:'#c8d8e8',hair:'#3affff',hs:'holo',suit:'#1a1a2a',suit2:'#3affff',shirt:'#ff2fd6',pants:'#1a1a2a',shoes:'#3affff',item:'tablet',cape:'#1a3a5a',extra:'necklace'}}
 };
 /* ================= LEVELS / CLUBS ================= */
 const LEVELS=[
@@ -583,7 +707,49 @@ const LEVELS=[
  {club:'Sónar',geo:[2.15,41.37],res:null,city:'Barcelona',since:'seit 1994',fact:'Festival für Musik, Kreativität und Technologie – mit Sónar by Day und Sónar by Night.',theme:'sonar',genre:'reggaeton',bpm:125,root:50,scale:'dorian',segs:14,map2:1,abroad:'SPANIEN',
   style:{acid:1,arp:1,pad:1,stab:0,hard:.2,bass:'off',h16:1},reward:{outfit:'sonar'}},
  {club:'Tomorrowland',geo:[4.37,51.09],res:null,city:'Boom',since:'seit 2005',fact:'Märchenhafte Mainstage im Park De Schorre in Belgien – jedes Jahr mit neuem Thema.',theme:'tml',genre:'algo',bpm:128,root:45,scale:'minor',segs:14,map2:1,abroad:'BELGIEN',
-  style:{acid:1,arp:1,pad:1,stab:1,hard:.5,bass:'pump',h16:1},reward:{outfit:'tml'}}
+  style:{acid:1,arp:1,pad:1,stab:1,hard:.5,bass:'pump',h16:1},reward:{outfit:'tml'}},
+ /* ---------- KARTE 3: WELTTOURNEE ---------- */
+ {club:'Amnesia',geo:[1.38,38.96],res:null,city:'Ibiza',abroad:'Spanien',since:'seit 1976',fact:'Kult-Club im Inselinneren von Ibiza – berühmt für Schaumpartys und Sonnenaufgänge über der Tanzfläche.',theme:'ibiza',genre:'malle',bpm:126,root:47,scale:'major',segs:12,mapN:2,
+  style:{acid:0,arp:1,pad:1,stab:1,hard:.1,bass:'off',h16:1},reward:{outfit:'ibiza'}},
+ {club:'fabric',geo:[-0.103,51.519],res:null,city:'London',abroad:'England',since:'seit 1999',fact:'In einem alten Kühlhaus gegenüber dem Smithfield-Fleischmarkt – mit einer Tanzfläche, die im Bass mitvibriert.',theme:'london',genre:'britpop',bpm:130,root:45,scale:'minor',segs:12,mapN:2,
+  style:{acid:1,arp:0,pad:1,stab:1,hard:.5,bass:'roll',h16:1},reward:{outfit:'london'}},
+ {club:'Amsterdam Dance Event',short:'ADE',geo:[4.90,52.37],res:null,city:'Amsterdam',abroad:'Niederlande',since:'seit 1996',fact:'Jeden Oktober wird die ganze Stadt zum Club – von Grachten-Booten bis zu alten Kirchen.',theme:'amsterdam',genre:'drehorgel',bpm:126,root:48,scale:'dorian',segs:12,mapN:2,
+  style:{acid:0,arp:1,pad:1,stab:1,hard:.2,bass:'off',h16:1},reward:{outfit:'amsterdam'}},
+ {club:'Bassiani',geo:[44.79,41.72],res:null,city:'Tiflis',abroad:'Georgien',since:'seit 2014',fact:'Unter dem großen Fußballstadion von Tiflis – getanzt wird in einem leeren Schwimmbecken.',theme:'tbilisi',genre:'chor',bpm:134,root:44,scale:'phrygian',segs:12,mapN:2,
+  style:{acid:1,arp:0,pad:1,stab:1,hard:.8,bass:'roll',h16:1},reward:{outfit:'tbilisi'}},
+ {club:'Movement',geo:[-83.04,42.33],res:null,city:'Detroit',abroad:'USA',since:'seit 2000',fact:'Festival auf der Hart Plaza am Detroit River – in der Stadt, in der Techno erfunden wurde.',theme:'detroit',genre:'soul',bpm:128,root:46,scale:'minor',segs:12,mapN:2,
+  style:{acid:0,arp:1,pad:1,stab:1,hard:.4,bass:'roll',h16:1},reward:{outfit:'detroit'}},
+ {club:'Brooklyn',geo:[-73.95,40.70],res:null,city:'New York',abroad:'USA',since:'Warehouse-Partys',fact:'Getanzt wird in alten Lagerhallen am East River – darüber rattert die Hochbahn.',theme:'newyork',genre:'doowop',bpm:128,root:45,scale:'dorian',segs:12,mapN:2,
+  style:{acid:0,arp:1,pad:1,stab:1,hard:.3,bass:'off',h16:1},reward:{outfit:'newyork'}},
+ {club:'D-Edge',geo:[-46.66,-23.53],res:null,city:'São Paulo',abroad:'Brasilien',since:'seit 2003',fact:'Club in Barra Funda, dessen Wände, Decke und Boden aus leuchtenden LED-Flächen bestehen.',theme:'saopaulo',genre:'bossa',bpm:127,root:49,scale:'major',segs:12,mapN:2,
+  style:{acid:0,arp:1,pad:1,stab:1,hard:.2,bass:'off',h16:1},reward:{outfit:'saopaulo'}},
+ {club:'Womb',geo:[139.70,35.66],res:null,city:'Tokio',abroad:'Japan',since:'seit 2000',fact:'Mehrstöckiger Club in Shibuya – über der Tanzfläche hängt eine riesige Discokugel.',theme:'tokyo',genre:'idol',bpm:132,root:47,scale:'minor',segs:12,mapN:2,
+  style:{acid:1,arp:1,pad:1,stab:1,hard:.5,bass:'roll',h16:1},reward:{outfit:'tokyo'}},
+ {club:'AfrikaBurn',geo:[20.0,-32.3],res:null,city:'Tankwa Karoo',abroad:'Südafrika',since:'seit 2007',fact:'Kunst- und Musikfestival in der Halbwüste Südafrikas – am Ende gehen die großen Holzskulpturen in Flammen auf.',theme:'karoo',genre:'panflute',bpm:124,root:46,scale:'dorian',segs:12,mapN:2,
+  style:{acid:0,arp:1,pad:1,stab:0,hard:.2,bass:'off',h16:1},reward:{outfit:'karoo'}},
+ {club:'Tempelhof',geo:[13.40,52.47],res:null,city:'Berlin',since:'Flughafen bis 2008',fact:'Der stillgelegte Flughafen ist heute ein riesiger Park – im Hangar steigt das Finale der Welttournee.',theme:'tempelhof',genre:'muzak',bpm:132,root:45,scale:'minor',segs:12,mapN:2,
+  style:{acid:1,arp:1,pad:1,stab:1,hard:.6,bass:'roll',h16:1},reward:{outfit:'tempelhof'}},
+ /* ---------- KARTE 4: ZEITREISE ---------- */
+ {club:'Elektronik-Labor',short:'1974 · Labor',geo:[0,0],year:1974,res:null,city:'Düsseldorf',since:'1974',fact:'In Düsseldorf basteln Musiker an Synthesizern und Drumcomputern – die Geburtsstunde der elektronischen Popmusik.',theme:'era74',genre:'prog',bpm:118,root:45,scale:'minor',segs:12,mapN:3,
+  style:{acid:0,arp:1,pad:1,stab:0,hard:0,bass:'off',h16:0},reward:{outfit:'era74'}},
+ {club:'Paradise Garage',short:'1977 · Garage',geo:[0,0],year:1977,res:null,city:'New York',since:'1977',fact:'In einer Garage in Manhattan werden Disco-Nächte endlos lang – hier wächst, was später House heißt.',theme:'era77',genre:'disco',bpm:120,root:48,scale:'dorian',segs:12,mapN:3,
+  style:{acid:0,arp:1,pad:1,stab:1,hard:0,bass:'off',h16:1},reward:{outfit:'era77'}},
+ {club:'The Warehouse',short:'1985 · Warehouse',geo:[0,0],year:1985,res:null,city:'Chicago',since:'1985',fact:'House ist geboren – benannt nach dem Club „The Warehouse“, in dem Frankie Knuckles auflegte.',theme:'era85',genre:'newwave',bpm:122,root:46,scale:'minor',segs:12,mapN:3,
+  style:{acid:0,arp:1,pad:1,stab:1,hard:.1,bass:'off',h16:1},reward:{outfit:'era85'}},
+ {club:'Detroit',short:'1988 · Detroit',geo:[0,0],year:1988,res:null,city:'Detroit',since:'1988',fact:'Drei Freunde aus Belleville erfinden den Techno – Musik wie Fließbänder und Zukunft.',theme:'era88',genre:'glam',bpm:128,root:44,scale:'minor',segs:12,mapN:3,
+  style:{acid:0,arp:1,pad:1,stab:1,hard:.4,bass:'roll',h16:1},reward:{outfit:'era88'}},
+ {club:'Acid-Rave',short:'1989 · Acid',geo:[0,0],year:1989,res:null,city:'Manchester',since:'1989',fact:'Acid House erobert England: In der Haçienda wird getanzt, draußen auf Feldern steigen illegale Raves.',theme:'era89',genre:'lambada',bpm:124,root:45,scale:'phrygian',segs:12,mapN:3,
+  style:{acid:1,arp:0,pad:1,stab:1,hard:.3,bass:'roll',h16:1},reward:{outfit:'era89'}},
+ {club:'Mauerfall',short:'1990 · Berlin',geo:[0,0],year:1990,res:null,city:'Berlin',since:'1990',fact:'Nach dem Mauerfall entstehen in leeren Bunkern, Kraftwerken und Kellern Ost-Berlins über Nacht neue Clubs.',theme:'era90',genre:'liedermacher',bpm:136,root:44,scale:'minor',segs:12,mapN:3,
+  style:{acid:1,arp:0,pad:1,stab:1,hard:.8,bass:'roll',h16:1},reward:{outfit:'era90'}},
+ {club:'Love Parade 1999',short:'1999 · Parade',geo:[0,0],year:1999,res:null,city:'Berlin',since:'1999',fact:'Höhepunkt der Love Parade: weit über eine Million Menschen tanzen auf der Straße des 17. Juni.',theme:'era99',genre:'y2k',bpm:138,root:47,scale:'major',segs:12,mapN:3,
+  style:{acid:0,arp:1,pad:1,stab:1,hard:.4,bass:'roll',h16:1},reward:{outfit:'era99'}},
+ {club:'Minimal-Ära',short:'2005 · Minimal',geo:[0,0],year:2005,res:null,city:'Berlin',since:'2005',fact:'Klickende Beats, endlose Sets und Wochenenden, die erst am Montag enden.',theme:'era05',genre:'emo',bpm:124,root:45,scale:'minor',segs:12,mapN:3,
+  style:{acid:0,arp:0,pad:1,stab:1,hard:.3,bass:'off',h16:1},reward:{outfit:'era05'}},
+ {club:'Streaming-Ära',short:'2020 · Stream',geo:[0,0],year:2020,res:null,city:'Wohnzimmer',since:'2020',fact:'Die Clubs sind zu – getanzt wird vor der Webcam, in Wohnzimmern auf der ganzen Welt.',theme:'era20',genre:'lofi',bpm:122,root:48,scale:'dorian',segs:12,mapN:3,
+  style:{acid:0,arp:1,pad:1,stab:0,hard:0,bass:'off',h16:1},reward:{outfit:'era20'}},
+ {club:'Orbit-Rave',short:'2077 · Orbit',geo:[0,0],year:2077,res:null,city:'Raumstation',since:'2077',fact:'Die erste Clubnacht im Orbit: Schwerelos tanzen, während unten die Erde vorbeizieht.',theme:'era2077',genre:'kimusik',bpm:134,root:46,scale:'minor',segs:12,mapN:3,
+  style:{acid:1,arp:1,pad:1,stab:1,hard:.7,bass:'roll',h16:1},reward:{outfit:'era2077'}}
 ];
 
 /* ================= WAFFEN ================= */
@@ -654,7 +820,27 @@ const OUTFITS=[
  {id:'kappa',name:'Torino Sportiva',desc:'Trainingsjacke mit Streifen – tagsüber tanzen in Turin.',level:16,hair:'#2a1a10',hs:'short',top:'#1a3aa8',top2:'#ffffff',pants:'#1a1a2a',shoes:'#ffffff',hat:'cap',hatC:'#ffffff',glasses:'sun',extra:'stripe',glow:'#4a8aff'},
  {id:'hive',name:'Hive-Hardtechno',desc:'Schwarz, Gelb, Visor – wie ein Bienenstock auf 146 BPM.',level:17,hair:'#111111',hs:'buzz',top:'#111114',top2:'#ffd400',pants:'#111114',shoes:'#ffd400',hat:'none',glasses:'visor',extra:'chain',glow:'#ffd400'},
  {id:'sonar',name:'Barcelona Sunset',desc:'Fischerhut und Blumenhemd für Sónar by Day.',level:18,hair:'#3a2a1a',hs:'curly',top:'#ff8a3a',top2:'#ffd84a',pants:'#f0e8d8',shoes:'#ffffff',hat:'bucket',hatC:'#ffd84a',glasses:'sun',extra:'flowers',glow:'#ff8a3a'},
- {id:'tml',name:'Märchen-Mantel',desc:'Funkelnder Mantel aus dem Märchenwald von Boom.',level:19,hair:'#f0e0a0',hs:'long',top:'#6a3aff',top2:'#ffd84a',pants:'#2a1a5a',shoes:'#ffd84a',hat:'none',glasses:'none',extra:'sparkle',glow:'#b07cff'}
+ {id:'tml',name:'Märchen-Mantel',desc:'Funkelnder Mantel aus dem Märchenwald von Boom.',level:19,hair:'#f0e0a0',hs:'long',top:'#6a3aff',top2:'#ffd84a',pants:'#2a1a5a',shoes:'#ffd84a',hat:'none',glasses:'none',extra:'sparkle',glow:'#b07cff'},
+ {id:'ibiza',name:'Pool-Lieger',desc:'Badehose, Sonnenbrille, Schaum im Haar.',level:20,hair:'#e8c060',hs:'short',top:'#3affd8',top2:'#ffffff',pants:'#ff8a3a',shoes:'#ffffff',hat:'none',glasses:'sun',extra:'flowers',glow:'#3affd8'},
+ {id:'london',name:'Smithfield-Mantel',desc:'Langer Mantel für lange Nächte in London.',level:21,hair:'#3a2a1a',hs:'short',top:'#2a2a2a',top2:'#c83a3a',pants:'#1a1a1a',shoes:'#e8e8e8',hat:'none',glasses:'none',extra:'buttons',glow:'#c83a3a'},
+ {id:'amsterdam',name:'Grachten-Jacke',desc:'Regenjacke in Oranje – fürs Radfahren zwischen den Partys.',level:22,hair:'#e8d8a8',hs:'long',top:'#ff8a1a',top2:'#ffffff',pants:'#2a3a6a',shoes:'#ff8a1a',hat:'none',glasses:'none',extra:'stripe',glow:'#ff8a1a'},
+ {id:'tbilisi',name:'Pool-Schwarz',desc:'Ganz in Schwarz – für das leere Becken unter dem Stadion.',level:23,hair:'#1a1410',hs:'short',top:'#141418',top2:'#3a3a48',pants:'#141418',shoes:'#141418',hat:'cap',hatC:'#141418',glasses:'none',extra:'chain',glow:'#8a8aff'},
+ {id:'detroit',name:'Fließband-Overall',desc:'Arbeitsoverall aus der Motor City.',level:24,hair:'#1a1210',hs:'short',top:'#3a5a8a',top2:'#ffd84a',pants:'#3a5a8a',shoes:'#1a1a1a',hat:'cap',hatC:'#ffd84a',glasses:'none',extra:'overalls',glow:'#ffd84a'},
+ {id:'newyork',name:'Lagerhallen-Look',desc:'Bomberjacke und Mütze – Brooklyn bei Nacht.',level:25,hair:'#1a1a1a',hs:'short',top:'#2a3a2a',top2:'#ff5a3a',pants:'#1a1a2a',shoes:'#ffffff',hat:'capBack',hatC:'#ff5a3a',glasses:'none',extra:'chain',glow:'#ff5a3a'},
+ {id:'saopaulo',name:'LED-Hemd',desc:'Leuchtet fast so hell wie die Wände im D-Edge.',level:26,hair:'#1a1410',hs:'curly',top:'#3affb0',top2:'#ff2fd6',pants:'#1a1a2a',shoes:'#3affb0',hat:'none',glasses:'visor',extra:'lightning',glow:'#3affb0'},
+ {id:'tokyo',name:'Shibuya-Neon',desc:'Neon-Jacke mit Kapuze, Tokio um vier Uhr morgens.',level:27,hair:'#1a1a1a',hs:'bun',top:'#ff7ad8',top2:'#3affff',pants:'#1a1a2a',shoes:'#ffffff',hat:'none',glasses:'visor',extra:'sparkle',glow:'#ff7ad8'},
+ {id:'karoo',name:'Wüsten-Umhang',desc:'Staubschutz, Schutzbrille, Lichterkette.',level:28,hair:'#c89a5a',hs:'long',top:'#c89a5a',top2:'#ff5a3a',pants:'#6a4a2a',shoes:'#3a2a1a',hat:'bucket',hatC:'#c89a5a',glasses:'visor',extra:'kandi',glow:'#ff8a3a'},
+ {id:'tempelhof',name:'Piloten-Jacke',desc:'Lederjacke mit Abzeichen – Abflug vom Hangar.',level:29,hair:'#3a2a1a',hs:'short',top:'#5a3a1a',top2:'#ffd84a',pants:'#2a2a3a',shoes:'#1a1a1a',hat:'cap',hatC:'#1a2a4a',glasses:'sun',extra:'buttons',glow:'#9ac8e8'},
+ {id:'era74',name:'Laborkittel',desc:'Weißer Kittel, Krawatte und ein Lötkolben in der Tasche.',level:30,hair:'#2a1a10',hs:'short',top:'#e8e8e8',top2:'#c83a3a',pants:'#2a2a2a',shoes:'#1a1a1a',hat:'none',glasses:'none',extra:'buttons',glow:'#c83a3a'},
+ {id:'era77',name:'Schlaghose',desc:'Glitzerhemd und Schlaghose – Garage-Style 1977.',level:31,hair:'#1a1410',hs:'curly',top:'#ffd84a',top2:'#ffffff',pants:'#ffffff',shoes:'#ffd84a',hat:'none',glasses:'sun',extra:'sequins',glow:'#ffd84a'},
+ {id:'era85',name:'Warehouse-Tank',desc:'Tanktop, Schweißband, Kassette im Gürtel.',level:32,hair:'#1a1410',hs:'short',top:'#ffffff',top2:'#3affff',pants:'#2a2a6a',shoes:'#ffffff',hat:'none',glasses:'none',extra:'stripe',glow:'#3affff'},
+ {id:'era88',name:'Motor-City-Mantel',desc:'Langer Mantel – Zukunftsmusik aus Detroit.',level:33,hair:'#1a1210',hs:'short',top:'#2a2a3a',top2:'#8a8aff',pants:'#1a1a2a',shoes:'#1a1a1a',hat:'none',glasses:'sun',extra:'none',glow:'#8a8aff'},
+ {id:'era89',name:'Smiley-Shirt',desc:'Gelbes Smiley-Shirt und Fischerhut – Sommer der Liebe.',level:34,hair:'#6a3a1a',hs:'short',top:'#ffe23a',top2:'#1a1a1a',pants:'#2a4a8a',shoes:'#ffffff',hat:'bucket',hatC:'#ffe23a',glasses:'none',extra:'smiley',glow:'#ffe23a'},
+ {id:'era90',name:'Bunker-Bomber',desc:'Bomberjacke aus dem Armeeladen – Berlin, Winter 1990.',level:35,hair:'#1a1410',hs:'short',top:'#3a4a3a',top2:'#ff8a1a',pants:'#1a1a1a',shoes:'#1a1a1a',hat:'none',glasses:'none',extra:'chain',glow:'#ff8a1a'},
+ {id:'era99',name:'Parade-Plüsch',desc:'Plüschweste, Plateauschuhe, Lichterkette um den Hals.',level:36,hair:'#ff7ad8',hs:'bun',top:'#ff7ad8',top2:'#3affd8',pants:'#3affd8',shoes:'#ffffff',hat:'none',glasses:'visor',extra:'kandi',glow:'#ff7ad8'},
+ {id:'era05',name:'Minimal-Schwarz',desc:'Schwarzes T-Shirt, schwarze Hose, schwarze Sonnenbrille. Minimal eben.',level:37,hair:'#1a1a1a',hs:'short',top:'#101014',top2:'#ffffff',pants:'#101014',shoes:'#101014',hat:'none',glasses:'sun',extra:'none',glow:'#ffffff'},
+ {id:'era20',name:'Jogginghose',desc:'Oben Hemd für die Webcam, unten Jogginghose.',level:38,hair:'#3a2a2a',hs:'short',top:'#e8e8f0',top2:'#6a5a8a',pants:'#8a8a9a',shoes:'#e8e8e8',hat:'none',glasses:'none',extra:'buttons',glow:'#c8b8a8'},
+ {id:'era2077',name:'Orbit-Anzug',desc:'Raumanzug mit Leuchtstreifen – Dresscode im Orbit.',level:39,hair:'#e8e8ff',hs:'short',top:'#e8e8ff',top2:'#3affff',pants:'#c8c8e8',shoes:'#3affff',hat:'none',glasses:'visor',extra:'mirror',glow:'#3affff'}
 ];
 
 /* ================= SAVE ================= */
@@ -675,10 +861,15 @@ const skillById=id=>SKILLS.find(s=>s.id===id);
 function pointsSpent(){let s=0;for(const k in SAVE.skills)if(SAVE.skills[k]){const n=skillById(k);if(n)s+=n.cost}return s}
 function pointsFree(){return SAVE.earned-pointsSpent()}
 function hasSkill(id){return !!SAVE.skills[id]}
-function nextLevelIndex(){for(let i=0;i<10;i++)if(!SAVE.completed[i])return i;for(let i=10;i<NLV;i++)if(!SAVE.completed[i])return i;return-1}
-const mapOf=i=>i<10?0:1;
-function mapDone(m){return m===0?!!SAVE.gameDone:!!SAVE.gameDone2}
-function mapUnlocked(m){return m===0||!!SAVE.gameDone}
+function nextLevelIndex(){for(let i=0;i<NLV;i++)if(!SAVE.completed[i])return i;return-1}
+const MAPINFO=[
+ {tab:'Clubs',unit:'Clubs',title:'CLUB-TOUR',sub:'10 Clubs · Deutschland',play:'Weiter feiern',enter:'Club betreten',fin:'Berghain',col:'#ff2fd6',col2:'#2ff3ff',lock:''},
+ {tab:'Festivals',unit:'Festivals',title:'FESTIVAL-SAISON',sub:'10 Festivals · Deutschland & Europa',play:'Festival-Saison',enter:'Festival betreten',fin:'Tomorrowland',col:'#3affd8',col2:'#ffe23a',lock:'Erst alle 10 Clubs retten – dann öffnet die Festival-Saison.'},
+ {tab:'Welttournee',unit:'Städte',title:'WELTTOURNEE',sub:'10 legendäre Orte · weltweit',play:'Welttournee',enter:'Abflug',fin:'Tempelhof',col:'#ffb03a',col2:'#3affff',lock:'Erst alle 10 Festivals befreien – dann geht die Welttournee los.'},
+ {tab:'Zeitreise',unit:'Epochen',title:'ZEITREISE',sub:'1974 bis 2077 · die Geschichte der Elektronik',play:'Zeitreise',enter:'Zeitsprung',fin:'2077',col:'#c8a8ff',col2:'#3affd8',lock:'Erst die Welttournee beenden – dann öffnet sich die Zeitmaschine.'}];
+const NMAPS=4,mapOf=i=>Math.min(NMAPS-1,Math.floor(i/10));
+function mapDone(m){return!![SAVE.gameDone,SAVE.gameDone2,SAVE.gameDone3,SAVE.gameDone4][m]}
+function mapUnlocked(m){return m===0||mapDone(m-1)}
 function levelPlayable(i){const m=mapOf(i);if(!mapUnlocked(m))return false;return mapDone(m)||i===nextLevelIndex()}
 function mapCount(m){let n=0;for(let i=m*10;i<m*10+10;i++)if(SAVE.completed[i])n++;return n}
 function weaponUnlocked(w){return w.unlock<0||!!SAVE.completed[w.unlock]}
@@ -3576,7 +3767,7 @@ KT.k_secret=(x,H)=>{const w=360,L=H.L,rx=x+40,rw=240;H.ground(x,w);
  (L.hardSpots=L.hardSpots||[]).push({x:rx+rw/2,y:FLOOR_Y-150,p:0});
  H.spawn('walker',x+200);H.spawn('walker',x+300);return w};
 const KCOUNT=[3,4,4,5,5,6,6,6,7,7, 7,7,8,8,8,9,9,9,10,10];
-const KD=i=>i<10?i/9*.7:.62+(i-10)/9*.45;   // Schwierigkeit der Hindernisse: 0 … 1.07
+const KD=i=>i<10?i/9*.7:i<20?.62+(i-10)/9*.45:i<30?.9+(i-20)/9*.2:1+(i-30)/9*.2;   // Schwierigkeit der Hindernisse: 0 … 1.07
 for(const t of Object.keys(KT)){const f=KT[t];
  GSEG[t]=(x,H)=>{const d=H.diff;H.diff=KD(H.L.i);const w=f(x,H);H.diff=d;return w};
  GSEG[t+'~e']=(x,H)=>{const d=H.diff;H.diff=Math.min(KD(H.L.i),.12);const w=f(x,H);H.diff=d;if(!H.menu)(H.L.hints=H.L.hints||[]).push({x:x-30,text:KHINT[t]});return w}}
@@ -4047,14 +4238,16 @@ function updateParts(dt){
 function completeLevel(){
  const i=G.li,first=!SAVE.completed[i],rewards=[];
  SAVE.completed[i]=true;
- if(!SAVE.bossPts[i]){const bp=i>=10?3:2;SAVE.bossPts[i]=true;SAVE.earned+=bp;rewards.push({icon:'skill',text:'+'+bp+' Skillpunkte'})}
+ if(!SAVE.bossPts[i]){const bp=i>=30?4:i>=10?3:2;SAVE.bossPts[i]=true;SAVE.earned+=bp;rewards.push({icon:'skill',text:'+'+bp+' Skillpunkte'})}
  G.stats.vinyls.forEach((v,k)=>{if(v)SAVE.vinyls[i][k]=true});
  if(SAVE.vinyls[i].every(Boolean)&&!SAVE.vinylPts[i]){SAVE.vinylPts[i]=true;SAVE.earned+=1;rewards.push({icon:'vinyl',text:'+1 Skillpunkt für alle 3 Gold-Vinyls'})}
  const best=SAVE.best[i];const newBest=best===null||G.stats.time<best;if(newBest)SAVE.best[i]=G.stats.time;
  if(first){const w=WEAPONS.find(w=>w.unlock===i);if(w)rewards.push({icon:'weapon',text:'Neue Waffe: '+w.name,wid:w.id})}
  const o=OUTFITS.find(o=>o.level===i);if(o&&!SAVE.outfits.includes(o.id)){SAVE.outfits.push(o.id);rewards.push({icon:'outfit',text:'Outfit freigeschaltet: '+o.name})}
  let finale=false;if(i===9&&!SAVE.gameDone){SAVE.gameDone=true;finale=1;rewards.push({icon:'outfit',text:'Neue Karte freigeschaltet: Festival-Saison!'})}
- if(i===19&&!SAVE.gameDone2){SAVE.gameDone2=true;finale=2}
+ if(i===19&&!SAVE.gameDone2){SAVE.gameDone2=true;finale=2;rewards.push({icon:'outfit',text:'Neue Karte freigeschaltet: Welttournee!'})}
+ if(i===29&&!SAVE.gameDone3){SAVE.gameDone3=true;finale=3;rewards.push({icon:'outfit',text:'Neue Karte freigeschaltet: Zeitreise!'})}
+ if(i===39&&!SAVE.gameDone4){SAVE.gameDone4=true;finale=4}
  persist();
  G.state='results';UI.showTouch(false);
  UI.showResult({i,stats:G.stats,rewards,newBest:newBest&&best!==null,finale});
@@ -4492,7 +4685,7 @@ const UI={
  act(a,el){
   switch(a){
    case'play':{AU.sfx('uiok');const nx=nextLevelIndex();if(nx<0)this.sub('pTour');else startLevel(nx);break}
-   case'tmap':{const m=+el.dataset.m;if(!mapUnlocked(m)){AU.sfx('deny');toastMsg('Erst alle 10 Clubs retten – dann öffnet die Festival-Saison.');break}this.tourMap=m;this.tourSel=null;this.b_pTour();AU.sfx('ui');this.focusFirst($('#pTour'));break}
+   case'tmap':{const m=+el.dataset.m;if(!mapUnlocked(m)){AU.sfx('deny');toastMsg(MAPINFO[m].lock);break}this.tourMap=m;this.tourSel=null;this.b_pTour();AU.sfx('ui');this.focusFirst($('#pTour'));break}
    case'tour':this.sub('pTour');break;case'skills':this.sub('pSkills');break;case'wardrobe':this.sub('pWardrobe');break;
    case'options':this.sub('pOptions');break;case'controls':this.sub('pControls');break;
    case'back':this.back();break;
@@ -4517,32 +4710,32 @@ const UI={
  b_pMenu(){
   const nx=nextLevelIndex(),done=SAVE.completed.filter(Boolean).length,vin=SAVE.vinyls.flat().filter(Boolean).length,pts=pointsFree();
   if(nx<0){$('#playLbl').textContent='Freie Levelwahl';$('#playSub').textContent='Alle Clubs & Festivals offen'}
-  else if(nx>=10){$('#playLbl').textContent=mapCount(1)?'Festival-Saison':'Festival-Saison starten';$('#playSub').textContent=`Level ${nx+1} · ${LEVELS[nx].club}, ${LEVELS[nx].city}`}
+  else if(nx>=10){const m=mapOf(nx);$('#playLbl').textContent=mapCount(m)?MAPINFO[m].play:MAPINFO[m].play+' starten';$('#playSub').textContent=`Level ${nx+1} · ${LEVELS[nx].club}, ${LEVELS[nx].city}`}
   else{$('#playLbl').textContent=done?'Weiter feiern':'Nacht starten';$('#playSub').textContent=`Level ${nx+1} · ${LEVELS[nx].club}, ${LEVELS[nx].city}`}
-  $('#tourSub').textContent=SAVE.gameDone?`${mapCount(0)}/10 Clubs · ${mapCount(1)}/10 Festivals`:`${done} / 10 Clubs gerettet`;
+  $('#tourSub').textContent=SAVE.gameDone?MAPINFO.filter((_,m)=>mapUnlocked(m)).map((q,m)=>`${mapCount(m)}/10 ${q.unit}`).join(' · '):`${done} / 10 Clubs gerettet`;
   const b=$('#ptsBadge');b.hidden=pts<=0;b.textContent=pts===1?'1 Punkt':pts+' Punkte';
   $('#wardSub').textContent=`${SAVE.outfits.length} / ${OUTFITS.length} Outfits`;
-  $('#mStats').innerHTML=`<div class="c"><b>${SAVE.coins}</b>Wertmarken</div><div><b>${vin}/${NLV*3}</b>Gold-Vinyls</div><div><b>${done}/${SAVE.gameDone?NLV:10}</b>${SAVE.gameDone?'Level':'Clubs'}</div>`;
+  $('#mStats').innerHTML=`<div class="c"><b>${SAVE.coins}</b>Wertmarken</div><div><b>${vin}/${NLV*3}</b>Gold-Vinyls</div><div><b>${done}/${SAVE.gameDone?10*MAPINFO.filter((_,m)=>mapUnlocked(m)).length:10}</b>${SAVE.gameDone?'Level':'Clubs'}</div>`;
   const i=nx<0?NLV-1:nx,L=LEVELS[i],B=BOSSES[L.genre],Gn=GENRES[L.genre],m0=mapOf(i)*10;
-  $('#flyer').innerHTML=`<div class="when">${nx<0?'AFTERHOUR · FREIE WAHL':L.map2?'FESTIVAL-SAISON · '+esc(L.since.toUpperCase()):'SA · 23:59 – OPEN END'}</div><h2>${esc(L.club.toUpperCase())}</h2><div class="city">${esc(L.city.toUpperCase())} · ${esc(L.since)}</div>
+  $('#flyer').innerHTML=`<div class="when">${nx<0?'AFTERHOUR · FREIE WAHL':mapOf(i)>0?MAPINFO[mapOf(i)].title+' · '+esc(L.since.toUpperCase()):'SA · 23:59 – OPEN END'}</div><h2>${esc(L.club.toUpperCase())}</h2><div class="city">${esc(L.city.toUpperCase())} · ${esc(L.since)}</div>
    <div class="lineup"><div><span>DU</span><span>Techno · ${L.bpm} BPM</span></div><div class="vs">VS</div><div><span>${esc(B.name)}</span><span style="color:${Gn.color}">${esc(Gn.label)}</span></div></div>
    <p>${esc(L.fact)}</p><div class="tourdots">${LEVELS.slice(m0,m0+10).map((_,j)=>{const k=m0+j;return`<i class="${SAVE.completed[k]?'done':k===nx?'next':''}"></i>`}).join('')}</div>`;
  },
  /* ---------- Tour ---------- */
  b_pTour(){
-  const nx=nextLevelIndex();if(this.tourMap===undefined)this.tourMap=nx>=10||nx<0&&SAVE.gameDone2?1:0;if(!mapUnlocked(this.tourMap))this.tourMap=0;
+  const nx=nextLevelIndex();if(this.tourMap===undefined)this.tourMap=nx<0?NMAPS-1:mapOf(nx);if(!mapUnlocked(this.tourMap))this.tourMap=0;
   const m=this.tourMap,m0=m*10;if(this.tourSel==null||mapOf(this.tourSel)!==m)this.tourSel=nx>=m0&&nx<m0+10?nx:m0;
   const done=mapCount(m),ids=[...Array(10)].map((_,j)=>m0+j);
   const pos=ids.map(k=>geoNode(k)),pts=pos.map(q=>q.x.toFixed(1)+','+q.y.toFixed(1));
   const doneUpTo=pts.slice(0,Math.max(1,done+(mapDone(m)?0:1))).join(' ');
-  const lock2=!mapUnlocked(1);
+  
   $('#pTour').innerHTML=`<div class="subhead"><button class="btn ghost" data-act="back">◂ Zurück</button><h2>Tourplan</h2>
-   <div class="tabs"><button class="tab ${m===0?'on':''}" data-act="tmap" data-m="0">Karte 1 · Clubs</button><button class="tab ${m===1?'on':''} ${lock2?'locked':''}" data-act="tmap" data-m="1">${lock2?'🔒 ':''}Karte 2 · Festivals</button></div>
-   <span class="spacer"></span><span class="pill">${m?'Festivals':'Clubs'} <b>${done}/10</b></span>${mapDone(m)?'<span class="pill gold">Freie Wahl <b>✓</b></span>':''}</div>
-  <div class="tourwrap"><div class="map card ${m?'m2':'m1'}"><div class="geo" style="background-image:url(${pixelMapURL(-1,m)})"><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+   <div class="tabs">${MAPINFO.map((q,k)=>{const lk=!mapUnlocked(k);return`<button class="tab ${m===k?'on':''} ${lk?'locked':''}" data-act="tmap" data-m="${k}">${lk?'🔒 ':''}${k+1} · ${q.tab}</button>`}).join('')}</div>
+   <span class="spacer"></span><span class="pill">${MAPINFO[m].unit} <b>${done}/10</b></span>${mapDone(m)?'<span class="pill gold">Freie Wahl <b>✓</b></span>':''}</div>
+  <div class="tourwrap"><div class="map card m${m+1}"><div class="geo" style="background-image:url(${pixelMapURL(-1,m)})"><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
    ${pos.map(q=>q.nx||q.ny?`<line x1="${q.gx}" y1="${q.gy}" x2="${q.x}" y2="${q.y}" stroke="rgba(255,255,255,.35)" stroke-width="1" vector-effect="non-scaling-stroke"/>`:'').join('')}
    <polyline points="${pts.join(' ')}" fill="none" stroke="rgba(190,160,255,.35)" stroke-width="1.5" stroke-dasharray="4 4" vector-effect="non-scaling-stroke"/>
-   <polyline points="${doneUpTo}" fill="none" stroke="${m?'#3affd8':'#ff2fd6'}" stroke-width="2.5" vector-effect="non-scaling-stroke"/><polyline class="flow" points="${pts.join(' ')}" fill="none" stroke="${m?'#ffe23a':'#2ff3ff'}" stroke-width="1.2" stroke-dasharray="2 10" vector-effect="non-scaling-stroke"/></svg><div class="maptitle">${m?'FESTIVAL-SAISON':'CLUB-TOUR'}<small>${m?'10 Festivals · Deutschland & Europa':'10 Clubs · Deutschland'}</small></div>
+   <polyline points="${doneUpTo}" fill="none" stroke="${MAPINFO[m].col}" stroke-width="2.5" vector-effect="non-scaling-stroke"/><polyline class="flow" points="${pts.join(' ')}" fill="none" stroke="${MAPINFO[m].col2}" stroke-width="1.2" stroke-dasharray="2 10" vector-effect="non-scaling-stroke"/></svg><div class="maptitle">${MAPINFO[m].title}<small>${MAPINFO[m].sub}</small></div>
    ${ids.map((k,j)=>{const l=LEVELS[k],q=pos[j],st=SAVE.completed[k]?'done':k===nx?'next':'';const lock=!levelPlayable(k)?' lock':'';return`<button class="node ${st}${lock}" style="left:${q.x}%;top:${q.y}%" data-i="${k}" data-act="tsel" ${k===this.tourSel?'data-focus':''}><span class="dot">${SAVE.completed[k]?'✓':j+1}</span><span class="nm">${q.edge?q.edge+' ':''}${esc(l.short||l.club)}</span></button>`}).join('')}
   </div></div><div class="tinfo card" id="tinfo"></div></div>`;
   this.tourInfo();
@@ -4551,14 +4744,14 @@ const UI={
   const i=this.tourSel,L=LEVELS[i],B=BOSSES[L.genre],Gn=GENRES[L.genre],box=$('#tinfo');if(!box)return;
   document.querySelectorAll('.node').forEach(n=>n.classList.toggle('cur',+n.dataset.i===i));
   const play=levelPlayable(i),tr=TOURS[L.theme];let msg='';
-  if(!play)msg=SAVE.completed[i]?(i<10?'Schon gerettet. Nach dem Finale im Berghain sind alle Clubs frei wählbar.':'Schon gerettet. Nach dem Finale im Tomorrowland sind alle Festivals frei wählbar.'):'Gesperrt – erst den vorherigen '+(i<10?'Club':'Festival')+' befreien.';
-  box.innerHTML=`<span class="lab">Level ${i+1} · ${esc(L.city)}${L.abroad?' · '+esc(L.abroad):''} · ${esc(L.since)}</span><h3>${esc(L.club)}</h3><p>${esc(L.fact)}</p>${typeof GIM!=='undefined'&&(GIM[L.theme]||[]).length?`<p class="gimrow">${GIM[L.theme].map(g=>`<b style="color:${GIMDEF[g].c}">${GIMDEF[g].n}</b>`).join(' · ')}</p>`:''}
+  if(!play){const q=MAPINFO[mapOf(i)];msg=SAVE.completed[i]?'Schon gerettet. Nach dem Finale ('+q.fin+') ist die ganze Karte frei wählbar.':'Gesperrt – erst das vorherige Level befreien.'}
+  box.innerHTML=`<span class="lab">Level ${i+1} · ${esc(L.city)}${L.abroad?' · '+esc(L.abroad):''} · ${esc(L.since)}</span><h3>${esc(L.club)}</h3><p>${esc(L.fact)}</p>${typeof GIM!=='undefined'&&(GIM[L.theme]||[]).length?`<p class="gimrow">${GIM[L.theme].map(g=>`<b style="color:${GIMDEF[g].c}">${gimName(L.theme,g)}</b>`).join(' · ')}</p>`:''}
    ${tr?`<div class="route">${[tr.out].concat(tr.z,[tr.boss]).map((z,k,a)=>`<span${k===a.length-1?' class="b"':''}>${esc(z.n)}</span>`).join('<i>▸</i>')}</div>`:''}
    ${L.res&&L.res.name?`<div class="resl">🎧 ${esc(L.res.role==='RESIDENT'?'Resident':L.res.role==='GRÜNDER'?'Gründer':'Gründer & DJ')}: <b>${esc(L.res.name)}</b> – irgendwo im Level zu finden</div>`:''}
    <div class="row"><div><b>${L.bpm}</b>BPM</div><div><b style="color:${Gn.color}">${esc(Gn.label)}</b>Gegner</div><div><b>${fmtTime(SAVE.best[i])}</b>Bestzeit</div><div><b class="vin">${SAVE.vinyls[i].map(v=>`<i class="${v?'on':''}"></i>`).join('')}</b>Gold-Vinyls</div></div>
    <div class="lab">Endgegner</div><div style="font-size:1.25em">${esc(B.name)}</div>
    ${msg?`<div class="lockmsg">${esc(msg)}</div>`:''}
-   <button class="btn" data-act="enter" data-i="${i}" ${play?'':'disabled'}><div>${SAVE.completed[i]?'Nochmal feiern':i<10?'Club betreten':'Festival betreten'}<small>${play?'Los geht’s':'Noch nicht verfügbar'}</small></div></button>`;
+   <button class="btn" data-act="enter" data-i="${i}" ${play?'':'disabled'}><div>${SAVE.completed[i]?'Nochmal feiern':MAPINFO[mapOf(i)].enter}<small>${play?'Los geht’s':'Noch nicht verfügbar'}</small></div></button>`;
  },
  /* ---------- Skilltree ---------- */
  canBuy(n){return!hasSkill(n.id)&&(!n.map2||SAVE.gameDone)&&n.req.every(hasSkill)&&pointsFree()>=n.cost},
@@ -4655,7 +4848,7 @@ const UI={
  /* ---------- Ergebnis ---------- */
  showResult(r){this.res=r;this.show('pResult');AU.sfx('buy')},
  b_pResult(){const r=this.res,L=LEVELS[r.i],s=r.stats,vin=SAVE.vinyls[r.i];
-  const hasNext=r.i<NLV-1&&r.i!==9&&levelPlayable(r.i+1);
+  const hasNext=r.i<NLV-1&&r.i%10!==9&&levelPlayable(r.i+1);
   $('#pResult').innerHTML=`<div class="card box"><span class="lab">Level ${r.i+1} · ${esc(L.city)}</span><h2>${esc(L.short||L.club)} gerettet!</h2>
    <div class="res"><div><span class="lab">Zeit</span><b>${fmtTime(s.time)}</b>${r.newBest?'<span class="lab" style="color:var(--lime)">Bestzeit!</span>':''}</div><div><span class="lab">Wertmarken</span><b style="color:var(--gold)">+${s.coins}</b></div><div><span class="lab">K.O.s</span><b>${s.kills}</b></div><div><span class="lab">Treffer</span><b>${s.hits}</b></div></div>
    <div style="display:flex;align-items:center;gap:.8em"><span class="lab">Gold-Vinyls</span><span class="vin">${vin.map(v=>`<i class="${v?'on':''}"></i>`).join('')}</span></div>
@@ -4678,7 +4871,7 @@ const UI={
  /* ---------- Einblendungen ---------- */
  levelIntro(i){const L=LEVELS[i],B=BOSSES[L.genre],el=$('#introCard'),tr=TOURS[L.theme];
   el.innerHTML=`<div class="irow"><img class="imap" alt="" src="${pixelMapURL(i)}"><div><div class="lv">LEVEL ${i+1} · ${esc(L.city.toUpperCase())}${L.abroad?' · '+esc(L.abroad):''} · ${esc(L.since.toUpperCase())}</div><h2>${esc((L.short||L.club).toUpperCase())}</h2></div></div><p>${esc(L.fact)}</p>
-   ${tr?`<div class="ifact">📍 ${esc(tr.out.n)}: ${esc(tr.out.f)}</div>`:''}<div class="boss">ENDGEGNER: ${esc(B.name.toUpperCase())} · ${esc(GENRES[L.genre].label.toUpperCase())}</div>${typeof GIM!=='undefined'&&(GIM[L.theme]||[]).length?`<div class="igim">${GIM[L.theme].map(g=>`<div><b style="color:${GIMDEF[g].c}">${GIMDEF[g].n}</b> ${esc(GIMDEF[g].d)}</div>`).join('')}</div>`:''}`;
+   ${tr?`<div class="ifact">📍 ${esc(tr.out.n)}: ${esc(tr.out.f)}</div>`:''}<div class="boss">ENDGEGNER: ${esc(B.name.toUpperCase())} · ${esc(GENRES[L.genre].label.toUpperCase())}</div>${typeof GIM!=='undefined'&&(GIM[L.theme]||[]).length?`<div class="igim">${GIM[L.theme].map(g=>`<div><b style="color:${GIMDEF[g].c}">${gimName(L.theme,g)}</b> ${esc(GIMDEF[g].d)}</div>`).join('')}</div>`:''}`;
   el.classList.add('on');clearTimeout(this.timers.intro);this.timers.intro=setTimeout(()=>el.classList.remove('on'),5600)},
  bossCard(b){const el=$('#bossCard'),bz=G.level&&G.level.tour?G.level.tour.find(z=>z.boss):null;$('#introCard').classList.remove('on');
   el.innerHTML=`<div class="bar"><div class="g" style="color:${b.g.color}">${esc(b.g.label.toUpperCase())}</div><h2>${esc(b.def.name)}</h2><div class="vs">VS TECHNO</div><div class="task">Hörst du das? Hier läuft nur noch ${esc(b.g.label)}.<br><b>Deine Aufgabe:</b> Besiege ${esc(akk(b.def.name))} und stell den Techno wieder her!${bz?`<div class="bz">📍 ${esc(bz.n)} – ${esc(bz.f)}</div>`:''}</div></div>`;
@@ -5468,6 +5661,7 @@ const GIMDEF={
  lowg:{n:'SCHWERELOS',c:'#c8a8ff',d:'Nach drei Tagen Party schwebst du: höhere, langsamere Sprünge.'},
  mud:{n:'SCHLAMM',c:'#c89a5a',d:'Im Matsch kommst du kaum voran und springst niedriger.'},
  dark:{n:'BLACKOUT',c:'#6a8aff',d:'Stromausfall! Nur dein Licht und die Stroboskope zeigen den Weg.'}};
+const introOn=()=>{const e=document.getElementById('introCard');return!!(e&&e.classList.contains('on'))};
 const gimHas=g=>!!(G.level&&G.level.gim&&G.level.gim.includes(g));
 function gimRng(seed){let s=seed>>>0||1;return()=>(s=(s*1664525+1013904223)>>>0)/4294967296}
 
@@ -5499,7 +5693,8 @@ const inRange=(arr,x)=>arr&&arr.some(q=>x>=q.x0&&x<=q.x1);
   if(gimHas('lowg')){PHYS.g=.5;PHYS.jump=.78;PHYS.fall=.62}
   if(onG&&inRange(L.ice,cx)){PHYS.fr=.1;if(Math.abs(p.vx)>60&&Math.random()<.3)part({x:cx,y:FLOOR_Y-1,vx:-p.vx*.2,vy:-10,g:40,life:.3,col:'#d8f8ff',s:1,em:true})}
   if(onG&&inRange(L.mud,cx)){PHYS.spd=.55;PHYS.jump*=.9;if(Math.abs(p.vx)>20&&Math.random()<.25)part({x:cx,y:FLOOR_Y-2,vx:(Math.random()-.5)*30,vy:-40-Math.random()*30,g:300,life:.5,col:'#6a4a24',s:2})}
-  if(gimHas('gust')&&G.gust.dir&&!G.bossStarted)PHYS.wind=G.gust.dir*72}
+  if(gimHas('gust')&&G.gust.dir&&!G.bossStarted)PHYS.wind=G.gust.dir*72;
+  if(typeof gimPhysX==='function')gimPhysX(L,p,onG,cx)}
  _up(dt)}}
 
 /* ---------- Ablauf pro Frame ---------- */
@@ -5549,7 +5744,7 @@ function hotState(beat){const b=beat%8;return b>=7?2:b>=5.5?1:0}
 const DK={c:null,x:null};
 {const _fg=drawFG;drawFG=function(L,cx,cy,beat,pulse){_fg(L,cx,cy,beat,pulse);if(!L||!L.gim||!L.gim.includes('dark')||G.state==='menu'||!G.player)return;
  const d=RD.d,W=RD.W,H=RD.H,S=RD.S;if(!DK.c||DK.c.width!==W||DK.c.height!==H){DK.c=document.createElement('canvas');DK.c.width=W;DK.c.height=H;DK.x=DK.c.getContext('2d')}
- const x=DK.x,arena=G.bossStarted,a=(arena?.62:.9)*(1-G.strobe*.85);x.globalCompositeOperation='source-over';x.clearRect(0,0,W,H);x.fillStyle=`rgba(4,2,12,${a})`;x.fillRect(0,0,W,H);
+ const x=DK.x,arena=G.bossStarted,a=(arena?.6:.86)*(1-G.strobe*.85);x.globalCompositeOperation='source-over';x.clearRect(0,0,W,H);x.fillStyle=`rgba(4,2,12,${a})`;x.fillRect(0,0,W,H);
  x.globalCompositeOperation='destination-out';
  const hole=(wx,wy,r,s)=>{const sx=(wx-cx)*S,sy=(wy+cy)*S,rr=r*S;if(sx<-rr||sx>W+rr)return;const g=x.createRadialGradient(sx,sy,0,sx,sy,rr);g.addColorStop(0,`rgba(0,0,0,${s})`);g.addColorStop(.6,`rgba(0,0,0,${s*.7})`);g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(sx-rr,sy-rr,rr*2,rr*2)};
  const p=G.player;hole(p.x+p.w/2,p.y+p.h/2,86+(hasSkill('v1')?10:0),1);hole(p.x+p.w/2+p.facing*40,p.y+p.h/2,46,.6);
@@ -5560,15 +5755,343 @@ const DK={c:null,x:null};
 /* ---------- HUD ---------- */
 {const _h=drawHUD;drawHUD=function(){_h();const L=G.level;if(G.state!=='play'||!L||!L.gim||!L.gim.length)return;const d=RD.d,S=RD.S,W=RD.W;d.save();
  // Symbole oben mittig
- let x=W/2-(L.gim.length*48*S)/2;const y=12*S;for(const g of L.gim){const D=GIMDEF[g];d.fillStyle='rgba(8,4,20,.7)';d.fillRect(x,y-8*S,46*S,10*S);hudText(d,D.n,x+23*S,y,3.6,D.c,'center');x+=48*S}
+ let x=W/2-(L.gim.length*48*S)/2;const y=12*S;for(const g of L.gim){const D=GIMDEF[g];d.fillStyle='rgba(8,4,20,.7)';d.fillRect(x,y-8*S,46*S,10*S);hudText(d,gimName(L.def.theme,g),x+23*S,y,3.6,D.c,'center');x+=48*S}
  // Zeit
- if(G.timer!=null&&!G.bossStarted){const t=Math.ceil(G.timer),low=t<=15,col=low?(Math.floor(G.t*4)%2?'#ff3a5a':'#ffe23a'):'#ffe23a';
+ if(G.timer!=null&&!G.bossStarted&&!introOn()){const t=Math.ceil(G.timer),low=t<=15,col=low?(Math.floor(G.t*4)%2?'#ff3a5a':'#ffe23a'):'#ffe23a';
   hudText(d,'⏰ '+Math.floor(t/60)+':'+String(t%60).padStart(2,'0'),W/2,30*S,low?10:8,col,'center')}
  // Sturm-Warnung
- if(gimHas('gust')&&!G.bossStarted){const g=G.gust,dir=g.dir||g.warn;if(dir){const txt=dir<0?'◀◀◀ GEGENWIND':'RÜCKENWIND ▶▶▶';hudText(d,(g.warn?'GLEICH: ':'')+txt,W/2,(G.timer!=null?44:30)*S,g.warn?5:7,g.warn?'#9ab89a':'#e8ffe0','center')}}
+ if(gimHas('gust')&&!G.bossStarted&&!introOn()){const g=G.gust,dir=g.dir||g.warn;if(dir){const txt=dir<0?'◀◀◀ GEGENWIND':'RÜCKENWIND ▶▶▶';hudText(d,(g.warn?'GLEICH: ':'')+txt,W/2,(G.timer!=null?44:30)*S,g.warn?5:7,g.warn?'#9ab89a':'#e8ffe0','center')}}
  // Walze: Abstand
  if(G.chase&&G.chase.on&&!G.bossStarted){const dist=Math.max(0,Math.round((G.player.x-G.chase.x)/10));if(dist<40)hudText(d,'KOMMERZ-WALZE '+dist+' m',14*S,RD.H-60*S,5,dist<12?'#ff3a6a':'#ff8ad8','left')}
  d.restore()}}
+
+/* =====================================================================
+   NEUE REGELN FÜR KARTE 3 + 4: Jetlag/Lag, Pool, U-Bahn, Fließband, Schwerkraft-Takt
+   und Zeit-Filter je Epoche
+   ===================================================================== */
+Object.assign(GIMDEF,{
+ jetlag:{n:'JETLAG',c:'#9ac8e8',d:'Nach dem Langstreckenflug reagiert die Steuerung am Anfang verzögert.'},
+ lag:{n:'LAG',c:'#ff3a3a',d:'Verbindungsprobleme! Deine Eingaben kommen verzögert an.'},
+ swim:{n:'POOL',c:'#3affd8',d:'Im Wasser schwimmst du: mit der Sprungtaste nach oben paddeln, alles läuft langsamer.'},
+ train:{n:'U-BAHN',c:'#ffd84a',d:'Züge donnern von hinten heran – rauf aufs Dach und mitfahren!'},
+ escal:{n:'FLIESSBAND',c:'#c8c8e8',d:'Laufbänder schieben dich – achte auf die Pfeile am Boden.'},
+ gpulse:{n:'SCHWERKRAFT',c:'#c8a8ff',d:'Die Schwerkraft wechselt im Takt zwischen schwer und schwebend.'}});
+const GIMLAB={tokyo:{escal:'ROLLTREPPEN'},tempelhof:{escal:'GEPÄCKBAND'},era85:{train:'HOCHBAHN'},newyork:{train:'HOCHBAHN'}};
+const WATER_Y=FLOOR_Y-56;
+{const _pl=postLevel;postLevel=function(L){_pl(L);if(L.menu||!L.gim||!L.gim.length)return;
+ const r=gimRng(L.i*313+7),A=L.arena?L.arena.x:L.w,cpx=(L.checkpoints||[]).map(c=>c.x),near=x=>cpx.some(c=>Math.abs(c-x)<100);
+ const grounds=L.solids.filter(s=>s.kind==='ground'&&s.x+s.w>420&&s.x<A-220);
+ const patches=(prob,min,max,g0,g1)=>{const o=[];for(const g of grounds){let x=Math.max(g.x+40,420);const end=Math.min(g.x+g.w-40,A-240);
+  while(x<end-min){const w=Math.min(end-x,min+r()*(max-min));if(r()<prob&&!near(x)&&!near(x+w))o.push({x0:x,x1:x+w});x+=w+g0+r()*(g1-g0)}}return o};
+ if(L.gim.includes('escal')){L.esc=patches(.75,110,240,160,380);L.esc.forEach(q=>q.dir=r()<.7?-1:1)}
+ if(L.gim.includes('swim'))L.pool=patches(.65,150,280,220,520)}}
+{const _sl=startLevel;startLevel=function(i){_sl(i);G.trainT=6;G.trainW=0;G.jlT=0;JL.buf.length=0;G.gp=0;
+ const L=G.level;if(L)L.solids=L.solids.filter(s=>s.kind!=='train')}}
+{const _rp=respawnPlayer;respawnPlayer=function(){_rp();G.jlT=6;const L=G.level;if(L){L.solids=L.solids.filter(s=>s.kind!=='train');G.trainT=Math.max(G.trainT,4)}}}
+function inPool(L,p){return L.pool&&p.y+p.h>WATER_Y+2&&inRange(L.pool,p.x+p.w/2)}
+function gimPhysX(L,p,onG,cx){
+ if(L.esc&&onG){const q=L.esc.find(q=>cx>=q.x0&&cx<=q.x1);if(q)PHYS.wind+=q.dir*62}
+ if(inPool(L,p)){PHYS.g=.28;PHYS.fall=.3;PHYS.jump=.62;PHYS.spd*=.78;p.jumps=Math.min(p.jumps,1);if(Math.random()<.08)part({x:cx,y:p.y,vx:0,vy:-20,g:-20,life:.8,col:'#bff4ff',s:1,em:true})}
+ if(gimHas('gpulse')&&!G.bossStarted){const heavy=Math.floor(AU.beat()/8)%2===0;if(heavy){PHYS.g=1.25;PHYS.fall=1.15}else{PHYS.g=.45;PHYS.jump=.82;PHYS.fall=.55}}}
+
+/* --- Eingabe-Verzögerung (Jetlag / Lag) --- */
+const JL={buf:[],acts:['left','right','jump','down','dash']};
+function jlDelay(){const L=G.level;if(!L||!L.gim)return 0;if(L.gim.includes('lag'))return .17;if(L.gim.includes('jetlag')&&(G.gimT<12||G.jlT>0))return .13;return 0}
+{const _up=updatePlayer;updatePlayer=function(dt){const d=G.state==='play'?jlDelay():0;if(!d){JL.buf.length=0;return _up(dt)}
+ const now=G.t,cur={t:now,a:{},pr:[],px:IN.padX};for(const a of JL.acts){cur.a[a]=IN.act(a);if(IN.pressed.has(a)){cur.pr.push(a);IN.pressed.delete(a)}}JL.buf.push(cur);
+ let st=null;while(JL.buf.length&&JL.buf[0].t<=now-d){st=JL.buf.shift();for(const a of st.pr)IN.pressed.add(a);JL.last=st}st=st||JL.last||{a:{},px:0};
+ const oa=IN.act,opx=IN.padX;IN.act=function(a){return JL.acts.includes(a)?!!st.a[a]:oa.call(IN,a)};IN.padX=st.px||0;
+ try{_up(dt)}finally{IN.act=oa;IN.padX=opx}}}
+
+/* --- U-Bahn --- */
+function trainTick(dt){const L=G.level,p=G.player;if(!gimHas('train')||!p)return;const A=L.arena?L.arena.x:L.w;
+ let tr=L.solids.find(s=>s.kind==='train');
+ if(!tr&&!G.bossStarted&&p.x<A-700){G.trainT-=dt;if(G.trainT<1.8&&!G.trainW){G.trainW=1;AU.sfx('horn')}
+  if(G.trainT<=0){tr={x:G.cam.x-300,y:FLOOR_Y-34,w:250,h:6,type:'oneway',kind:'train',dyn:true,sp:150+L.i*2,dx:0};L.solids.push(tr);G.trainT=10+Math.random()*4;G.trainW=0}}
+ if(tr){const ox=tr.x;tr.x+=tr.sp*dt;tr.dx=tr.x-ox;
+  if(p.ground===tr&&p.onGround){p.x+=tr.dx;p.y=tr.y-p.h}
+  else if(!p.dead&&p.x+p.w>tr.x&&p.x<tr.x+tr.w&&p.y+p.h>tr.y+5){hurtPlayer(tr.x,true);p.vy=-280;p.vx=180;addShake(6)}
+  if(tr.x>G.cam.x+VW+80||tr.x>A-260)L.solids=L.solids.filter(s=>s!==tr)}}
+{const _u=updatePlay;updatePlay=function(dt){_u(dt);if(G.state==='play'){trainTick(dt);if(G.jlT>0)G.jlT-=dt}}}
+
+/* --- Zeichnen: Pools, Bänder, Züge --- */
+{const _de=drawExtras;drawExtras=function(cx,cy,beat,pulse){_de(cx,cy,beat,pulse);const L=G.level;if(!L||!L.esc)return;const p=RD.p,e=RD.e,Y=FLOOR_Y+cy;
+ for(const q of L.esc){const X=Math.round(q.x0-cx),w=Math.round(q.x1-q.x0);if(X>VW||X+w<0)continue;p.fillStyle='#1a1a22';p.fillRect(X,Y-2,w,5);p.fillStyle='#4a4a58';p.fillRect(X,Y-2,w,1);
+  const off=((G.t*62*q.dir)%12+12)%12;for(let k=-12;k<w+12;k+=12){const xx=X+k+off;if(xx<X||xx>X+w-5)continue;p.fillStyle='#c8c8e8';if(q.dir<0){p.fillRect(xx+3,Y,1,1);p.fillRect(xx+2,Y+1,1,1);p.fillRect(xx+3,Y+2,1,1)}else{p.fillRect(xx+2,Y,1,1);p.fillRect(xx+3,Y+1,1,1);p.fillRect(xx+2,Y+2,1,1)}}
+  e.fillStyle='#c8c8e8';e.globalAlpha=.25;e.fillRect(X,Y-2,w,1);e.globalAlpha=1}}}
+{const _dp=drawParts;drawParts=function(cx,cy){_dp(cx,cy);const L=G.level;if(!L||G.state==='menu')return;const p=RD.p,e=RD.e;
+ for(const q of L.pool||[]){const X=Math.round(q.x0-cx),w=Math.round(q.x1-q.x0);if(X>VW||X+w<0)continue;const Y=WATER_Y+cy;
+  p.fillStyle='rgba(40,150,210,.42)';p.fillRect(X,Y,w,FLOOR_Y-WATER_Y+4);p.fillStyle='#e8ffff';p.fillRect(X-3,Y-1,3,FLOOR_Y-WATER_Y+5);p.fillRect(X+w,Y-1,3,FLOOR_Y-WATER_Y+5);
+  for(let k=0;k<w;k+=6){const yy=Y+Math.round(Math.sin(G.t*3+k*.25)*1.2);p.fillStyle='#bff4ff';p.fillRect(X+k,yy,4,1);e.fillStyle='#8ae8ff';e.globalAlpha=.4;e.fillRect(X+k,yy,4,1);e.globalAlpha=1}addL((q.x0+q.x1)/2,WATER_Y+20,Math.min(140,w/2+20),'#3ab8ff',.5)}
+ const tr=L.solids.find(s=>s.kind==='train');if(tr){const X=Math.round(tr.x-cx),Y=tr.y+cy,H=FLOOR_Y-tr.y;
+  p.fillStyle='#c8ccd8';p.fillRect(X,Y,tr.w,H);p.fillStyle='#8a90a0';p.fillRect(X,Y+H-6,tr.w,6);p.fillStyle=L.th.accent;p.fillRect(X,Y+H-12,tr.w,3);
+  for(let k=10;k<tr.w-20;k+=26){p.fillStyle='#1a2a3a';p.fillRect(X+k,Y+6,18,11);e.fillStyle='#ffe8b0';e.globalAlpha=.5;e.fillRect(X+k+1,Y+7,16,9);e.globalAlpha=1}
+  p.fillStyle='#ffffff';p.fillRect(X+tr.w-4,Y+18,4,4);e.fillStyle='#ffffff';e.fillRect(X+tr.w-4,Y+18,4,4);addL(tr.x+tr.w+30,FLOOR_Y-12,80,'#ffffe0',.9);
+  for(let k=0;k<3;k++){p.fillStyle='#2a2a30';p.fillRect(X+20+k*90,Y+H-2,16,3)}}}}
+/* --- HUD-Warnungen --- */
+{const _h=drawHUD;drawHUD=function(){_h();const L=G.level;if(G.state!=='play'||!L||!L.gim)return;const d=RD.d,S=RD.S,W=RD.W;
+ if(gimHas('train')&&G.trainW&&!G.bossStarted&&!introOn())hudText(d,'◀ ZUG KOMMT – RAUF AUFS DACH!',W/2,44*S,6,Math.floor(G.t*6)%2?'#ffd84a':'#ffffff','center');
+ const jd=jlDelay();if(jd)hudText(d,L.gim.includes('lag')?'📶 LAG '+Math.round(jd*1000)+' ms':'✈ JETLAG',14*S,RD.H-74*S,5,L.gim.includes('lag')?'#ff3a3a':'#9ac8e8','left');
+ if(gimHas('gpulse')&&!G.bossStarted&&!introOn()){const b=AU.beat(),heavy=Math.floor(b/8)%2===0,soon=(b%8)>6.5;hudText(d,(soon?'GLEICH: ':'')+(heavy!==soon?'SCHWER ▼':'SCHWEBEN ▲'),W/2,30*S,soon?5:6,soon?'#c8a8ff':'#ffffff','center')}}}
+/* Symbol-Beschriftung je Level */
+{const _gl=GIMDEF;window.gimName=(th,g)=>(GIMLAB[th]&&GIMLAB[th][g])||GIMDEF[g].n}
+
+/* ---------- Zeit-Filter (Karte 4) ---------- */
+const EF={c:null,x:null};
+function efCanvas(W,H){if(!EF.c||EF.c.width!==W||EF.c.height!==H){EF.c=document.createElement('canvas');EF.c.width=W;EF.c.height=H;EF.x=EF.c.getContext('2d')}return EF.x}
+{const _fg=drawFG;drawFG=function(L,cx,cy,beat,pulse){_fg(L,cx,cy,beat,pulse);if(!L||G.state==='menu'||typeof ERAFX==='undefined')return;const fx=ERAFX[L.def.theme];if(!fx)return;
+ const d=RD.d,W=RD.W,H=RD.H,S=RD.S,t=G.t;d.save();
+ const blend=(mode,col,a)=>{d.globalCompositeOperation=mode;d.globalAlpha=a;d.fillStyle=col;d.fillRect(0,0,W,H);d.globalAlpha=1;d.globalCompositeOperation='source-over'};
+ const grain=(n,a)=>{d.fillStyle=`rgba(255,255,255,${a})`;for(let k=0;k<n;k++)d.fillRect(Math.random()*W,Math.random()*H,S,S)};
+ const scan=(gap,a)=>{d.fillStyle=`rgba(0,0,0,${a})`;for(let y=0;y<H;y+=gap*S)d.fillRect(0,y,W,S)};
+ if(fx==='bit8'){const q=Math.max(2,Math.round(S*1.6)),w=Math.ceil(W/q),h=Math.ceil(H/q),x=efCanvas(w,h);x.imageSmoothingEnabled=false;x.drawImage(d.canvas,0,0,w,h);d.imageSmoothingEnabled=false;d.drawImage(EF.c,0,0,w,h,0,0,W,H);
+  blend('color','#c87a3a',.35);scan(2,.12)}
+ else if(fx==='film'){blend('overlay','#ffb060',.18);grain(160,.12);const g=d.createRadialGradient(W/2,H/2,H*.3,W/2,H/2,W*.7);g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(40,20,0,.45)');d.fillStyle=g;d.fillRect(0,0,W,H)}
+ else if(fx==='vhs'){scan(3,.14);const by=((t*60)%(H+80))-40;d.drawImage(d.canvas,0,by,W,22*S,(Math.sin(t*9)*4)*S,by,W,22*S);d.globalCompositeOperation='lighter';d.globalAlpha=.08;d.drawImage(d.canvas,2*S,0);d.globalAlpha=1;d.globalCompositeOperation='source-over';grain(120,.18);
+  hudText(d,'PLAY ▶',W-60*S,RD.H-46*S,6,'#ffffff','left');hudText(d,'JAN 12 1985  '+String(Math.floor(t/60)).padStart(2,'0')+':'+String(Math.floor(t)%60).padStart(2,'0'),W-110*S,RD.H-36*S,4.4,'#ffffff','left')}
+ else if(fx==='sepia'){blend('color','#a07040',.62);grain(80,.08)}
+ else if(fx==='acid'){const hue=(t*40)%360;blend('hue',`hsl(${hue},90%,55%)`,.32);d.globalAlpha=.5;for(let k=0;k<5;k++){const sx=((k*173+t*20)%(W+80))-40,sy=((k*97+Math.sin(t+k)*40)%H+H)%H,r=9*S;d.fillStyle='#ffe23a';d.beginPath();d.arc(sx,sy,r,0,7);d.fill();d.fillStyle='#1a1a1a';d.fillRect(sx-4*S,sy-3*S,2*S,2*S);d.fillRect(sx+2*S,sy-3*S,2*S,2*S);d.fillRect(sx-4*S,sy+3*S,8*S,S)}d.globalAlpha=1}
+ else if(fx==='bw'){blend('saturation','#808080',1);grain(140,.1);scan(4,.06)}
+ else if(fx==='mono'){blend('saturation','#808080',.85);blend('overlay','#ffffff',.06)}
+ else if(fx==='y2k'){blend('overlay','#ff7ad8',.12);for(let k=0;k<14;k++){const sx=(k*137+t*30)%W,sy=(k*61)%H;d.fillStyle=`rgba(255,255,255,${.4+.4*Math.sin(t*5+k)})`;d.fillRect(sx,sy,2*S,2*S)}
+  const left=Math.max(0,59-Math.floor(t)%60);hudText(d,'23:59:'+String(left).padStart(2,'0')+' → 2000',W-96*S,RD.H-36*S,5,'#3affd8','left')}
+ else if(fx==='webcam'){d.strokeStyle='rgba(255,255,255,.25)';d.lineWidth=2*S;d.strokeRect(6*S,6*S,W-12*S,H-12*S);d.fillStyle='#ff3a3a';d.beginPath();d.arc(W-20*S,RD.H-60*S,3*S,0,7);d.fill();hudText(d,'REC',W-44*S,RD.H-58*S,4.4,'#ff3a3a','left');
+  for(let k=0;k<3;k++){const tx=W-46*S,ty=60*S+k*32*S;d.fillStyle='rgba(20,20,30,.85)';d.fillRect(tx,ty,40*S,28*S);d.fillStyle=['#5a4a3a','#3a4a5a','#4a3a4a'][k];d.fillRect(tx+2*S,ty+2*S,36*S,24*S);d.fillStyle='#e8c8a8';d.beginPath();d.arc(tx+20*S,ty+11*S+Math.sin(t*6+k)*1.5*S,5*S,0,7);d.fill()}
+  const chat=['Bild hängt!','Mute dich mal!','Tanzt ihr auch?','Wer hat noch Bier?','Ton ist weg!','Nächste Woche wieder?'],ci=Math.floor(t/3)%chat.length;hudText(d,'💬 '+chat[ci],14*S,RD.H-86*S,4.4,'#ffffff','left')}
+ else if(fx==='holo'){scan(3,.1);blend('overlay','#3affff',.08);for(let k=0;k<30;k++){d.fillStyle='rgba(255,255,255,.6)';d.fillRect(((k*211+t*15)%W),((k*89)%H),S,S)}}
+ d.restore()}}
+
+/* =====================================================================
+   KARTE 3 (WELTTOURNEE) und KARTE 4 (ZEITREISE): Themes, Wahrzeichen,
+   Bereiche, eigene Kulissen, Musik
+   ===================================================================== */
+const TX=(base,o)=>Object.assign({},THEMES[base],{first:null,pool:['dance']},o);
+Object.assign(THEMES,{
+ /* ---- Karte 3 ---- */
+ ibiza:FT({far:'ibiza',floor:'deck',water:true,gaps:'water',fairy:true,amb:'#a07a9a',sky:['#2a1a5a','#c85a8a','#ffc070'],spots:['#3affd8','#ff8a3a','#ff4fd8'],neon:'AMNESIA',neonC:'#3affd8',neonC2:'#ff8a3a',accent:'#3affd8',floorTop:'#c8a87a',mid:{trees:1,flags:1}}),
+ london:TX('tresor',{far:'london',amb:'#5a5470',sky:['#05060c','#141a2a','#2a2a3a'],spots:['#c83a3a','#ffffff','#3a6aff'],neon:'FABRIC',neonC:'#ff3a3a',neonC2:'#ffffff',accent:'#ff3a3a',wallC:'#2a2428',wallC2:'#1a1418'}),
+ amsterdam:FT({far:'amsterdam',floor:'cobble',water:true,gaps:'water',fairy:true,amb:'#7a6a8a',sky:['#0a0a1e','#2a2a4a','#5a4a5a'],spots:['#ff8a1a','#ffffff','#3a8aff'],neon:'ADE',neonC:'#ff8a1a',neonC2:'#3a8aff',accent:'#ff8a1a',floorTop:'#5a4a44',mid:{trees:1}}),
+ tbilisi:TX('berghain',{far:'tbilisi',amb:'#4a4660',sky:['#02030a','#0a0c1a','#1a1a2a'],spots:['#8a8aff','#ffffff','#ff3a3a'],neon:'BASSIANI',neonC:'#8a8aff',neonC2:'#ffffff',accent:'#8a8aff'}),
+ detroit:FT({far:'detroit',floor:'concrete',amb:'#8a7088',sky:['#1a1a3a','#8a4a6a','#ffa060'],spots:['#ffd84a','#3a8aff','#ff3a3a'],neon:'MOVEMENT',neonC:'#ffd84a',neonC2:'#3a8aff',accent:'#ffd84a',floorTop:'#6a6a70',mid:{flags:1}}),
+ newyork:TX('ms',{far:'newyork',amb:'#5e5068',sky:['#04040c','#1a1428','#3a2a3a'],spots:['#ff5a3a','#ffd84a','#3affff'],neon:'BROOKLYN',neonC:'#ff5a3a',neonC2:'#ffd84a',accent:'#ff5a3a'}),
+ saopaulo:FT({far:'saopaulo',wall:'messehalle',floor:'concrete',ceil:true,outdoor:false,lasers:true,ledwall:true,amb:'#5a6a6a',sky:['#02040a','#0a1a1a','#1a2a2a'],spots:['#3affb0','#ff2fd6','#ffd84a'],neon:'D-EDGE',neonC:'#3affb0',neonC2:'#ff2fd6',accent:'#3affb0',floorTop:'#2a3a3a',refl:.3}),
+ tokyo:TX('bootshaus',{far:'tokyo',disco:true,amb:'#6a5478',sky:['#05020e','#1a0a2a','#3a1a3a'],spots:['#ff7ad8','#3affff','#ffffff'],neon:'WOMB',neonC:'#ff7ad8',neonC2:'#3affff',accent:'#ff7ad8'}),
+ karoo:FT({far:'karoo',floor:'sand',co2:true,amb:'#9a7a6a',sky:['#1a0a1a','#8a3a2a','#ffb060'],spots:['#ff8a3a','#ffd84a','#ff3a5a'],neon:'AFRIKABURN',neonC:'#ff8a3a',neonC2:'#ffd84a',accent:'#ff8a3a',floorTop:'#c89a5a',mid:{towers:1,flags:1}}),
+ tempelhof:FT({far:'tempelhof',floor:'concrete',lasers:true,co2:true,amb:'#6a6a80',sky:['#04060e','#1a2034','#3a3a52'],spots:['#9ac8e8','#ffd84a','#ff3a6a'],neon:'TEMPELHOF',neonC:'#9ac8e8',neonC2:'#ffd84a',accent:'#9ac8e8',floorTop:'#4a4a52',mid:{towers:1,flags:1}}),
+ /* ---- Karte 4 ---- */
+ era74:TX('rj',{far:'era74',amb:'#6a5a48',sky:['#0a0806','#2a1a10','#4a2a1a'],spots:['#ff8a3a','#ffd84a','#c83a3a'],neon:'1974',neonC:'#ff8a3a',neonC2:'#ffd84a',accent:'#ff8a3a',water:false}),
+ era77:TX('distillery',{far:'era77',disco:true,amb:'#7a5a6a',sky:['#06040a','#1a0a1a','#3a1a2a'],spots:['#ffd84a','#ff3ab0','#ffffff'],neon:'PARADISE GARAGE',neonC:'#ffd84a',neonC2:'#ff3ab0',accent:'#ffd84a'}),
+ era85:TX('ms',{far:'era85',amb:'#5a5a78',sky:['#04040c','#141434','#2a2a4a'],spots:['#3affff','#ff3a8a','#ffffff'],neon:'THE WAREHOUSE',neonC:'#3affff',neonC2:'#ff3a8a',accent:'#3affff'}),
+ era88:TX('tresor',{far:'era88',amb:'#6a6058',sky:['#06060a','#1a1a1a','#3a2a1a'],spots:['#8a8aff','#ffffff','#ffd84a'],neon:'DETROIT 1988',neonC:'#8a8aff',neonC2:'#ffd84a',accent:'#8a8aff'}),
+ era89:FT({far:'era89',floor:'grass',lasers:true,amb:'#7a6a5a',sky:['#04060a','#1a2a1a','#3a4a2a'],spots:['#ffe23a','#3aff5a','#ff3a8a'],neon:'ACID HOUSE',neonC:'#ffe23a',neonC2:'#3aff5a',accent:'#ffe23a',floorTop:'#3a5a2a',mid:{trees:1,tents:1}}),
+ era90:TX('berghain',{far:'era90',amb:'#4a4a52',sky:['#020204','#0a0a10','#1a1a22'],spots:['#ff8a1a','#ffffff','#ff3a3a'],neon:'BERLIN 1990',neonC:'#ff8a1a',neonC2:'#ffffff',accent:'#ff8a1a'}),
+ era99:FT({far:'berlinlp',day:true,floor:'asphalt',amb:'#b8b0c8',sky:['#3a7ae8','#8ac0f0','#fff0d0'],spots:['#ff7ad8','#3affd8','#ffe23a'],neon:'LOVE PARADE 1999',neonC:'#ff7ad8',neonC2:'#3affd8',accent:'#ff7ad8',floorTop:'#4a4a52',mid:{trees:1,flags:1}}),
+ era05:TX('sisyphos',{far:'era05',amb:'#6a6a6a',sky:['#0a0a0c','#3a3a44','#8a8a90'],spots:['#ffffff','#ff3a3a','#c8c8c8'],neon:'MINIMAL',neonC:'#ffffff',neonC2:'#ff3a3a',accent:'#ff3a3a'}),
+ era20:TX('distillery',{far:'era20',amb:'#5a5a6a',sky:['#06060e','#1a1a2a','#2a2a3a'],spots:['#c8b8a8','#6a5a8a','#3affff'],neon:'LIVE',neonC:'#ff3a3a',neonC2:'#ffffff',accent:'#ff3a3a'}),
+ era2077:FT({far:'era2077',wall:'messehalle',floor:'grate',ceil:true,outdoor:false,lasers:true,ledwall:true,amb:'#4a5a7a',sky:['#000004','#02020a','#0a0a1a'],spots:['#3affff','#ff2fd6','#ffffff'],neon:'ORBIT',neonC:'#3affff',neonC2:'#ff2fd6',accent:'#3affff',floorTop:'#2a3a4a',refl:.3})
+});
+
+/* ---------- Wahrzeichen in der Ferne ---------- */
+Object.assign(LANDMARK,{
+ ibiza(x,lx,b,r,col){const F=(c,X,Y,w,h)=>{x.fillStyle=c;x.fillRect(Math.round(X),Math.round(Y),w,h)};
+  for(let k=0;k<120;k++){const yy=Math.round(Math.sin(k/120*Math.PI)*30);F(col,lx+k,b-yy,1,yy)}F(col,lx+50,b-46,14,18);F(col,lx+55,b-56,4,10);F(col,lx+30,b-36,60,4);
+  for(let k=0;k<6;k++)F(col,lx+28+k*12,b-40,6,4);F('#ffd890',lx+56,b-44,2,2)},
+ london(x,lx,b,r,col){const F=(c,X,Y,w,h)=>{x.fillStyle=c;x.fillRect(Math.round(X),Math.round(Y),w,h)};
+  F(col,lx,b-70,10,70);F(col,lx-2,b-74,14,4);F(col,lx+2,b-84,6,10);F(col,lx+4,b-90,2,6);pcirc(x,lx+5,b-62,3,'#ffe8b0');
+  F(col,lx+30,b-30,70,4);F(col,lx+36,b-50,8,50);F(col,lx+84,b-50,8,50);F(col,lx+34,b-54,12,4);F(col,lx+82,b-54,12,4);for(let k=0;k<6;k++)F(col,lx+44+k*7,b-30+Math.round(Math.sin(k/5*Math.PI)*-8),2,2);
+  for(let k=0;k<26;k++){const w=Math.round(Math.sin(k/26*Math.PI)*8);F(col,lx+120-w,b-26-k*2,w*2,2)}},
+ amsterdam(x,lx,b,r,col){const F=(c,X,Y,w,h)=>{x.fillStyle=c;x.fillRect(Math.round(X),Math.round(Y),w,h)};
+  for(let k=0;k<7;k++){const hx=lx+k*16,h=34+((k*7)%10);F(col,hx,b-h,15,h);for(let q=0;q<5;q++)F(col,hx+q+2,b-h-q*2,11-q*2,2);F('#ffd890',hx+4,b-h+8,2,3);F('#ffd890',hx+9,b-h+16,2,3)}
+  const wx=lx+130;F(col,wx,b-40,8,40);F(col,wx-2,b-44,12,4);x.strokeStyle=col;x.lineWidth=2;for(let k=0;k<4;k++){const a=k*Math.PI/2+.4;x.beginPath();x.moveTo(wx+4,b-40);x.lineTo(wx+4+Math.cos(a)*20,b-40+Math.sin(a)*20);x.stroke()}},
+ tbilisi(x,lx,b,r,col){const F=(c,X,Y,w,h)=>{x.fillStyle=c;x.fillRect(Math.round(X),Math.round(Y),w,h)};
+  for(let k=0;k<160;k++){const yy=Math.round(20+Math.sin(k*.05)*10+Math.sin(k*.17)*4);F(shade(col,.15),lx-20+k,b-yy,1,yy)}
+  F(col,lx+60,b-72,3,72);F(col,lx+54,b-50,15,3);F(col,lx+57,b-62,9,2);F('#ff3030',lx+60,b-74,3,2);
+  for(let k=0;k<40;k++)F(col,lx+90+k,b-36-(k%10<5?4:0),1,8);x.strokeStyle=col;x.lineWidth=3;x.beginPath();x.arc(lx+20,b,22,Math.PI,0);x.stroke()},
+ detroit(x,lx,b,r,col){const F=(c,X,Y,w,h)=>{x.fillStyle=c;x.fillRect(Math.round(X),Math.round(Y),w,h)};
+  F(col,lx+30,b-80,16,80);pcircF(F,lx+38,b-80,8,col);[[0,56],[56,56],[10,46],[50,46]].forEach(([dx,h])=>{F(col,lx+12+dx*.6,b-h,12,h)});
+  for(let k=0;k<10;k++)F('#ffd890',lx+34,b-74+k*7,2,2);F(col,lx+90,b-20,60,20);x.strokeStyle=col;x.lineWidth=2;x.beginPath();x.arc(lx+120,b-20,18,Math.PI,0);x.stroke()},
+ newyork(x,lx,b,r,col){const F=(c,X,Y,w,h)=>{x.fillStyle=c;x.fillRect(Math.round(X),Math.round(Y),w,h)};
+  F(col,lx+40,b-70,16,70);F(col,lx+43,b-82,10,12);F(col,lx+46,b-92,4,10);F(col,lx+47,b-100,2,8);for(let k=0;k<12;k++)F('#ffd890',lx+42+(k%3)*4,b-66+Math.floor(k/3)*14,2,2);
+  F(col,lx+10,b-44,22,44);F(col,lx+62,b-52,18,52);F(col,lx+84,b-38,26,38);
+  x.strokeStyle=col;x.lineWidth=1;F(col,lx+120,b-46,5,46);F(col,lx+170,b-46,5,46);for(let k=0;k<10;k++){x.beginPath();x.moveTo(lx+122,b-46);x.lineTo(lx+122+k*5,b-10);x.stroke();x.beginPath();x.moveTo(lx+172,b-46);x.lineTo(lx+172-k*5,b-10);x.stroke()}F(col,lx+110,b-12,80,3)},
+ saopaulo(x,lx,b,r,col){const F=(c,X,Y,w,h)=>{x.fillStyle=c;x.fillRect(Math.round(X),Math.round(Y),w,h)};
+  for(let k=0;k<12;k++){const h=30+Math.floor(r()*40),bx=lx+k*13;F(col,bx,b-h,11,h);for(let q=6;q<h-4;q+=6)if(r()<.5)F('#ffd890',bx+2+Math.floor(r()*6),b-h+q,2,2)}
+  for(let k=0;k<50;k++)F(col,lx+170+k,b-50+Math.round(Math.sin(k/50*Math.PI*2)*6),1,50-Math.round(Math.sin(k/50*Math.PI*2)*6))},
+ tokyo(x,lx,b,r,col){const F=(c,X,Y,w,h)=>{x.fillStyle=c;x.fillRect(Math.round(X),Math.round(Y),w,h)};
+  for(let k=0;k<70;k++){const yy=Math.round((1-Math.abs(k-35)/35)*40);F(shade(col,.2),lx+90+k,b-yy,1,yy);if(yy>32)F('#ffffff',lx+90+k,b-yy,1,2)}
+  for(let k=0;k<60;k++){const w=Math.max(1,Math.round((60-k)/60*18));F('#c83a2a',lx+30-w/2,b-k,w,1)}F('#ffffff',lx+22,b-30,16,2);F('#ffffff',lx+25,b-46,10,2);F('#c83a2a',lx+29,b-70,2,10);
+  for(let k=0;k<6;k++){const h=24+((k*11)%20);F(col,lx+50+k*7,b-h,6,h);F(['#ff7ad8','#3affff','#ffd84a'][k%3],lx+51+k*7,b-h+3,4,2)}},
+ karoo(x,lx,b,r,col){const F=(c,X,Y,w,h)=>{x.fillStyle=c;x.fillRect(Math.round(X),Math.round(Y),w,h)};
+  F(shade(col,.15),lx-20,b-26,180,26);for(let k=0;k<12;k++)F(shade(col,.15),lx-20+k*15,b-30-(k%2)*3,15,4);
+  const sx=lx+70;F(col,sx,b-60,3,34);F(col,sx-10,b-50,23,2);pcircF(F,sx+1,b-64,4,col);F(col,sx-8,b-26,2,10);F(col,sx+9,b-26,2,10);F('#ff8a3a',sx-1,b-30,5,4);F('#ffd84a',sx,b-32,3,2)},
+ tempelhof(x,lx,b,r,col){const F=(c,X,Y,w,h)=>{x.fillStyle=c;x.fillRect(Math.round(X),Math.round(Y),w,h)};
+  for(let k=0;k<200;k++){const yy=18+Math.round(Math.sin(k/200*Math.PI)*6);F(col,lx-20+k,b-yy,1,yy)}for(let k=0;k<20;k++)F('#ffd890',lx-14+k*10,b-12,3,2);
+  F(col,lx+170,b-40,6,24);pcircF(F,lx+173,b-44,7,col);F('#ff3030',lx+172,b-52,2,2)},
+ era74(x,lx,b,r,col){const F=(c,X,Y,w,h)=>{x.fillStyle=c;x.fillRect(Math.round(X),Math.round(Y),w,h)};
+  F(col,lx+40,b-90,5,90);F(col,lx+36,b-72,13,8);F(col,lx+38,b-76,9,4);F(col,lx+42,b-100,1,10);for(let k=0;k<5;k++)F('#ff8a3a',lx+38+k*2,b-70,1,2);
+  for(let k=0;k<5;k++)F(col,lx+70+k*20,b-26-((k*5)%12),18,26+((k*5)%12));F(col,lx+76,b-48,4,22);F(col,lx+116,b-52,4,26)},
+ era77(x,lx,b,r,col){const F=(c,X,Y,w,h)=>{x.fillStyle=c;x.fillRect(Math.round(X),Math.round(Y),w,h)};
+  F(col,lx+20,b-74,14,74);for(let k=0;k<6;k++){const w=12-k*2;F(col,lx+27-w/2,b-80-k*3,w,3)}F(col,lx+26,b-100,2,10);
+  F(col,lx+50,b-62,18,62);F(col,lx+54,b-70,10,8);F(col,lx+58,b-80,2,10);for(let k=0;k<4;k++)F(col,lx+80+k*22,b-30-((k*9)%26),18,30+((k*9)%26));for(let k=0;k<30;k++)F('#ffd890',lx+16+Math.floor(r()*170),b-Math.floor(r()*60),1,1)},
+ era85(x,lx,b,r,col){const F=(c,X,Y,w,h)=>{x.fillStyle=c;x.fillRect(Math.round(X),Math.round(Y),w,h)};
+  F(col,lx+40,b-96,22,96);F(col,lx+42,b-104,4,8);F(col,lx+56,b-104,4,8);F(col,lx+30,b-60,10,60);F(col,lx+62,b-70,10,70);
+  F(col,lx+90,b-22,110,4);for(let k=0;k<6;k++)F(col,lx+94+k*20,b-22,3,22);F('#c83a3a',lx+120,b-30,40,8);for(let k=0;k<6;k++)F('#ffd890',lx+122+k*6,b-28,3,2)},
+ era88(x,lx,b,r,col){const F=(c,X,Y,w,h)=>{x.fillStyle=c;x.fillRect(Math.round(X),Math.round(Y),w,h)};
+  F(col,lx,b-30,140,30);for(let k=0;k<7;k++)F(col,lx+k*20,b-38,18,8);for(let k=0;k<4;k++){F(col,lx+20+k*30,b-80+k*6,6,50-k*6);F(shade(col,.2),lx+18+k*30,b-84+k*6,10,4)}
+  for(let k=0;k<12;k++)F('#ffd890',lx+6+k*11,b-22,3,2)},
+ era89(x,lx,b,r,col){const F=(c,X,Y,w,h)=>{x.fillStyle=c;x.fillRect(Math.round(X),Math.round(Y),w,h)};
+  F(col,lx,b-34,90,34);for(let q=0;q<4;q++)for(let k=0;k<10;k++)F('#ffd890',lx+4+k*9,b-30+q*8,3,3);F(col,lx+30,b-78,8,44);F(col,lx+60,b-70,7,36);
+  pcircF(F,lx+140,b-40,14,'#ffe23a');F('#1a1a1a',lx+135,b-44,3,3);F('#1a1a1a',lx+143,b-44,3,3);for(let k=0;k<12;k++)F('#1a1a1a',lx+132+k,b-34+Math.round(Math.sin(k/11*Math.PI)*3),1,1)},
+ era90(x,lx,b,r,col){const F=(c,X,Y,w,h)=>{x.fillStyle=c;x.fillRect(Math.round(X),Math.round(Y),w,h)};
+  F(col,lx+60,b-110,4,110);pcircF(F,lx+62,b-74,8,col);F(col,lx+61,b-124,2,14);F('#ff3030',lx+61,b-126,2,2);
+  for(let k=0;k<10;k++)F(shade(col,.12),lx+90+k*12,b-24,11,24);F('#e8e8e8',lx+92,b-20,70,1);for(let k=0;k<4;k++)F(col,lx+k*14,b-30-k*4,12,30+k*4)},
+ era05(x,lx,b,r,col){const F=(c,X,Y,w,h)=>{x.fillStyle=c;x.fillRect(Math.round(X),Math.round(Y),w,h)};
+  F(col,lx+60,b-110,4,110);pcircF(F,lx+62,b-74,8,col);F(col,lx+61,b-124,2,14);
+  for(let k=0;k<3;k++){const cx=lx+100+k*40;F(col,cx,b-80,3,80);F(col,cx-16,b-80,40,3);F(col,cx+20,b-78,1,20)}},
+ era20(x,lx,b,r,col){const F=(c,X,Y,w,h)=>{x.fillStyle=c;x.fillRect(Math.round(X),Math.round(Y),w,h)};
+  for(let k=0;k<4;k++){const bx=lx+k*48,h=50+((k*13)%30);F(col,bx,b-h,44,h);for(let q=0;q<4;q++)for(let p=0;p<Math.floor(h/12);p++)F(r()<.4?'#9ac8ff':'#2a2a3a',bx+4+q*10,b-h+4+p*12,6,7)}},
+ era2077(x,lx,b,r,col){x.fillStyle='#1a4a8a';x.beginPath();x.arc(lx+100,b+150,170,Math.PI,0);x.fill();x.fillStyle='#2a8a5a';x.beginPath();x.arc(lx+60,b+60,40,0,7);x.fill();x.fillStyle='#e8f0ff';x.globalAlpha=.4;x.fillRect(lx-70,b-20,340,2);x.globalAlpha=1}
+});
+
+/* ---------- Signatur-Kulissen: jedes neue Level hat seinen eigenen Ort ---------- */
+const SIGP={
+ poolbar(o,X,W){const{F,FE}=o;F('#2a8ac8',X+20,FLOOR_Y-30,W-40,30);for(let k=X+24;k<X+W-24;k+=14)FE('#bff4ff',k,FLOOR_Y-28+((k/14)%2)*4,8,1,.7);for(let k=0;k<3;k++){const px=X+40+k*120;F('#6a4a2a',px,FLOOR_Y-110,4,80);for(let q=0;q<5;q++)F('#2a8a4a',px-14+q*6,FLOOR_Y-116+Math.abs(q-2)*3,10,3)}tc(o,'POOL PARTY','#3affd8',8,X+W/2-34,40,.8)},
+ tube(o,X,W){const{F,FE}=o;F('#e8e0d0',X,26,W,FLOOR_Y-56);for(let yy=30;yy<FLOOR_Y-30;yy+=6)for(let xx=X+((yy/6)%2?6:0);xx<X+W;xx+=12)F('#d0c8b8',xx,yy,11,5);
+  for(let k=X+60;k<X+W-40;k+=200){pcircF(F,k,70,16,'#c8302a');pcircF(F,k,70,10,'#e8e0d0');F('#1a3aa8',k-22,66,44,8);tc(o,'MIND THE GAP','#ffffff',6,k-28,67,.9)}F('#ffd84a',X,FLOOR_Y-34,W,3)},
+ grachten(o,X,W){const{F,FE}=o;for(let k=0;k<W/26;k++){const hx=X+k*26,h=70+((k*13)%30),c=['#5a3a2a','#3a2a2a','#6a4a3a','#4a3a3a'][k%4];F(c,hx,FLOOR_Y-30-h,24,h);for(let q=0;q<6;q++)F(c,hx+q*2,FLOOR_Y-30-h-q*2,24-q*4,2);
+  for(let p=0;p<3;p++){FE('#ffd890',hx+5,FLOOR_Y-30-h+12+p*20,4,6,.7);FE('#ffd890',hx+15,FLOOR_Y-30-h+12+p*20,4,6,.5)}}F('#1a2a4a',X,FLOOR_Y-30,W,30);for(let k=X;k<X+W;k+=10)FE('#ffd890',k,FLOOR_Y-24+((k/10)%3)*6,6,1,.4)},
+ leerpool(o,X,W){const{F,FE}=o;F('#1a1c24',X,26,W,FLOOR_Y-26);for(let yy=40;yy<FLOOR_Y-6;yy+=10)for(let xx=X;xx<X+W;xx+=10)F('#2a3040',xx,yy,9,9);F('#3a4050',X,FLOOR_Y-40,W,3);
+  for(let k=X+30;k<X+W-20;k+=90){F('#8a8a9a',k,FLOOR_Y-70,2,40);F('#8a8a9a',k+12,FLOOR_Y-70,2,40);for(let q=0;q<4;q++)F('#8a8a9a',k,FLOOR_Y-66+q*10,14,1)}tc(o,'BASSIANI','#8a8aff',8,X+W/2-26,50,.6)},
+ plaza(o,X,W){const{F,FE,th}=o;fsky(o,X,W);const s=silC(o);x0ring(o,X+W/2,FLOOR_Y-40,50,s);crowdSil(o,X,W,FLOOR_Y-2,shade(s,-.2));tc(o,'HART PLAZA','#ffd84a',8,X+W/2-30,FLOOR_Y-120,.8)},
+ warehouse(o,X,W){const{F,FE}=o;F('#2a1a18',X,0,W,BOT);for(let yy=0;yy<FLOOR_Y;yy+=8)for(let xx=X+((yy/8)%2?8:0);xx<X+W;xx+=16)F('#3a2420',xx,yy,15,7);
+  for(let k=X+30;k<X+W-60;k+=150){F('#141418',k,50,60,40);for(let q=0;q<3;q++)F('#1e2a3a',k+4+q*19,54,16,32);FE('#ffd890',k+8,58,3,3,.5)}F('#5a3a2a',X+W-90,20,40,30);F('#3a2a1a',X+W-86,50,4,30);F('#3a2a1a',X+W-58,50,4,30);tc(o,'BROOKLYN','#ff5a3a',8,X+30,FLOOR_Y-110,.7)},
+ ledwand(o,X,W){const{F,FE,th}=o;F('#06080a',X,0,W,BOT);for(let yy=10;yy<FLOOR_Y;yy+=6)for(let xx=X;xx<X+W;xx+=6){const v=(Math.sin(xx*.05)+Math.cos(yy*.07))*.5+.5;FE(v>.66?th.spots[0]:v>.33?th.spots[1]:'#0a1a1a',xx,yy,5,5,.5)}},
+ shibuya(o,X,W){const{F,FE}=o;F('#0a0614',X,0,W,BOT);for(let k=0;k<W/40;k++){const bx=X+k*40,h=100+((k*17)%60);F('#141024',bx,FLOOR_Y-h,36,h);for(let q=0;q<Math.floor(h/18);q++)FE(['#ff7ad8','#3affff','#ffd84a','#ffffff'][(k+q)%4],bx+4,FLOOR_Y-h+6+q*18,28,6,.5)}
+  for(let k=0;k<6;k++){F('#3a3a4a',X+40+k*20,FLOOR_Y-10-k*12,40,4)}tc(o,'SHIBUYA','#ff7ad8',8,X+W-90,30,.8)},
+ skulptur(o,X,W){const{F,FE}=o;fsky(o,X,W);const s=silC(o);for(let k=0;k<3;k++){const sx=X+60+k*120,h=60+k*18;F(s,sx,FLOOR_Y-h,6,h);F(s,sx-14,FLOOR_Y-h+10,34,4);pcircF(F,sx+3,FLOOR_Y-h-6,7,s);for(let q=0;q<6;q++)FE(['#ff8a3a','#ffd84a'][q%2],sx-4+q*3,FLOOR_Y-h-14-((q*5)%7),2,4,.8)}crowdSil(o,X,W,FLOOR_Y-2,shade(s,-.25))},
+ hangarbig(o,X,W){const{F,FE}=o;F('#1a1c24',X,0,W,BOT);for(let k=0;k<W;k++){const yy=Math.round(30-Math.sin((k/W)*Math.PI)*20);F('#2a2e3a',X+k,yy,1,4)}for(let k=X;k<X+W;k+=40)F('#22252e',k,20,3,FLOOR_Y-20);F('#ffd84a',X,FLOOR_Y-6,W,2);for(let k=X;k<X+W;k+=30)FE('#9ac8e8',k,36,12,2,.6);tc(o,'HANGAR 1','#9ac8e8',8,X+20,50,.7)},
+ synthlab(o,X,W){const{F,FE}=o;F('#2a1e14',X,0,W,BOT);for(let k=X+20;k<X+W-40;k+=90){F('#4a3a2a',k,50,80,90);for(let q=0;q<4;q++)for(let p=0;p<6;p++){F('#1a1410',k+6+p*12,58+q*20,8,8);FE(['#ff8a3a','#ffd84a','#c83a3a'][(p+q)%3],k+9+p*12,60+q*20,2,2,.8)}for(let p=0;p<5;p++)F(['#c83a3a','#3a6aff','#ffd84a'][p%3],k+10+p*14,120,1,20)}tc(o,'STUDIO','#ff8a3a',8,X+W/2-20,30,.7)},
+ discofloor(o,X,W){const{F,FE}=o;F('#140a14',X,0,W,BOT);for(let xx=X;xx<X+W;xx+=16)for(let k=0;k<2;k++)FE(['#ffd84a','#ff3ab0','#3affff','#ffffff'][((xx/16)+k)%4],xx+1,FLOOR_Y-30+k*14,14,12,.35);pcircF(F,X+W/2,40,14,'#c8c8d8');for(let k=0;k<20;k++)FE('#ffffff',X+W/2-12+((k*7)%24),28+((k*5)%24),2,2,.9)},
+ vhsroom(o,X,W){const{F,FE}=o;F('#100a18',X,0,W,BOT);for(let k=X+30;k<X+W-40;k+=110){F('#2a2a2a',k,FLOOR_Y-80,60,46);F('#0a3a4a',k+4,FLOOR_Y-76,52,36);for(let q=0;q<6;q++)FE('#3affff',k+6,FLOOR_Y-74+q*6,48,1,.4);F('#1a1a1a',k+10,FLOOR_Y-34,40,6)}tc(o,'PLAY ▶','#ffffff',8,X+20,30,.8)},
+ fliessband(o,X,W){const{F,FE}=o;F('#1a1a1a',X,0,W,BOT);for(let k=X;k<X+W;k+=60){F('#3a3a3a',k,60,4,FLOOR_Y-90);F('#4a4a4a',k-20,56,44,6)}F('#2a2a2a',X,FLOOR_Y-60,W,12);for(let k=X;k<X+W;k+=12)F('#4a4a4a',k,FLOOR_Y-58,6,8);for(let k=X+20;k<X+W;k+=80){F('#5a6a8a',k,FLOOR_Y-78,30,18);F('#8a8aff',k+4,FLOOR_Y-74,8,6)}tc(o,'MOTOR CITY','#8a8aff',8,X+W/2-34,30,.7)},
+ ravefield(o,X,W){const{F,FE}=o;fsky(o,X,W);const s=silC(o);for(let k=0;k<3;k++){pcircF(F,X+60+k*130,70,16,'#ffe23a');F('#1a1a1a',X+54+k*130,64,4,4);F('#1a1a1a',X+63+k*130,64,4,4);for(let q=0;q<14;q++)F('#1a1a1a',X+52+k*130+q,76+Math.round(Math.sin(q/13*Math.PI)*4),1,1)}crowdSil(o,X,W,FLOOR_Y-2,shade(s,-.2))},
+ bunkercandle(o,X,W){const{F,FE}=o;F('#141416',X,0,W,BOT);for(let yy=0;yy<FLOOR_Y;yy+=20)F('#1c1c20',X,yy,W,1);for(let k=X+20;k<X+W;k+=50){F('#e8e0c8',k,FLOOR_Y-40,4,10);FE('#ffb040',k+1,FLOOR_Y-44,2,3,1)}tc(o,'BITTE KEINE FOTOS','#e8e8e8',6,X+W/2-40,40,.5)},
+ whiteroom(o,X,W){const{F,FE}=o;F('#d8d8dc',X,0,W,BOT);F('#c8c8cc',X,FLOOR_Y-40,W,40);for(let k=X+40;k<X+W;k+=120){F('#101014',k,60,8,8);FE('#ff3a3a',k+2,62,4,4,.9)}tc(o,'KLICK','#101014',8,X+W/2-14,40,.6)},
+ webcam(o,X,W){const{F,FE}=o;F('#1a1a24',X,0,W,BOT);for(let k=0;k<Math.floor(W/70);k++)for(let q=0;q<2;q++){const bx=X+8+k*70,by=30+q*70;F('#2a2a3a',bx,by,62,52);F(['#5a4a3a','#3a4a5a','#4a3a4a'][(k+q)%3],bx+2,by+2,58,48);pcircF(F,bx+31,by+22,7,'#e8c8a8');F('#3a3a5a',bx+20,by+32,22,18);FE('#ff3a3a',bx+52,by+5,4,4,.9)}tc(o,'LIVE','#ff3a3a',8,X+W-40,12,.9)},
+ orbit(o,X,W){const{F,FE}=o;F('#06080e',X,0,W,BOT);for(let k=X+30;k<X+W-40;k+=140){F('#2a3a4a',k,40,100,70);F('#000004',k+6,46,88,58);for(let q=0;q<14;q++)FE('#ffffff',k+8+((q*37)%84),48+((q*23)%54),1,1,.9);pcircF(F,k+70,96,14,'#1a4a8a')}F('#3affff',X,FLOOR_Y-34,W,1)}
+};
+function x0ring(o,cx,cy,r,col){const{F}=o;for(let a=0;a<Math.PI*2;a+=.04)F(col,cx+Math.cos(a)*r,cy+Math.sin(a)*r*.6,3,3)}
+Object.keys(SIGP).forEach(k=>{BACKPAINT['sig_'+k]=(o,b)=>SIGP[k](o,b.x,b.w)});
+/* Signatur-Abschnitt bauen: eigener Ort + eigene Plattformen */
+function sigSeg(kind,lay){return(x,H)=>{const r=H.r,w=380;H.ground(x,w);BACK(H,x,w,'sig_'+kind);NOSPOT(H,x,x+w);if(H.th.outdoor)NOCEIL(H,x,x+w);
+ if(lay==='high'){H.plat(x+60,FLOOR_Y-56,70);H.plat(x+170,FLOOR_Y-96,70);H.plat(x+280,FLOOR_Y-56,70);H.coinArc(x+60,x+340,FLOOR_Y-120,14);H.L.vinylSpots.push({x:x+205,y:FLOOR_Y-130})}
+ else if(lay==='stage'){H.solid(x+130,FLOOR_Y-24,120,24,H.th.festival?'podium':'podium');H.zone(x+130,x+250,1.2);H.coinArc(x+140,x+240,FLOOR_Y-44,8)}
+ else{H.zone(x+40,x+w-40,1);H.coinArc(x+40,x+340,FLOOR_Y-30,12)}
+ H.spawn('walker',x+90+Math.round(r()*60));H.spawn(r()<.5?'hopper':'thrower',x+260+Math.round(r()*60));if(r()<.5)H.spawn('flyer',x+200,FLOOR_Y-140);return w}}
+const SIGOF={ibiza:['poolbar','stage'],london:['tube','high'],amsterdam:['grachten','flat'],tbilisi:['leerpool','high'],detroit:['plaza','stage'],newyork:['warehouse','high'],saopaulo:['ledwand','flat'],tokyo:['shibuya','high'],karoo:['skulptur','stage'],tempelhof:['hangarbig','high'],
+ era74:['synthlab','flat'],era77:['discofloor','stage'],era85:['vhsroom','high'],era88:['fliessband','flat'],era89:['ravefield','stage'],era90:['bunkercandle','high'],era99:['ravefield','stage'],era05:['whiteroom','flat'],era20:['webcam','high'],era2077:['orbit','high']};
+for(const th in SIGOF){XSEG[th]=Object.assign({},THEMES[th].festival?FS:{},{sig:sigSeg(SIGOF[th][0],SIGOF[th][1])})}
+['ibiza','amsterdam','detroit','karoo','tempelhof','era89','era99'].forEach(k=>{XENTRY[k]=festEntry;XARENA[k]=(AX,AW,H)=>{BACK(H,AX-40,AW+100,k==='tempelhof'?'hangar':'bigfest');NOSPOT(H,AX-40,AX+AW+60);NOCEIL(H,AX-40,AX+AW+60)}});
+XARENA.era99=(AX,AW,H)=>{BACK(H,AX-40,AW+100,'siegessaeule');NOSPOT(H,AX-40,AX+AW+60);NOCEIL(H,AX-40,AX+AW+60)};
+
+/* ---------- Bereiche & Fakten pro Level ---------- */
+const TZ=(out,z1,z2,z3,boss)=>({out:{n:out[0],f:out[1]},z:[{n:z1[0],f:z1[1],s:[]},{n:z2[0],f:z2[1],s:[]},{n:z3[0],f:z3[1],s:[]}],boss:{n:boss[0],f:boss[1]}});
+Object.assign(TOURS,{
+ ibiza:TZ(['San Rafael','Amnesia liegt mitten auf der Insel, zwischen Ibiza-Stadt und San Antonio.'],['Pool-Terrasse','Hier wird im Wasser getanzt – Badehose ist Pflicht.'],['Schaumparty','Aus Kanonen quillt Schaum über die ganze Tanzfläche.'],['Sonnenaufgang','Wenn die Sonne aufgeht, wird erst richtig gefeiert.'],['Main Room','Der Boss hat die Schaumkanone besetzt.']),
+ london:TZ(['Farringdon','Der Club liegt gegenüber dem alten Fleischmarkt Smithfield.'],['U-Bahn-Tunnel','Die Züge der Tube donnern direkt nebenan vorbei.'],['Kühlhaus','Früher hingen hier Rinderhälften – heute hängen hier Lautsprecher.'],['Room One','Hier vibriert der Boden im Bass.'],['Room One','Die Tanzfläche bebt – der Boss auch.']),
+ amsterdam:TZ(['Centraal','Am Hauptbahnhof beginnt die Partywoche.'],['Grachten','Boote, Brücken und Fahrräder – überall.'],['Alte Kirche','Manche ADE-Partys steigen in ehemaligen Kirchen.'],['Hafen','Lagerhallen am Wasser werden zu Clubs.'],['Hafen-Bühne','Die Drehorgel steht schon bereit.']),
+ tbilisi:TZ(['Dinamo-Arena','Der Club liegt direkt unter dem Fußballstadion.'],['Tribünengang','Betongänge unter den Rängen.'],['Leeres Becken','Getanzt wird da, wo früher geschwommen wurde.'],['Horoom','Der kleinere Floor – dunkel und laut.'],['Beckenboden','Ganz unten im Pool wartet der Chor.']),
+ detroit:TZ(['Riverfront','Am Ufer des Detroit River.'],['Hart Plaza','Festival zwischen Brunnen und Beton.'],['Fließband-Floor','In der Motor City läuft alles im Takt.'],['Underground Stage','Die Bühne unter der Plaza.'],['Main Stage','Der Soul-Boss ruft zur Revue.']),
+ newyork:TZ(['East River','Lagerhallen mit Blick auf Manhattan.'],['Hochbahn','Über dem Dancefloor rattert die U-Bahn.'],['Lagerhalle','Ein Lastenaufzug, zehn Boxen, kein Schlaf.'],['Rooftop','Über den Dächern von Brooklyn.'],['Rooftop-Stage','Unter der Laterne wartet das Doo-Wop-Quartett.']),
+ saopaulo:TZ(['Barra Funda','Viertel mit Lagerhäusern und Bahnlinien.'],['LED-Gang','Wände, die im Takt leuchten.'],['Main Room','Decke und Boden – alles leuchtet.'],['Dachterrasse','Über den Hochhäusern von São Paulo.'],['LED-Floor','Der Bossa-Boss dimmt das Licht.']),
+ tokyo:TZ(['Shibuya Crossing','Die berühmteste Kreuzung der Welt.'],['Rolltreppen','Hoch, runter, hoch – Tokio ist immer in Bewegung.'],['Discokugel-Floor','Über allem dreht sich die riesige Kugel.'],['Lounge','Die oberste Etage.'],['Main Floor','Das Idol hat die Bühne gekapert.']),
+ karoo:TZ(['Tankwa Karoo','Halbwüste im Westen Südafrikas.'],['Zeltstadt','Staub, Sterne und selbstgebaute Lager.'],['Skulpturenfeld','Riesige Kunstwerke aus Holz.'],['Feuerplatz','Hier brennen am Ende die Skulpturen.'],['Wüstenbühne','Der Panflöten-Boss wartet auf den Kondor.']),
+ tempelhof:TZ(['Tempelhofer Feld','Die alten Rollbahnen sind heute ein Park.'],['Rollfeld','Gepäckbänder und Gangways.'],['Abflughalle','Die riesige Halle des alten Flughafens.'],['Hangar','Das Finale der Welttournee.'],['Hangar 1','Kapitän Warteschleife hat übernommen.']),
+ era74:TZ(['Düsseldorf 1974','Am Rhein entsteht elektronische Popmusik.'],['Studio','Kabel, Regler, Tonbandmaschinen.'],['Lötwerkstatt','Hier werden Drumcomputer selbst gebaut.'],['Tonbandarchiv','Kilometerlange Bänder voller Klänge.'],['Aufnahmeraum','Der Prog-Rocker spielt sein Orgelsolo.']),
+ era77:TZ(['Manhattan 1977','Disco ist überall.'],['Garderobe','Glitzer und Schlaghosen.'],['Leuchtboden','Der Boden blinkt im Takt.'],['Galerie','Von oben sieht man die Kugel kreisen.'],['Tanzfläche','Die Disco-Diva wartet.']),
+ era85:TZ(['Chicago 1985','Unter der Hochbahn wird House geboren.'],['Hochbahn','Die Züge rattern über den Köpfen.'],['Warehouse','Ein Lagerhaus voller Tänzer.'],['Plattenladen','Hier gibt es die ersten House-Platten.'],['Warehouse-Floor','Föhnfrisur-Fabian will Synthiepop.']),
+ era88:TZ(['Detroit 1988','Leere Fabriken, große Ideen.'],['Fließband','Maschinen geben den Takt vor.'],['Fabrikhalle','Aus Stahl wird Musik.'],['Kellerstudio','Die ersten Techno-Platten entstehen.'],['Halle 3','Haarspray-Harry will Gitarrensolos.']),
+ era89:TZ(['Manchester 1989','Der zweite Sommer der Liebe.'],['Acker','Illegale Raves auf dem Feld.'],['Smiley-Zelt','Acid House überall.'],['Lagerhalle','Die Party zieht weiter.'],['Feld-Bühne','Lambada-Lola tanzt Paartanz.']),
+ era90:TZ(['Berlin 1990','Die Mauer ist offen.'],['Grenzstreifen','Wo früher Mauer war, wird jetzt getanzt.'],['Bunker','Clubs in leeren Bunkern und Kellern.'],['Kraftwerk','Die Stadt gehört der Nacht.'],['Kellerclub','Protest-Peter singt Strophe 18.']),
+ era99:TZ(['Berlin 1999','Die größte Love Parade.'],['Straße des 17. Juni','Wagen an Wagen.'],['Tiergarten','Tanzen zwischen den Bäumen.'],['Großer Stern','Rund um die Siegessäule.'],['Siegessäule','Millennium-Mandy zählt runter.']),
+ era05:TZ(['Berlin 2005','Minimal regiert die Stadt.'],['Afterhour','Sonntagmittag, keiner geht nach Hause.'],['Weißer Raum','Klick. Klack. Klick.'],['Garten','Montagmorgen – immer noch Sets.'],['Garten-Floor','Seitenscheitel-Sven ist traurig.']),
+ era20:TZ(['Wohnzimmer','Die Clubs sind geschlossen.'],['Videochat','Hundert Kacheln, hundert Tänzer.'],['Küche','Die Afterhour findet am Kühlschrank statt.'],['Balkon','Tanzen für die Nachbarn.'],['Stream-Bühne','Chillhop-Charlie lernt nebenbei.']),
+ era2077:TZ(['Andockschleuse','Willkommen an Bord.'],['Schwerelos-Gang','Hier fliegt man mehr als man läuft.'],['Gewächshaus','Pflanzen im Orbit.'],['Kuppel','Unten zieht die Erde vorbei.'],['Kommandobrücke','Die KI-Playlist hat das Schiff übernommen.'])
+});
+Object.assign(ZONES,{
+ ibiza:[ZD('zpark','#2a6a5a','#3affd8','deck','#a07a9a',true,0),ZD('zstage','#5a3a6a','#ff8a3a','deck','#8a6a9a',true,'AMNESIA'),ZD('zpark','#6a4a3a','#ffc070','sand','#c08a8a',true,0,{sand:1})],
+ london:[ZD('zconcrete','#2a2a30','#ff3a3a','concrete','#4a4a60',false,'MIND THE GAP'),ZD('zcellar','#3a2a2a','#ffffff','grate','#5a4a5a',false,'FARRINGDON'),ZD('zsteel','#2a2228','#ff3a3a','black','#4a4060',false,'ROOM ONE')],
+ amsterdam:[ZD('zriver','#2a2a3a','#ff8a1a','cobble','#6a6a8a',true,0),ZD('zhall','#4a3a3a','#ffd890','stone','#6a5a6a',false,'ADE'),ZD('zriver','#1a2a3a','#3a8aff','concrete','#5a6a8a',true,0)],
+ tbilisi:[ZD('zconcrete','#1e1e26','#8a8aff','concrete','#3a3a50',false,0),ZD('zcellar','#1a1c24','#ffffff','concrete','#30304a',false,'BASSIANI'),ZD('zsteel','#141418','#ff3a3a','black','#2a2a40',false,0)],
+ detroit:[ZD('zriver','#2a2a3a','#ffd84a','concrete','#8a7088',true,0),ZD('zstreet','#3a3a40','#3a8aff','concrete','#7a6a88',true,'HART PLAZA'),ZD('zsteel','#2a2a2a','#ff3a3a','grate','#6a5a70',false,'MOTOR CITY')],
+ newyork:[ZD('zriver','#2a2028','#ff5a3a','concrete','#5e5068',true,0),ZD('zsteel','#3a2420','#ffd84a','grate','#5a4a5a',false,'BROOKLYN'),ZD('zstreet','#2a2a3a','#3affff','concrete','#6a5a78',true,0)],
+ saopaulo:[ZD('zstreet','#1a2a2a','#3affb0','concrete','#4a5a5a',true,0),ZD('zled','#0a1414','#ff2fd6','concrete','#4a5a6a',false,'D-EDGE'),ZD('zled','#141a1a','#ffd84a','concrete','#5a6a6a',false,0)],
+ tokyo:[ZD('zstreet','#1a1024','#ff7ad8','asphalt','#5a4a6a',true,'SHIBUYA'),ZD('zled','#140a1a','#3affff','black','#5a4a78',false,0),ZD('zlounge','#2a1a2a','#ffffff','parquet','#6a5478',false,'WOMB')],
+ karoo:[ZD('zcamp','#5a3a2a','#ff8a3a','sand','#9a7a6a',true,0,{sand:1}),ZD('zpark','#6a4a2a','#ffd84a','sand','#a08070',true,0,{sand:1}),ZD('zstage','#3a1a1a','#ff3a5a','sand','#8a6a6a',true,0,{sand:1})],
+ tempelhof:[ZD('zairfield','#2a2e3a','#9ac8e8','concrete','#6a6a80',true,0),ZD('zhall','#3a3a44','#ffd84a','stone','#6a6a7a',false,'TEMPELHOF'),ZD('zsteel','#22252e','#ff3a6a','concrete','#5a5a70',false,'HANGAR')],
+ era74:[ZD('zlounge','#3a2a1a','#ff8a3a','parquet','#6a5a48',false,0),ZD('zwood','#4a3a2a','#ffd84a','boards','#6a5a48',false,'STUDIO'),ZD('zcellar','#2a1e14','#c83a3a','boards','#5a4a3a',false,0)],
+ era77:[ZD('zstreet','#2a1a2a','#ffd84a','asphalt','#7a5a6a',true,0),ZD('zlounge','#3a1a2a','#ff3ab0','parquet','#7a5a6a',false,'DISCO'),ZD('zled','#1a0a1a','#ffffff','black','#6a4a6a',false,0)],
+ era85:[ZD('zstreet','#1a1a2a','#3affff','asphalt','#5a5a78',true,0),ZD('zsteel','#2a2a3a','#ff3a8a','grate','#5a5a78',false,'WAREHOUSE'),ZD('zlounge','#2a2030','#ffffff','parquet','#5a5070',false,'HOUSE')],
+ era88:[ZD('zsteel','#2a2a2a','#8a8aff','grate','#6a6058',false,0),ZD('zconcrete','#1a1a1a','#ffd84a','concrete','#5a5048',false,'TECHNO'),ZD('zcellar','#1a1614','#8a8aff','concrete','#4a4038',false,0)],
+ era89:[ZD('zpark','#2a3a1a','#ffe23a','grass','#7a6a5a',true,0),ZD('ztent','#3a3a1a','#3aff5a','grass','#6a6a4a',true,'ACID'),ZD('zsteel','#2a2a1a','#ff3a8a','concrete','#6a5a4a',false,0)],
+ era90:[ZD('zconcrete','#1e1e20','#ff8a1a','concrete','#4a4a52',false,0),ZD('zcellar','#141416','#ffffff','concrete','#3a3a42',false,'BUNKER'),ZD('zsteel','#1a1a1c','#ff3a3a','grate','#3a3a48',false,0)],
+ era99:[ZD('zstreet','#4a4a52','#ff7ad8','asphalt','#b8b0c8',true,0),ZD('zforest','#2a4a2a','#3affd8','grass','#a8b0b8',true,0),ZD('zstreet','#4a4a52','#ffe23a','asphalt','#b8b0c8',true,'1999')],
+ era05:[ZD('zlounge','#2a2a2a','#ffffff','concrete','#6a6a6a',false,0),ZD('zconcrete','#c8c8cc','#ff3a3a','concrete','#8a8a8a',false,'MINIMAL'),ZD('zpark','#3a3a3a','#ff3a3a','deck','#7a7a7a',true,0)],
+ era20:[ZD('zlounge','#3a3040','#ff3a3a','parquet','#5a5a6a',false,0),ZD('zled','#1a1a24','#3affff','parquet','#5a5a6a',false,'LIVE'),ZD('zwood','#3a2a2a','#c8b8a8','boards','#5a5a6a',false,0)],
+ era2077:[ZD('zsteel','#1a2230','#3affff','grate','#4a5a7a',false,0),ZD('zforest','#1a3a2a','#3aff8a','grate','#4a6a6a',false,'ORBIT'),ZD('zled','#0a0a1a','#ff2fd6','grate','#4a4a7a',false,0)]
+});
+for(const t in SIGOF){const base={ibiza:'sonar',london:'tresor',amsterdam:'kater',tbilisi:'berghain',detroit:'ms',newyork:'ms',saopaulo:'timewarp',tokyo:'bootshaus',karoo:'fusion',tempelhof:'fusion',
+ era74:'rj',era77:'distillery',era85:'ms',era88:'tresor',era89:'natureone',era90:'berghain',era99:'loveparade',era05:'sisyphos',era20:'distillery',era2077:'hive'}[t];
+ KS[t]=KS[base];EVT_THEME[t]=EVT_THEME[base]||{extra:'lights',drop:'mug'}}
+Object.assign(SND,{
+ ibiza:{kick:'four',hats:'shaker',perc:'clap',swing:.1,leads:['piano','chop','strings'],bass:'off',arr:'deep'},
+ london:{kick:'rumble',hats:'ride',perc:'snare',swing:.05,leads:['dub','stab','acid'],bass:'reese',arr:'classic',hard:.6},
+ amsterdam:{kick:'four',hats:'open',perc:'clap',swing:.06,leads:['organ','arp','piano'],bass:'pump',arr:'peak'},
+ tbilisi:{kick:'hard',hats:'ride',perc:'noise',swing:0,leads:['dub','stab'],bass:'roll',arr:'deep',hard:.95},
+ detroit:{kick:'four',hats:'tick',perc:'clap',swing:.04,leads:['strings','stab','arp'],bass:'roll',arr:'classic'},
+ newyork:{kick:'soft',hats:'shaker',perc:'rim',swing:.2,leads:['piano','organ','chop'],bass:'off',arr:'deep'},
+ saopaulo:{kick:'broken',hats:'shaker',perc:'rim',swing:.14,leads:['bell','arp','chop'],bass:'octave',arr:'classic'},
+ tokyo:{kick:'hard',hats:'open',perc:'clapfill',swing:0,leads:['supersaw','arp','bell'],bass:'pump',arr:'peak',hard:.5},
+ karoo:{kick:'broken',hats:'shaker',perc:'rim',swing:.1,leads:['psy','bell'],bass:'psy',arr:'classic'},
+ tempelhof:{kick:'hard',hats:'open',perc:'snare',swing:0,leads:['hoover','supersaw','acid'],bass:'pump',arr:'peak',hard:.7,tail:1},
+ era74:{kick:'soft',hats:'tick',perc:'rim',swing:0,leads:['arp','bell'],bass:'octave',arr:'deep'},
+ era77:{kick:'four',hats:'open',perc:'clap',swing:.08,leads:['strings','piano','organ'],bass:'octave',arr:'classic'},
+ era85:{kick:'four',hats:'open',perc:'clap',swing:.12,leads:['piano','organ','strings'],bass:'off',arr:'deep'},
+ era88:{kick:'four',hats:'tick',perc:'clap',swing:.02,leads:['strings','stab','arp'],bass:'roll',arr:'classic'},
+ era89:{kick:'four',hats:'open',perc:'clapfill',swing:.04,leads:['acid','piano','acid'],bass:'roll',arr:'peak'},
+ era90:{kick:'hard',hats:'ride',perc:'noise',swing:0,leads:['acid','stab','hoover'],bass:'roll',arr:'classic',hard:.9},
+ era99:{kick:'four',hats:'open',perc:'clapfill',swing:0,leads:['supersaw','arp','hoover'],bass:'pump',arr:'peak'},
+ era05:{kick:'soft',hats:'tick',perc:'rim',swing:.16,leads:['chop','dub'],bass:'off',arr:'deep'},
+ era20:{kick:'soft',hats:'shaker',perc:'rim',swing:.2,leads:['piano','bell','chop'],bass:'off',arr:'deep'},
+ era2077:{kick:'rumble',hats:'ride',perc:'noise',swing:0,leads:['psy','hoover','supersaw'],bass:'reese',arr:'peak',hard:.85,tail:1}
+});
+/* Spielregeln: Karte 3 immer mit Jetlag, Karte 4 mit Zeit-Filter */
+Object.assign(GIM,{ibiza:['jetlag','swim'],london:['jetlag','train'],amsterdam:['jetlag','ice'],tbilisi:['jetlag','dark'],detroit:['jetlag','escal'],newyork:['jetlag','train','timer'],saopaulo:['jetlag','hot','chase'],tokyo:['jetlag','escal','chase'],karoo:['jetlag','gust','timer'],tempelhof:['jetlag','escal','chase','gust'],
+ era74:['timer'],era77:['hot','ice'],era85:['train','gust'],era88:['escal','timer'],era89:['chase','mud'],era90:['dark','ice'],era99:['chase','hot'],era05:['lowg','timer'],era20:['lag','hot'],era2077:['gpulse','chase','hot']});
+const ERAFX={era74:'bit8',era77:'film',era85:'vhs',era88:'sepia',era89:'acid',era90:'bw',era99:'y2k',era05:'mono',era20:'webcam',era2077:'holo'};
+/* Baupläne der neuen Level */
+const BPX={
+ ibiza:[['sig','bounce','u_split','bar','secret','dance'],['duel','press','u_cat','swing','dance'],['stacks','duel','jets','u_lift','combo','sp']],
+ london:[['sig','gate','u_tower','roll'],['bar','duel','press','u_stairs','laser'],['mosh','duel','sp','u_lift','combo','climb']],
+ amsterdam:[['bar','u_cat','bounce','crumble'],['sig','duel','swing','u_cat','wind'],['truss','duel','u_split','combo','sp']],
+ tbilisi:[['stairs','gate','press','sig'],['laser','duel','u_lift','crumble','vent'],['duel','sp','u_tower','combo','climb','secret']],
+ detroit:[['sig','roll','u_stairs','rain'],['truss','duel','press','u_tower','jets'],['bar','duel','combo','u_split','sp','climb']],
+ newyork:[['bar','u_stairs','gate','roll'],['sig','duel','u_tower','press','wind'],['duel','u_lift','sp','combo','secret','swing']],
+ saopaulo:[['sig','laser','bounce','secret','u_split'],['duel','jets','u_stairs','press'],['bar','duel','u_lift','combo','sp','climb']],
+ tokyo:[['sig','u_tower','gate'],['dance','duel','u_stairs','swing','press'],['bar','duel','u_lift','combo','sp','climb']],
+ karoo:[['camp','u_split','wind','crumble'],['sig','duel','jets','u_cat','rain'],['fstage','duel','combo','u_tower','sp','secret']],
+ tempelhof:[['airport','u_split','roll','wind'],['sig','duel','u_stairs','press','gate'],['hangar','duel','u_tower','combo','secret','sp','u_cat','climb']],
+ era74:[['sig','roll','u_stairs'],['bar','duel','press','u_lift','gate'],['duel','u_tower','sp','combo','climb']],
+ era77:[['bar','u_split','bounce'],['sig','duel','swing','u_stairs','rain'],['dance','duel','u_lift','combo','sp']],
+ era85:[['sig','u_tower','gate','roll'],['bar','duel','u_lift','press'],['dance','duel','sp','u_split','combo','secret']],
+ era88:[['sig','press','u_stairs','roll'],['truss','duel','u_tower','gate','jets'],['duel','u_lift','combo','sp','climb']],
+ era89:[['camp','u_split','rain','crumble'],['sig','duel','u_cat','jets','wind'],['fstage','duel','u_tower','combo','sp']],
+ era90:[['stairs','sig','gate','u_lift'],['laser','duel','u_tower','press','crumble'],['bar','duel','sp','u_stairs','combo','climb','secret']],
+ era99:[['kudamm','u_split','bounce','roll'],['float','duel','parade','u_cat','jets'],['stern','duel','u_tower','combo','sp']],
+ era05:[['sig','u_stairs','gate','roll'],['bar','duel','u_lift','swing','press'],['dance','duel','u_cat','sp','combo','climb']],
+ era20:[['sig','u_split','bounce'],['bar','duel','u_stairs','press','gate'],['dance','duel','u_tower','sp','combo','secret']],
+ era2077:[['sig','u_tower','jets','wind'],['laser','duel','u_cat','sp','crumble'],['truss','duel','u_lift','combo','u_split','climb','sp']]
+};
 
 /* =====================================================================
    LEVELAUFBAU PRO CLUB: eigene Baupläne + verschiedene Wege nach oben
@@ -5648,6 +6171,7 @@ const BP={
  hive:[['messe','gate','press','u_stairs'],['mhall','laser','duel','sp','u_lift','jets'],['ledtunnel','duel','secret','combo','wind','climb']],
  sonar:[['turf','bounce','u_split','rain'],['sonard','duel','u_stairs','gate','crumble'],['mhall','laser','duel','u_lift','sp','combo']],
  tml:[['swing','bounce','u_split','rain'],['tree','u_tower','lake','duel','wind'],['fstage','duel','u_cat','sp','climb','combo']]};
+if(typeof BPX!=='undefined')Object.assign(BP,BPX);
 const STRUCT_FIRST={};
 function applyBlueprint(th){const bp=BP[th],li=LEVELS.findIndex(l=>l.theme===th);if(!bp||li<0||!TOURS[th])return;
  const unl=INTRO.slice(0,Math.min(li+1,INTRO.length)),XS=XSEGS(th);
@@ -5661,6 +6185,63 @@ function XSEGS(th){return (typeof XSEG!=='undefined'&&XSEG[th])||{}}
 // erstes Auftreten jeder Oben-Art (für Hinweise)
 {const seen=new Set();LEVELS.forEach((l,i)=>{const bp=BP[l.theme];if(!bp)return;for(const z of bp)for(const t of z)if(UPPER.includes(t)&&!seen.has(t)){seen.add(t);(STRUCT_FIRST[l.theme]=STRUCT_FIRST[l.theme]||new Set()).add(t)}})}
 for(const th in BP)applyBlueprint(th);
+
+/* =====================================================================
+   KARTE 3 + 4 IM TOURPLAN: Weltkarte und Zeitstrahl, Finale-Bildschirme
+   ===================================================================== */
+const WGEO={lon0:-128,lon1:152,lat0:-46,lat1:66,W:160,H:80};
+const wgeoP=(lo,la)=>[(lo-WGEO.lon0)/(WGEO.lon1-WGEO.lon0)*WGEO.W,(WGEO.lat1-la)/(WGEO.lat1-WGEO.lat0)*WGEO.H];
+const CONT=[
+ [[-168,66],[-140,70],[-95,72],[-80,62],[-65,60],[-55,50],[-70,43],[-76,35],[-81,25],[-97,26],[-105,20],[-90,15],[-83,9],[-79,8],[-92,15],[-105,22],[-115,30],[-124,40],[-125,49],[-135,58],[-150,60],[-165,60]],
+ [[-80,8],[-60,10],[-50,0],[-35,-7],[-40,-22],[-50,-30],[-58,-38],[-68,-52],[-75,-50],[-72,-30],[-70,-18],[-80,-5]],
+ [[-10,36],[-9,43],[-2,44],[-5,48],[0,50],[4,52],[8,54],[10,58],[5,62],[15,69],[28,71],[40,67],[45,60],[40,50],[30,46],[28,41],[22,37],[15,40],[12,44],[8,44],[3,42]],
+ [[-5,50],[1,51],[2,53],[-1,55],[-3,58],[-6,58],[-5,54],[-3,53]],
+ [[-17,21],[-10,30],[-6,36],[10,37],[20,32],[32,31],[34,28],[43,12],[51,12],[40,-2],[40,-15],[35,-25],[20,-35],[17,-29],[12,-17],[13,-5],[9,4],[-8,5],[-15,11]],
+ [[28,41],[40,42],[48,30],[58,24],[66,25],[73,18],[78,8],[88,22],[95,16],[100,10],[105,2],[110,20],[122,30],[122,40],[130,43],[142,52],[160,60],[180,66],[140,72],[100,77],[70,73],[60,68],[45,60],[40,50],[30,46]],
+ [[130,31],[135,34],[140,35],[142,40],[141,45],[139,38],[133,34]],
+ [[114,-22],[122,-18],[130,-12],[137,-12],[142,-11],[146,-19],[153,-26],[150,-37],[140,-38],[130,-32],[115,-34]]];
+const WNUDGE={20:[0,4],21:[-6,2],22:[-2,-7],23:[0,0],24:[-4,-6],25:[3,6],26:[0,0],27:[-3,0],28:[0,0],29:[6,4]};
+/* Zeitstrahl: zehn Stationen im Zickzack */
+const TLPOS=[[9,72],[18,38],[28,66],[37,32],[47,62],[56,30],[65,60],[74,28],[83,58],[92,30]];
+{const _gn=geoNode;geoNode=function(k){if(k<20)return _gn(k);const m=mapOf(k);
+ if(m===3){const q=TLPOS[k-30];return{gx:q[0],gy:q[1],x:q[0],y:q[1],nx:0,ny:0,edge:''}}
+ const L=LEVELS[k],[px,py]=wgeoP(L.geo[0],L.geo[1]),gx=px/WGEO.W*100,gy=py/WGEO.H*100,n=WNUDGE[k]||[0,0];
+ return{gx,gy,x:clamp(gx+n[0],4,96),y:clamp(gy+n[1],5,94),nx:n[0],ny:n[1],edge:''}}}
+const MAPPAL3={a:'#3a2a14',b:'#4a3418',edge:'#ffb03a',edge2:'#8a5a1a',hi:'#3affff'};
+{const _pm=pixelMapURL;pixelMapURL=function(hi,map){const m=hi>=0?mapOf(hi):map;if(m<2)return _pm(hi,map);const key='w'+hi+'|'+m;if(_pmCache[key])return _pmCache[key];
+ const S=2,W=WGEO.W*S,H=WGEO.H*S,c=mk(W,H),x=g2(c);
+ if(m===2){x.fillStyle='#000';CONT.forEach(poly=>{x.beginPath();poly.forEach((q,k)=>{const[px,py]=wgeoP(q[0],q[1]);k?x.lineTo(px*S,py*S):x.moveTo(px*S,py*S)});x.closePath();x.fill()});
+  const id=x.getImageData(0,0,W,H),d=id.data,inside=new Uint8Array(W*H);for(let k=0;k<W*H;k++)inside[k]=d[k*4+3]>110?1:0;const out=x.createImageData(W,H),o=out.data,P=MAPPAL3;
+  const set=(k,cc,a)=>{const[r,g,b]=hexRgb(cc);o[k*4]=r;o[k*4+1]=g;o[k*4+2]=b;o[k*4+3]=a};
+  for(let yy=0;yy<H;yy++)for(let xx=0;xx<W;xx++){const k=yy*W+xx;if(!inside[k]){if((xx+yy)%9===0)set(k,'#1a3a5a',90);continue}
+   const edge=!inside[k-1]||!inside[k+1]||!inside[k-W]||!inside[k+W];set(k,edge?P.edge:((xx>>2)+(yy>>2))%2?P.a:P.b,255)}
+  x.putImageData(out,0,0);
+  // Flugrouten-Bögen
+  x.strokeStyle='rgba(255,176,58,.35)';x.lineWidth=1;x.setLineDash([3,3]);for(let k=20;k<29;k++){const[a,b]=wgeoP(LEVELS[k].geo[0],LEVELS[k].geo[1]),[c2,d2]=wgeoP(LEVELS[k+1].geo[0],LEVELS[k+1].geo[1]);x.beginPath();x.moveTo(a*S,b*S);x.quadraticCurveTo((a+c2)/2*S,Math.min(b,d2)*S-18,c2*S,d2*S);x.stroke()}x.setLineDash([]);
+  if(hi>=0){const[px,py]=wgeoP(LEVELS[hi].geo[0],LEVELS[hi].geo[1]);x.fillStyle='rgba(58,255,255,.35)';x.fillRect(px*S-6,py*S-6,13,13);x.fillStyle='#0a0614';x.fillRect(px*S-4,py*S-4,9,9);x.fillStyle=P.hi;x.fillRect(px*S-3,py*S-3,7,7);x.fillStyle='#fff';x.fillRect(px*S-1,py*S-1,3,3)}}
+ else{// Zeitstrahl: Zeittunnel mit Ringen und Jahresmarken
+  const g=x.createRadialGradient(W/2,H/2,4,W/2,H/2,W/1.6);g.addColorStop(0,'#3a1a5a');g.addColorStop(1,'#08040e');x.fillStyle=g;x.fillRect(0,0,W,H);
+  for(let k=1;k<14;k++){x.strokeStyle=k%2?'rgba(200,168,255,.25)':'rgba(58,255,216,.18)';x.lineWidth=S;x.beginPath();x.ellipse(W/2,H/2,k*14,k*7,0,0,7);x.stroke()}
+  for(let k=0;k<24;k++){const a=k/24*Math.PI*2;x.strokeStyle='rgba(200,168,255,.12)';x.beginPath();x.moveTo(W/2,H/2);x.lineTo(W/2+Math.cos(a)*W,H/2+Math.sin(a)*H);x.stroke()}
+  for(let k=0;k<120;k++){x.fillStyle=`rgba(255,255,255,${.2+((k*37)%60)/100})`;x.fillRect((k*53)%W,(k*29)%H,S/2+1,S/2+1)}
+  x.strokeStyle='rgba(58,255,216,.5)';x.lineWidth=S;x.beginPath();TLPOS.forEach((q,k)=>{const px=q[0]/100*W,py=q[1]/100*H;k?x.lineTo(px,py):x.moveTo(px,py)});x.stroke();
+  if(hi>=30){const q=TLPOS[hi-30],px=q[0]/100*W,py=q[1]/100*H;x.fillStyle='rgba(200,168,255,.5)';x.fillRect(px-7,py-7,15,15);x.fillStyle='#ffffff';x.fillRect(px-3,py-3,7,7)}}
+ return _pmCache[key]=c.toDataURL()}}
+
+/* ---------- Finale-Bildschirme ---------- */
+{const _be=UI.b_pEnding.bind(UI);UI.b_pEnding=function(){const f=this.res&&this.res.finale;
+ if(f===3){$('#pEnding').innerHTML=`<div class="card box" style="max-width:min(44em,94vw)"><span class="lab">Tempelhof · Hangar 1 · 06:30 Uhr</span><h2 style="font-size:2.6em">Die Welt tanzt wieder.</h2>
+   <p style="margin:0;line-height:1.5">Kapitän Warteschleife hat die Durchsage abgeschaltet, Idol Kirakira hat einen Lichtstab im Takt und Panflöten-Pedro spielt jetzt Acid. Von Ibiza bis Tokio gehört der Bass wieder der Tanzfläche.</p>
+   <p style="margin:0;line-height:1.5">Doch im Hangar steht eine seltsame Maschine. Auf dem Display blinkt: <b>1974</b> …</p>
+   <div class="rew"><div class="o">Neue Karte: Zeitreise – von 1974 bis 2077</div><div class="o">Freie Levelwahl auf der Welttournee</div><div>Neue Outfits aus zehn Städten</div></div>
+   <div class="brow"><button class="btn" data-act="play" data-focus><div>Zeitreise starten<small>1974 · Düsseldorf</small></div></button><button class="btn ghost" data-act="tour"><div>Tourplan</div></button><button class="btn ghost" data-act="menu"><div>Hauptmenü</div></button></div></div>`;return}
+ if(f===4){$('#pEnding').innerHTML=`<div class="card box" style="max-width:min(44em,94vw)"><span class="lab">Raumstation · 2077 · Bordzeit 04:04</span><h2 style="font-size:2.6em">Techno ist zeitlos.</h2>
+   <p style="margin:0;line-height:1.5">Die KI-Playlist hat aufgehört zu rechnen und angefangen zu tanzen. Von den ersten Drumcomputern bis in den Orbit: Jede Epoche hat ihren Beat zurück.</p>
+   <p style="margin:0;line-height:1.5">König Kommerz schickt eine Postkarte aus dem Ruhestand: „Hätte ich gewusst, wie gut das klingt …“</p>
+   <div class="rew"><div class="o">Alle 40 Level frei wählbar</div><div class="o">Sammle alle ${NLV*3} Gold-Vinyls</div><div>Remix-Modus für jedes Level</div></div>
+   <p class="hint" style="text-transform:none;letter-spacing:.04em">Fan-Projekt. Clubs, Festivals und Epochen sind echte Orte und Zeiten – Bosse und Szenen sind frei erfunden.</p>
+   <div class="brow"><button class="btn" data-act="tour" data-focus><div>Tour · freie Wahl</div></button><button class="btn ghost" data-act="menu"><div>Hauptmenü</div></button></div></div>`;return}
+ _be();if(f===2){const r=$('#pEnding .rew');if(r)r.insertAdjacentHTML('afterbegin','<div class="o">Neue Karte: Welttournee – 10 legendäre Orte weltweit</div>');const b=$('#pEnding .brow');if(b)b.insertAdjacentHTML('afterbegin','<button class="btn" data-act="play"><div>Welttournee starten<small>Ibiza</small></div></button>')}}}
 
 /* ================= INPUT ================= */
 const KEYMAP={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',ArrowDown:'down',KeyS:'down',ArrowUp:'jump',KeyW:'jump',Space:'jump',
@@ -5756,7 +6337,7 @@ async function boot(){
 }
 /* Testhaken (Konsole) */
 window.KN={G,SAVE:()=>SAVE,start:i=>startLevel(i),boss(){const A=G.level.arena;G.player.x=A.x+60;G.player.y=FLOOR_Y-22},win(){if(G.boss&&G.boss.state==='fight')hitBoss(99999,G.boss.x,G.boss.y,true)},god(v){G.god=v!==false},
- unlockAll(n){n=n||NLV;for(let k=0;k<n;k++)SAVE.completed[k]=true;SAVE.gameDone=n>=10;SAVE.gameDone2=n>=NLV;SAVE.earned=Math.max(SAVE.earned,3*Math.min(n,10));persist()}};
+ unlockAll(n){n=n||NLV;for(let k=0;k<n;k++)SAVE.completed[k]=true;SAVE.gameDone=n>=10;SAVE.gameDone2=n>=20;SAVE.gameDone3=n>=30;SAVE.gameDone4=n>=40;SAVE.earned=Math.max(SAVE.earned,3*Math.min(n,10));persist()}};
 boot();
 
 </script>
