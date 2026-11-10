@@ -790,7 +790,17 @@ const SKILLS=[
  {id:'g6',br:'groove',name:'Turbo-Dash',desc:'Dash-Abklingzeit halbiert.',cost:2,req:['g5'],pos:[1,4],map2:true},
  {id:'g7',br:'groove',name:'Schwebeflug',desc:'Sprungtaste in der Luft halten: langsam herabgleiten.',cost:3,req:['g4'],pos:[3,4],map2:true},
  {id:'v6',br:'vibe',name:'Zweite Luft',desc:'+1 maximale Energie.',cost:3,req:['v2'],pos:[1,3],map2:true},
- {id:'v7',br:'vibe',name:'Ersthelfer',desc:'Wasser heilt 2 Energie, Checkpoints heilen komplett.',cost:2,req:['v5'],pos:[2,5],map2:true}
+ {id:'v7',br:'vibe',name:'Ersthelfer',desc:'Wasser heilt 2 Energie, Checkpoints heilen komplett.',cost:2,req:['v5'],pos:[2,5],map2:true},
+ /* Welttournee-Skills */
+ {id:'b8',br:'bass',name:'Subwoofer',desc:'+15 % Schaden gegen alle normalen Gegner.',cost:3,req:['b6'],pos:[1,6],map3:true},
+ {id:'g8',br:'groove',name:'Seepferdchen',desc:'Im Pool schwimmst du fast so schnell, wie du läufst, und paddelst kräftiger.',cost:2,req:['g6'],pos:[1,5],map3:true},
+ {id:'g9',br:'groove',name:'Bahnsurfer',desc:'Fließbänder schieben nur halb so stark, und ein Zug wirft dich nur hoch, ohne Energie zu kosten.',cost:3,req:['g7'],pos:[3,5],map3:true},
+ {id:'v8',br:'vibe',name:'Weltenbummler',desc:'Jetlag und Lag verzögern deine Eingaben nur noch halb so stark.',cost:2,req:['v7'],pos:[1,6],map3:true},
+ /* Zeitreise-Skills */
+ {id:'b9',br:'bass',name:'Headliner',desc:'+20 % Schaden gegen Endgegner.',cost:4,req:['b7'],pos:[3,6],map4:true},
+ {id:'g10',br:'groove',name:'Antigrav-Sohlen',desc:'Glatteis, Schlamm und Schwerkraft-Wechsel bremsen dich deutlich weniger.',cost:3,req:['g8'],pos:[2,6],map4:true},
+ {id:'v9',br:'vibe',name:'Zeitgefühl',desc:'Sperrstunde: +30 Sekunden, Wecker geben mehr Zeit. Taktgefühl-Spiele verzeihen mehr.',cost:2,req:['v7'],pos:[3,6],map4:true},
+ {id:'v10',br:'vibe',name:'Dritte Luft',desc:'+1 maximale Energie.',cost:4,req:['v8'],pos:[2,7],map4:true}
 ];
 
 /* ================= OUTFITS ================= */
@@ -867,6 +877,8 @@ const MAPINFO=[
  {tab:'Festivals',unit:'Festivals',title:'FESTIVAL-SAISON',sub:'10 Festivals · Deutschland & Europa',play:'Festival-Saison',enter:'Festival betreten',fin:'Tomorrowland',col:'#3affd8',col2:'#ffe23a',lock:'Erst alle 10 Clubs retten – dann öffnet die Festival-Saison.'},
  {tab:'Welttournee',unit:'Städte',title:'WELTTOURNEE',sub:'10 legendäre Orte · weltweit',play:'Welttournee',enter:'Abflug',fin:'Tempelhof',col:'#ffb03a',col2:'#3affff',lock:'Erst alle 10 Festivals befreien – dann geht die Welttournee los.'},
  {tab:'Zeitreise',unit:'Epochen',title:'ZEITREISE',sub:'1974 bis 2077 · die Geschichte der Elektronik',play:'Zeitreise',enter:'Zeitsprung',fin:'2077',col:'#c8a8ff',col2:'#3affd8',lock:'Erst die Welttournee beenden – dann öffnet sich die Zeitmaschine.'}];
+function skillLocked(n){return!!((n.map2&&!SAVE.gameDone)||(n.map3&&!SAVE.gameDone2)||(n.map4&&!SAVE.gameDone3))}
+function skillLockName(n){return n.map4?'Zeitreise':n.map3?'Welttournee':'Festival'}
 const NMAPS=4,mapOf=i=>Math.min(NMAPS-1,Math.floor(i/10));
 function mapDone(m){return!![SAVE.gameDone,SAVE.gameDone2,SAVE.gameDone3,SAVE.gameDone4][m]}
 function mapUnlocked(m){return m===0||mapDone(m-1)}
@@ -3827,7 +3839,7 @@ function popup(x,y,text,col,big){G.pops.push({x,y,text,col:col||'#ffffff',t:0,li
 function bubble(who,text,dur){G.bubbles=G.bubbles.filter(b=>b.who!==who);G.bubbles.push({who,text,t:dur||2.6})}
 /* ---------- Spieler ---------- */
 function makePlayer(x,y,keep){
- const maxHp=5+(hasSkill('v1')?1:0)+(hasSkill('v3')?1:0)+(hasSkill('v6')?1:0);
+ const maxHp=5+(hasSkill('v1')?1:0)+(hasSkill('v3')?1:0)+(hasSkill('v6')?1:0)+(hasSkill('v10')?1:0);
  const p={x,y,w:10,h:22,vx:0,vy:0,facing:1,onGround:false,ground:null,jumps:0,hp:maxHp,maxHp,inv:1,cool:0,wi:0,ammo:{note:120,wave:50,cd:20,vinyl:6,kick:12,laser:100},heat:0,overheat:false,drop:0,
   dashT:0,dashCd:0,dashDir:1,airDash:true,shield:hasSkill('v4')?1:0,shieldT:0,revived:false,anim:'idle',t:0,dead:false,deadT:0,coyote:0,jumpBuf:0,dropping:0,stomping:false,
   aim:0,aimIdx:0,shootT:0,lastSafe:{x,y},safeT:0,laser:null,laserTick:0,look:playerLook(),stepT:0};
@@ -4754,16 +4766,16 @@ const UI={
    <button class="btn" data-act="enter" data-i="${i}" ${play?'':'disabled'}><div>${SAVE.completed[i]?'Nochmal feiern':MAPINFO[mapOf(i)].enter}<small>${play?'Los geht’s':'Noch nicht verfügbar'}</small></div></button>`;
  },
  /* ---------- Skilltree ---------- */
- canBuy(n){return!hasSkill(n.id)&&(!n.map2||SAVE.gameDone)&&n.req.every(hasSkill)&&pointsFree()>=n.cost},
+ canBuy(n){return!hasSkill(n.id)&&!skillLocked(n)&&n.req.every(hasSkill)&&pointsFree()>=n.cost},
  b_pSkills(){
   const pts=pointsFree();this.armed=null;
-  const X=[0,17,50,83],Y=[0,8,25,42,59,76,92];
+  const X=[0,17,50,83],Y=[0,6,19,32,45,58,71,84];
   $('#pSkills').innerHTML=`<div class="subhead"><button class="btn ghost" data-act="back">◂ Zurück</button><h2>Skilltree</h2><span class="spacer"></span><span class="pill">Freie Punkte <b>${pts}</b></span><button class="btn ghost" data-act="skreset"><div>Zurücksetzen</div></button></div>
   <div class="trees">${BRANCHES.map(br=>{const ns=SKILLS.filter(s=>s.br===br.id);
    const lines=ns.flatMap(n=>n.req.map(r=>{const a=skillById(r);const on=hasSkill(r)&&hasSkill(n.id);return`<line x1="${X[a.pos[0]]}" y1="${Y[a.pos[1]]}" x2="${X[n.pos[0]]}" y2="${Y[n.pos[1]]}" stroke="${on?br.col:'rgba(190,160,255,.3)'}" stroke-width="${on?3:2}" vector-effect="non-scaling-stroke" ${on?'':'stroke-dasharray="3 3"'}/>`})).join('');
    return`<div class="tree card" style="--bc:${br.col}"><span class="lab" style="color:${br.col}">${esc(br.sub)}</span><h3>${esc(br.name)}</h3><div class="tgrid"><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${lines}</svg>
     ${ns.map(n=>{const own=hasSkill(n.id),can=this.canBuy(n),lock=!own&&!n.req.every(hasSkill);return`<button class="sk ${own?'own':can?'can':lock?'lock':''}" style="left:${X[n.pos[0]]}%;top:${Y[n.pos[1]]}%" data-act="sk" data-id="${n.id}">${esc(n.name)}<span class="c">${own?'✓ aktiv':n.cost+' P'}</span></button>`}).join('')}</div></div>`}).join('')}</div>
-  <div class="skdesc card" id="skdesc"><span>Wähle einen Skill. Skillpunkte gibt es für jeden besiegten Endgegner (Clubs +2, Festivals +3) und für alle drei Gold-Vinyls eines Levels (+1). Die untersten Skills schaltet die Festival-Karte frei.</span></div>`;
+  <div class="skdesc card" id="skdesc"><span>Wähle einen Skill. Skillpunkte gibt es für jeden besiegten Endgegner (Clubs +2, Festivals und Welttournee +3, Zeitreise +4) und für alle drei Gold-Vinyls eines Levels (+1). Die unteren Skills schalten die Festival-Karte, die Welttournee und die Zeitreise frei.</span></div>`;
  },
  skInfo(id){const n=skillById(id),b=$('#skdesc');if(!n||!b)return;const own=hasSkill(id),can=this.canBuy(n);
   const reqTxt=n.req.length?'Benötigt: '+n.req.map(r=>skillById(r).name).join(' + '):'';
@@ -5114,8 +5126,8 @@ UI.b_pArchiv=function(){const t=this.archTab||'flyer',nA=Object.keys(SAVE.ach).l
 /* Schwebeflug */
 {const _up=updatePlayer;updatePlayer=function(dt){_up(dt);const p=G.player;if(p&&!p.dead&&hasSkill('g7')&&!p.onGround&&p.vy>40&&(IN.act('jump')||IN.padJump)){p.vy=40;if(Math.random()<.3)part({x:p.x+5,y:p.y+20,vx:(Math.random()-.5)*30,vy:20,g:0,life:.3,col:p.look.glow,s:1,em:true})}}}
 /* Skilltree: Hinweis auf Festival-Skills */
-{const _sk=UI.b_pSkills.bind(UI);UI.b_pSkills=function(){_sk();document.querySelectorAll('.sk').forEach(b=>{const n=skillById(b.dataset.id);if(n&&n.map2&&!SAVE.gameDone){b.classList.add('lock');b.querySelector('.c').textContent='🔒 Festival'}})}}
-{const _si=UI.skInfo.bind(UI);UI.skInfo=function(id){_si(id);const n=skillById(id),b=$('#skdesc');if(n&&n.map2&&!SAVE.gameDone&&b)b.insertAdjacentHTML('beforeend','<span class="pill">Erst mit der Festival-Karte verfügbar</span>')}}
+{const _sk=UI.b_pSkills.bind(UI);UI.b_pSkills=function(){_sk();document.querySelectorAll('.sk').forEach(b=>{const n=skillById(b.dataset.id);if(n&&skillLocked(n)){b.classList.add('lock');b.querySelector('.c').textContent='🔒 '+skillLockName(n)}})}}
+{const _si=UI.skInfo.bind(UI);UI.skInfo=function(id){_si(id);const n=skillById(id),b=$('#skdesc');if(n&&skillLocked(n)&&b)b.insertAdjacentHTML('beforeend','<span class="pill">Erst mit der Karte „'+skillLockName(n)+'“ verfügbar</span>')}}
 
 /* =====================================================================
    TECHNOID – Logo „Vinyl-O“ (animiert) für Startbildschirm und Menü
@@ -5455,7 +5467,7 @@ function miniFinish(won){miniStop();MG.won=won;MG.phase='end';AU.sfx(won?'vinylG
 function miniEnd(){miniStop();const b=G.boss,p=G.player;UI.hideAll();AU.muffle(false);UI.showTouch(true);G.state='play';IN.clear();
  G.mixCD=MG.won?MINI_CD_WIN:MINI_CD_LOSE;p.inv=Math.max(p.inv,1.4);p.vy=-120;
  if(b&&b.state==='fight'){if(MG.won){const d=b.maxHp*MINI_DMG;popup(b.x+b.w/2,b.y-14,'−2 BALKEN!','#3aff9a',true);G.flash=.35;addShake(8);bubble(b,pick(MINI_WIN),2.4);
-   SAVE.st.minis=(SAVE.st.minis||0)+1;hitBoss(d,b.x+b.w/2,b.y+b.h/2,true);persist()}
+   SAVE.st.minis=(SAVE.st.minis||0)+1;G.miniHit=true;hitBoss(d,b.x+b.w/2,b.y+b.h/2,true);G.miniHit=false;persist()}
   else bubble(b,pick(MINI_LOSE),2.2)}}
 
 /* Spiel A: Beat-Match – im grünen Bereich drücken (5 Runden, 3 Treffer nötig) */
@@ -5554,7 +5566,7 @@ const MB={type:'',phase:'intro',me:0,op:0,msg:'',cb:null,name:'',lab:'',col:'#ff
  n.mg=MBTYPES[(L.i+k*2)%MBTYPES.length];if(k>0)n.name=DUELERS[(L.i+7+k)%DUELERS.length];return w}}
 for(const th in TOURS){const li=LEVELS.findIndex(l=>l.theme===th),z=TOURS[th].z[2];if(li>=10&&z&&!z.s.includes('duel'))z.s.splice(Math.min(3,z.s.length),0,'duel')}
 {const _sd=startDuel;startDuel=function(n){if(!n.mg||n.mg==='wort')return _sd(n);
- const g=GENRES[LEVELS[G.li].genre];startMB(n.mg,{name:n.name,lab:'Zwischenboss · '+g.label,col:g.color,cb:won=>{DU.n=n;DU.phase=won?'won':'lost';DU.reply='';duelEnd()}})}}
+ const g=GENRES[LEVELS[G.li].genre];DU.n=n;startMB(n.mg,{name:n.name,lab:'Zwischenboss · '+g.label,col:g.color,cb:won=>{DU.n=n;DU.phase=won?'won':'lost';DU.reply='';duelEnd()}})}}
 {const _ue=duelEnd;duelEnd=function(){_ue();MB.type=''}}
 
 function startMB(type,o){G.state='duel';IN.clear();UI.showTouch(false);AU.muffle(true);AU.sfx('horn');mbStop();
@@ -5566,15 +5578,15 @@ const hard=()=>G.li>=10;
 
 /* --- Quiz: zuerst 3 richtige gewinnt, 3 falsche verliert --- */
 function quizNext(){const free=QUIZ.map((_,k)=>k).filter(k=>!(MB.used||[]).includes(k));MB.used=MB.used||[];const k=free[Math.floor(Math.random()*free.length)];MB.used.push(k);
- MB.q=k;MB.opts=[1,2,3].sort(()=>Math.random()-.5);MB.phase='play';MB.msg='';MB.left=hard()?9:12;MB.last=performance.now();UI.b_pMB();
- const tick=now=>{MB.left-=(now-MB.last)/1000;MB.last=now;const el=$('#mbTime');if(el)el.style.width=Math.max(0,MB.left/(hard()?9:12)*100)+'%';if(MB.left<=0){quizPick(-1);return}if(MB.phase==='play')MB.raf=requestAnimationFrame(tick)};MB.raf=requestAnimationFrame(tick)}
+ MB.q=k;MB.opts=[1,2,3].sort(()=>Math.random()-.5);MB.phase='play';MB.msg='';MB.left=(hard()?9:12)*(hasSkill('v9')?1.25:1);MB.lmax=MB.left;MB.last=performance.now();UI.b_pMB();
+ const tick=now=>{MB.left-=(now-MB.last)/1000;MB.last=now;const el=$('#mbTime');if(el)el.style.width=Math.max(0,MB.left/MB.lmax*100)+'%';if(MB.left<=0){quizPick(-1);return}if(MB.phase==='play')MB.raf=requestAnimationFrame(tick)};MB.raf=requestAnimationFrame(tick)}
 function quizPick(j){if(MB.phase!=='play')return;mbStop();const ok=j>=0&&MB.opts[j]===1;if(ok){MB.me++;AU.sfx('vinylGet');MB.msg=pick(['Richtig! Der Türsteher nickt widerwillig.','Stimmt. Hmpf. Woher weißt du das?','Korrekt – du darfst weiter mitreden.'])}
  else{MB.op++;AU.sfx('hurt');MB.msg=(j<0?'Zu langsam! ':'Falsch! ')+'Richtig wäre: „'+QUIZ[MB.q][1]+'“'}
  if(MB.me>=3)return mbFinish(true);if(MB.op>=3)return mbFinish(false);MB.phase='res';UI.b_pMB()}
 
 /* --- Tanz-Battle: Pfeilfolge in der Zeit nachtanzen, 2 von 3 Runden --- */
 function tanzRound(){const r=MB.me+MB.op,len=4+r+(hard()?2:0)+Math.floor(G.li/7);MB.seq=Array.from({length:len},()=>Math.floor(Math.random()*4));MB.pos=0;MB.phase='play';
- MB.tot=len*(hard()?.62:.8);MB.left=MB.tot;MB.last=performance.now();MB.msg=MB.name+' tanzt vor – du tanzt nach!';UI.b_pMB();
+ MB.tot=len*(hard()?.62:.8)*(hasSkill('v9')?1.25:1);MB.left=MB.tot;MB.last=performance.now();MB.msg=MB.name+' tanzt vor – du tanzt nach!';UI.b_pMB();
  const tick=now=>{MB.left-=(now-MB.last)/1000;MB.last=now;const el=$('#mbTime');if(el)el.style.width=Math.max(0,MB.left/MB.tot*100)+'%';if(MB.left<=0){tanzLose('Zu langsam!');return}if(MB.phase==='play')MB.raf=requestAnimationFrame(tick)};MB.raf=requestAnimationFrame(tick)}
 function tanzHit(d){if(MB.phase!=='play')return;if(MB.seq[MB.pos]===d){MB.pos++;AU.sfx(['kickgun','note','laser','wave'][d]);const el=document.querySelectorAll('#pMB .arr')[MB.pos-1];if(el)el.classList.add('ok');
   if(MB.pos>=MB.seq.length){mbStop();MB.me++;MB.msg=pick(['Saubere Schritte! Das Publikum johlt.','Was für ein Move! Sogar die Garderobe tanzt.','Perfekt – '+MB.name+' guckt neidisch.']);if(MB.me>=2)return mbFinish(true);MB.phase='res';UI.b_pMB()}}
@@ -5592,16 +5604,17 @@ function kistePick(i){if(MB.phase!=='play'||MB.lock)return;const c=MB.cards[i];i
  UI.b_pMB(i)}
 
 /* --- Taktgefühl: 4 Schläge vorgezählt, dann 8 Schläge allein weiterklopfen --- */
-function tappRound(){const r=MB.me+MB.op,bpm=[118,128,138][r]+(hard()?10:0);MB.iv=60000/bpm;MB.bpm=bpm;MB.taps=[];MB.phase='count';MB.cnt=0;MB.msg='Hör zu: '+bpm+' BPM …';UI.b_pMB();
- const step=()=>{MB.cnt++;AU.sfx('kickgun');const el=$('#mbPulse');if(el){el.classList.remove('on');void el.offsetWidth;el.classList.add('on')}
-  if(MB.cnt<4)MB.to=setTimeout(step,MB.iv);else MB.to=setTimeout(()=>{MB.phase='play';MB.msg='Jetzt du – 8 Schläge im gleichen Tempo!';UI.b_pMB()},MB.iv*.5)};MB.to=setTimeout(step,500)}
-function tappHit(){if(MB.phase!=='play')return;const t=performance.now();MB.taps.push(t);AU.sfx('kickgun');const el=$('#mbPulse');if(el){el.classList.remove('on');void el.offsetWidth;el.classList.add('on')}
- const c=$('#mbCnt');if(c)c.textContent=MB.taps.length+' / 8';
- if(MB.taps.length>=8){const iv=MB.iv,base=MB.taps.reduce((s,q,i)=>s+q-i*iv,0)/8,err=MB.taps.reduce((s,q,i)=>s+Math.abs(q-(base+i*iv)),0)/8,rel=err/iv,lim=hard()?.11:.15;
-  const real=60000/((MB.taps[7]-MB.taps[0])/7);MB.phase='res';
-  if(rel<=lim){MB.me++;AU.sfx('vinylGet');MB.msg=`Im Takt! Du lagst bei ${Math.round(real)} BPM (Ziel ${MB.bpm}).`}else{MB.op++;AU.sfx('hurt');MB.msg=`Aus dem Takt: ${Math.round(real)} BPM statt ${MB.bpm}, im Schnitt ${Math.round(err)} ms daneben.`}
+/* leichter: der Takt läuft hörbar und sichtbar weiter, man klopft 6 Schläge mit */
+function tappPulse(){const el=$('#mbPulse');if(el){el.classList.remove('on');void el.offsetWidth;el.classList.add('on')}}
+function tappRound(){const r=MB.me+MB.op,bpm=[116,122,128][r]+(hard()?6:0);MB.iv=60000/bpm;MB.bpm=bpm;MB.taps=[];MB.phase='count';MB.cnt=0;MB.msg='Hör zu: '+bpm+' BPM – gleich klopfst du mit!';UI.b_pMB();
+ const beat=()=>{MB.cnt++;MB.last=performance.now();if(MB.cnt===5){MB.beat0=MB.last-4*MB.iv;MB.phase='play';MB.msg='Jetzt mitklopfen – genau auf die Kick! (6 Schläge)';UI.b_pMB()}
+  AU.sfx('kickgun');tappPulse();const c=$('#mbCnt');if(c&&MB.phase==='count')c.textContent='♪ '+MB.cnt+' / 4';if(MB.phase==='count'||MB.phase==='play')MB.to=setTimeout(beat,MB.iv)};MB.to=setTimeout(beat,500)}
+function tappHit(){if(MB.phase!=='play')return;const t=performance.now(),iv=MB.iv;MB.taps.push(t);AU.sfx('note');
+ const ph=((t-MB.beat0)%iv+iv)%iv,e=Math.min(ph,iv-ph);(MB.errs=MB.taps.length===1?[]:MB.errs).push(e);
+ const c=$('#mbCnt');if(c)c.textContent=MB.taps.length+' / 6 '+(e<iv*.12?'✓':e<iv*.25?'~':'✗');
+ if(MB.taps.length>=6){mbStop();const err=MB.errs.reduce((a,b)=>a+b,0)/MB.errs.length,lim=(hard()?.2:.25)+(hasSkill('v9')?.05:0);MB.phase='res';
+  if(err/iv<=lim){MB.me++;AU.sfx('vinylGet');MB.msg=`Im Takt! Im Schnitt nur ${Math.round(err)} ms neben der Kick.`}else{MB.op++;AU.sfx('hurt');MB.msg=`Knapp daneben: im Schnitt ${Math.round(err)} ms neben der Kick. Erlaubt sind ${Math.round(lim*iv)} ms.`}
   if(MB.me>=2)return mbFinish(true);if(MB.op>=2)return mbFinish(false);UI.b_pMB()}}
-
 /* ---------- Eingaben ---------- */
 addEventListener('keydown',e=>{if(UI.cur!=='pMB'||e.repeat)return;
  if(MB.type==='tanz'&&MB.phase==='play'){const d=ARR.findIndex(a=>a.c.includes(e.code));if(d>=0){e.preventDefault();e.stopImmediatePropagation();tanzHit(d)}}
@@ -5615,7 +5628,7 @@ UI.b_pMB=function(focusI){const D=MBDEF[MB.type],pips=(n,max,c)=>Array.from({len
  const rules={quiz:'Beantworte die Fragen des Türstehers. <b>3 richtige</b> gewinnen, 3 falsche verlieren. Die Zeit läuft mit! (Tasten 1–3)',
   tanz:'Tanz die Pfeilfolge nach – Pfeiltasten/WASD oder antippen. Ein falscher Schritt oder zu langsam kostet die Runde. <b>2 Runden</b> gewinnen!',
   kiste:'In der Plattenkiste liegen Paare. Dreh zwei Hüllen um und finde alle Paare, bevor dir zu viele Fehlgriffe passieren.',
-  tapp:'Hör dir vier Schläge an, dann klopf <b>8 Schläge</b> im selben Tempo weiter (Leertaste oder großer Knopf). <b>2 Runden</b> gewinnen!'}[MB.type];
+  tapp:'Hör dir vier Schläge an, dann klopf <b>6 Schläge</b> genau auf die Kick mit – der Takt läuft weiter (Leertaste oder großer Knopf). <b>2 Runden</b> gewinnen!'}[MB.type];
  const score=need?`<div class="dscore"><span>Du ${pips(MB.me,need,'#2ff3ff')}</span><span>${pips(MB.op,MB.type==='quiz'?3:2,MB.col)} ${esc(MB.name.split(' ')[0])}</span></div>`:
   MB.type==='kiste'&&MB.cards?`<div class="dscore"><span>Fehlgriffe ${pips(MB.maxMiss-MB.miss,MB.maxMiss,'#ff2fd6')}</span></div>`:'';
  const msg=MB.msg?`<div class="dsay"><b>${esc(MB.name)}:</b> „${esc(MB.msg)}“</div>`:'';
@@ -5628,7 +5641,7 @@ UI.b_pMB=function(focusI){const D=MBDEF[MB.type],pips=(n,max,c)=>Array.from({len
   <div class="mbar thin"><div id="mbTime" class="mtime"></div></div><div class="pads">${ARR.map((a,i)=>`<button class="btn pad" data-act="mbarr" data-j="${i}" style="--pc:#2ff3ff" ${i===0?'data-focus':''}><div><b>${a.k}</b></div></button>`).join('')}</div>`;
  else if(MB.type==='kiste')body=`${score}<div class="mtxt">${esc(MB.msg)}</div><div class="kiste ${MB.cards.length>8?'k12':''}">${MB.cards.map((c,i)=>{const r=MB.recs[c.id],show=c.open||c.done;
   return `<button class="btn rec ${show?'open':''} ${c.done?'done':''}" data-act="mbcard" data-j="${i}" style="--pc:${r.c}" ${i===(focusI??0)?'data-focus':''}><div>${show?`<span class="disc"></span><b>${r.n}</b>`:'<span class="sleeve">?</span>'}</div></button>`}).join('')}</div>`;
- else if(MB.type==='tapp')body=`${score}<div class="mtxt">${esc(MB.msg)}</div><div class="tapw"><div id="mbPulse" class="mbpulse"></div><div id="mbCnt" class="tcnt">${MB.phase==='play'?MB.taps.length+' / 8':'♪ '+MB.cnt+' / 4'}</div></div>
+ else if(MB.type==='tapp')body=`${score}<div class="mtxt">${esc(MB.msg)}</div><div class="tapw"><div id="mbPulse" class="mbpulse"></div><div id="mbCnt" class="tcnt">${MB.phase==='play'?MB.taps.length+' / 6':'♪ '+MB.cnt+' / 4'}</div></div>
   <button id="mbTap" class="btn big" data-focus ${MB.phase!=='play'?'disabled':''}><div>KLOPF!</div></button>`;
  $('#pMB').innerHTML=`<div class="card box duel mini" style="--gc:${MB.col}"><div class="dhead"><span class="lab">${esc(MB.lab)}</span><h2>${D.i} ${esc(D.n)}${MB.boss?'':' · '+esc(MB.name)}</h2></div>${body}</div>`;
  const tb=$('#mbTap');if(tb)tb.addEventListener('pointerdown',ev=>{ev.preventDefault();tappHit()})};
@@ -5680,7 +5693,7 @@ function gimRng(seed){let s=seed>>>0||1;return()=>(s=(s*1664525+1013904223)>>>0)
  if(L.gim.includes('chase'))L.chaseSp=30+L.i*1.25;
 }}
 {const _sl=startLevel;startLevel=function(i){_sl(i);const L=G.level;G.gimT=0;G.chase=null;G.gust={ph:0,dir:0,warn:0};G.timer=null;G.strobe=0;
- if(!L||!L.gim||!L.gim.length)return;if(L.timeMax)G.timer=L.timeMax;if(L.chaseSp)G.chase={x:-400,on:false};
+ if(!L||!L.gim||!L.gim.length)return;if(L.timeMax)G.timer=L.timeMax+(hasSkill('v9')?30:0);if(L.chaseSp)G.chase={x:-400,on:false};
  for(const c of L.clocks||[])c.taken=false}}
 {const _rp=respawnPlayer;respawnPlayer=function(){_rp();const L=G.level;if(!L||!L.gim)return;
  if(G.chase)G.chase.x=Math.min(G.chase.x,G.player.x-280);if(G.timer!=null)G.timer=Math.max(G.timer,45)}}
@@ -5691,8 +5704,8 @@ const inRange=(arr,x)=>arr&&arr.some(q=>x>=q.x0&&x<=q.x1);
  PHYS.spd=1;PHYS.fr=1;PHYS.wind=0;PHYS.jump=1;PHYS.g=1;PHYS.fall=1;
  if(L&&L.gim&&L.gim.length&&p&&G.state==='play'){const cx=p.x+p.w/2,onG=p.onGround&&p.ground&&p.ground.kind==='ground';
   if(gimHas('lowg')){PHYS.g=.5;PHYS.jump=.78;PHYS.fall=.62}
-  if(onG&&inRange(L.ice,cx)){PHYS.fr=.1;if(Math.abs(p.vx)>60&&Math.random()<.3)part({x:cx,y:FLOOR_Y-1,vx:-p.vx*.2,vy:-10,g:40,life:.3,col:'#d8f8ff',s:1,em:true})}
-  if(onG&&inRange(L.mud,cx)){PHYS.spd=.55;PHYS.jump*=.9;if(Math.abs(p.vx)>20&&Math.random()<.25)part({x:cx,y:FLOOR_Y-2,vx:(Math.random()-.5)*30,vy:-40-Math.random()*30,g:300,life:.5,col:'#6a4a24',s:2})}
+  if(onG&&inRange(L.ice,cx)){PHYS.fr=hasSkill('g10')?.35:.1;if(Math.abs(p.vx)>60&&Math.random()<.3)part({x:cx,y:FLOOR_Y-1,vx:-p.vx*.2,vy:-10,g:40,life:.3,col:'#d8f8ff',s:1,em:true})}
+  if(onG&&inRange(L.mud,cx)){const ag=hasSkill('g10');PHYS.spd=ag?.8:.55;PHYS.jump*=ag?1:.9;if(Math.abs(p.vx)>20&&Math.random()<.25)part({x:cx,y:FLOOR_Y-2,vx:(Math.random()-.5)*30,vy:-40-Math.random()*30,g:300,life:.5,col:'#6a4a24',s:2})}
   if(gimHas('gust')&&G.gust.dir&&!G.bossStarted)PHYS.wind=G.gust.dir*72;
   if(typeof gimPhysX==='function')gimPhysX(L,p,onG,cx)}
  _up(dt)}}
@@ -5703,7 +5716,7 @@ function gimTick(dt){const L=G.level,p=G.player;if(!L||!L.gim||!L.gim.length||!p
  // LED-Boden
  if(L.hot&&live&&!G.bossStarted){const st=hotState(beat);if(st===2&&p.onGround&&p.ground&&p.ground.kind==='ground'&&inRange(L.hot,p.x+p.w/2)){hurtPlayer(p.x+p.w/2);p.vy=-200;burst(p.x+5,FLOOR_Y,10,['#ff3a6a','#ffe23a'],{a:-Math.PI/2,spread:1.4,speed:90,g:200,life:.4,em:true})}}
  // Sperrstunde
- if(G.timer!=null&&live&&!G.bossStarted){G.timer-=dt;for(const c of L.clocks)if(!c.taken&&Math.abs(p.x+p.w/2-c.x)<14&&Math.abs(p.y+p.h/2-c.y)<20){c.taken=true;G.timer+=20;popup(c.x,c.y-10,'+20 SEK','#ffe23a',true);AU.sfx('checkpoint')}
+ if(G.timer!=null&&live&&!G.bossStarted){G.timer-=dt;for(const c of L.clocks)if(!c.taken&&Math.abs(p.x+p.w/2-c.x)<14&&Math.abs(p.y+p.h/2-c.y)<20){c.taken=true;const ad=hasSkill('v9')?30:20;G.timer+=ad;popup(c.x,c.y-10,'+'+ad+' SEK','#ffe23a',true);AU.sfx('checkpoint')}
   if(G.timer<=0){G.timer=0;if(!G.god){UI.toast(pick(['SPERRSTUNDE! Der Türsteher trägt dich raus.','Licht an, Musik aus – Sperrstunde!','„Habt ihr kein Zuhause?“ – Sperrstunde!']));p.hp=1;p.inv=0;p.shield=0;hurtPlayer(p.x,true)}G.timer=45}}
  // Verfolgung
  if(G.chase&&live){const c=G.chase,A=L.arena?L.arena.x-380:L.w;if(!c.on&&p.x>360){c.on=true;c.x=p.x-330;UI.toast('Die Kommerz-Walze rollt los!')}
@@ -5790,13 +5803,13 @@ const WATER_Y=FLOOR_Y-56;
 {const _rp=respawnPlayer;respawnPlayer=function(){_rp();G.jlT=6;const L=G.level;if(L){L.solids=L.solids.filter(s=>s.kind!=='train');G.trainT=Math.max(G.trainT,4)}}}
 function inPool(L,p){return L.pool&&p.y+p.h>WATER_Y+2&&inRange(L.pool,p.x+p.w/2)}
 function gimPhysX(L,p,onG,cx){
- if(L.esc&&onG){const q=L.esc.find(q=>cx>=q.x0&&cx<=q.x1);if(q)PHYS.wind+=q.dir*62}
- if(inPool(L,p)){PHYS.g=.28;PHYS.fall=.3;PHYS.jump=.62;PHYS.spd*=.78;p.jumps=Math.min(p.jumps,1);if(Math.random()<.08)part({x:cx,y:p.y,vx:0,vy:-20,g:-20,life:.8,col:'#bff4ff',s:1,em:true})}
- if(gimHas('gpulse')&&!G.bossStarted){const heavy=Math.floor(AU.beat()/8)%2===0;if(heavy){PHYS.g=1.25;PHYS.fall=1.15}else{PHYS.g=.45;PHYS.jump=.82;PHYS.fall=.55}}}
+ if(L.esc&&onG){const q=L.esc.find(q=>cx>=q.x0&&cx<=q.x1);if(q)PHYS.wind+=q.dir*(hasSkill('g9')?31:62)}
+ if(inPool(L,p)){const sp=hasSkill('g8');PHYS.g=.28;PHYS.fall=.3;PHYS.jump=sp?.78:.62;PHYS.spd*=sp?.95:.78;p.jumps=Math.min(p.jumps,1);if(Math.random()<.08)part({x:cx,y:p.y,vx:0,vy:-20,g:-20,life:.8,col:'#bff4ff',s:1,em:true})}
+ if(gimHas('gpulse')&&!G.bossStarted){const heavy=Math.floor(AU.beat()/8)%2===0;const ag=hasSkill('g10');if(heavy){PHYS.g=ag?1.08:1.25;PHYS.fall=ag?1.05:1.15}else{PHYS.g=ag?.65:.45;PHYS.jump=ag?.9:.82;PHYS.fall=ag?.75:.55}}}
 
 /* --- Eingabe-Verzögerung (Jetlag / Lag) --- */
 const JL={buf:[],acts:['left','right','jump','down','dash']};
-function jlDelay(){const L=G.level;if(!L||!L.gim)return 0;if(L.gim.includes('lag'))return .17;if(L.gim.includes('jetlag')&&(G.gimT<12||G.jlT>0))return .13;return 0}
+function jlDelay(){const L=G.level;if(!L||!L.gim)return 0;const k=hasSkill('v8')?.5:1;if(L.gim.includes('lag'))return .17*k;if(L.gim.includes('jetlag')&&(G.gimT<12||G.jlT>0))return .13*k;return 0}
 {const _up=updatePlayer;updatePlayer=function(dt){const d=G.state==='play'?jlDelay():0;if(!d){JL.buf.length=0;return _up(dt)}
  const now=G.t,cur={t:now,a:{},pr:[],px:IN.padX};for(const a of JL.acts){cur.a[a]=IN.act(a);if(IN.pressed.has(a)){cur.pr.push(a);IN.pressed.delete(a)}}JL.buf.push(cur);
  let st=null;while(JL.buf.length&&JL.buf[0].t<=now-d){st=JL.buf.shift();for(const a of st.pr)IN.pressed.add(a);JL.last=st}st=st||JL.last||{a:{},px:0};
@@ -5810,7 +5823,7 @@ function trainTick(dt){const L=G.level,p=G.player;if(!gimHas('train')||!p)return
   if(G.trainT<=0){tr={x:G.cam.x-300,y:FLOOR_Y-34,w:250,h:6,type:'oneway',kind:'train',dyn:true,sp:150+L.i*2,dx:0};L.solids.push(tr);G.trainT=10+Math.random()*4;G.trainW=0}}
  if(tr){const ox=tr.x;tr.x+=tr.sp*dt;tr.dx=tr.x-ox;
   if(p.ground===tr&&p.onGround){p.x+=tr.dx;p.y=tr.y-p.h}
-  else if(!p.dead&&p.x+p.w>tr.x&&p.x<tr.x+tr.w&&p.y+p.h>tr.y+5){hurtPlayer(tr.x,true);p.vy=-280;p.vx=180;addShake(6)}
+  else if(!p.dead&&p.x+p.w>tr.x&&p.x<tr.x+tr.w&&p.y+p.h>tr.y+5){if(!hasSkill('g9'))hurtPlayer(tr.x,true);p.vy=-300;p.vx=180;addShake(6)}
   if(tr.x>G.cam.x+VW+80||tr.x>A-260)L.solids=L.solids.filter(s=>s!==tr)}}
 {const _u=updatePlay;updatePlay=function(dt){_u(dt);if(G.state==='play'){trainTick(dt);if(G.jlT>0)G.jlT-=dt}}}
 
@@ -5860,6 +5873,10 @@ function efCanvas(W,H){if(!EF.c||EF.c.width!==W||EF.c.height!==H){EF.c=document.
   const chat=['Bild hängt!','Mute dich mal!','Tanzt ihr auch?','Wer hat noch Bier?','Ton ist weg!','Nächste Woche wieder?'],ci=Math.floor(t/3)%chat.length;hudText(d,'💬 '+chat[ci],14*S,RD.H-86*S,4.4,'#ffffff','left')}
  else if(fx==='holo'){scan(3,.1);blend('overlay','#3affff',.08);for(let k=0;k<30;k++){d.fillStyle='rgba(255,255,255,.6)';d.fillRect(((k*211+t*15)%W),((k*89)%H),S,S)}}
  d.restore()}}
+
+/* Skill-Wirkungen: Schaden */
+{const _he=hitEnemy;hitEnemy=function(e,d,...a){return _he(e,hasSkill('b8')?d*1.15:d,...a)}}
+{const _hb=hitBoss;hitBoss=function(d,...a){return _hb(hasSkill('b9')&&!G.miniHit?d*1.2:d,...a)}}
 
 /* =====================================================================
    KARTE 3 (WELTTOURNEE) und KARTE 4 (ZEITREISE): Themes, Wahrzeichen,
