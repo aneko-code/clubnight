@@ -174,12 +174,12 @@ h1,h2,h3{margin:0;font-weight:700;text-wrap:balance}
 .brow{display:flex;gap:.5em;flex-wrap:wrap}
 .brow .btn{flex:1;justify-content:center;min-width:8em}
 /* Einblendungen */
-#introCard{position:absolute;left:50%;top:9%;transform:translateX(-50%);text-align:center;pointer-events:none;opacity:0;transition:opacity .5s,transform .5s}
+#introCard{position:absolute;left:50%;top:7%;transform:translateX(-50%);text-align:center;pointer-events:none;opacity:0;transition:opacity .5s,transform .5s;max-width:min(92vw,44em);padding:.9em 1.4em 1em;background:rgba(8,4,20,.72);box-shadow:0 0 0 1px rgba(190,160,255,.22),0 10px 40px rgba(0,0,0,.55);border-radius:4px;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
 #introCard.on{opacity:1;transform:translateX(-50%) translateY(6px)}
-#introCard .lv{font-family:var(--f-lab);font-size:.8em;letter-spacing:.3em;color:var(--cyan)}
+#introCard .lv{font-family:var(--f-lab);font-size:.95em;letter-spacing:.3em;color:var(--cyan)}
 #introCard h2{font-size:clamp(36px,9vh,96px);line-height:.9;text-shadow:-3px 0 0 var(--cyan),3px 0 0 var(--mag),0 0 30px rgba(255,47,214,.6)}
-#introCard p{margin:.4em auto 0;max-width:42ch;font-size:1em;text-shadow:0 2px 4px #000}
-#introCard .boss{font-family:var(--f-lab);font-size:.72em;color:var(--gold);letter-spacing:.1em;margin-top:.6em}
+#introCard p{margin:.5em auto 0;max-width:44ch;font-size:1.22em;line-height:1.4;text-shadow:0 2px 4px #000}
+#introCard .boss{font-family:var(--f-lab);font-size:.9em;color:var(--gold);letter-spacing:.1em;margin-top:.6em}
 #bossCard{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity .3s}
 #bossCard.on{opacity:1}
 #bossCard .bar{width:100%;padding:1.2em 0;background:linear-gradient(90deg,transparent,rgba(7,4,15,.88) 18%,rgba(7,4,15,.88) 82%,transparent);text-align:center;transform:skewY(-3deg)}
@@ -219,7 +219,7 @@ h1,h2,h3{margin:0;font-weight:700;text-wrap:balance}
 .ptour{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.45em;font-size:.82em}.ptour li{color:var(--dim);opacity:.6}.ptour li.ok,.ptour li.now{opacity:1}.ptour li.now b{color:var(--cyan)}
 .ptour li span{display:block;font-size:.88em;line-height:1.35;color:var(--ink);opacity:.8;margin-top:.1em}
 #introCard .irow{display:flex;align-items:center;justify-content:center;gap:1em}#introCard .imap{width:clamp(56px,11vh,110px);image-rendering:pixelated;filter:drop-shadow(0 0 10px rgba(255,47,214,.45))}
-#introCard .irow>div{text-align:left}#introCard .ifact{margin:.45em auto 0;max-width:48ch;font-size:.82em;color:#e8e0ff;text-shadow:0 2px 4px #000}
+#introCard .irow>div{text-align:left}#introCard .ifact{margin:.5em auto 0;max-width:50ch;font-size:1em;line-height:1.35;color:#e8e0ff;text-shadow:0 2px 4px #000}
 #bossCard .bz{margin-top:.5em;font-size:.85em;opacity:.85}
 @media (max-width:760px){.pgrid{grid-template-columns:1fr}.pinfo{display:none}.tabs{margin-left:0}}
 .shopwrap,.archwrap{flex:1;overflow:auto;display:flex;flex-direction:column;gap:1em;min-height:0;padding-right:.3em}
@@ -253,7 +253,7 @@ canvas.logoC.sm{width:min(70vw,calc(15vh*320/104));height:auto;margin-left:-.4em
 @keyframes sweep{0%{transform:translateX(-50%) rotate(-38deg)}100%{transform:translateX(-50%) rotate(38deg)}}
 .btn.pulse{animation:bpulse 1.4s ease-in-out infinite}@keyframes bpulse{50%{box-shadow:inset 0 0 0 2px var(--mag),0 0 22px rgba(255,47,214,.55)}}
 @media (prefers-reduced-motion:reduce){.beams i,.btn.pulse{animation:none}}
-@media (max-height:500px){#pSplash{gap:.5em}#pSplash .story{display:none}canvas.logoC.big{width:min(80vw,calc(42vh*540/176))}}
+@media (max-height:500px){#introCard{top:3%;padding:.5em .9em .6em}#introCard p{font-size:.95em}#introCard .ifact{display:none}#introCard .igim{font-size:.85em}#pSplash{gap:.5em}#pSplash .story{display:none}canvas.logoC.big{width:min(80vw,calc(42vh*540/176))}}
 .map.m1{background:radial-gradient(circle at 60% 40%,rgba(255,47,214,.16),transparent 60%),repeating-linear-gradient(0deg,rgba(190,160,255,.05) 0 1px,transparent 1px 22px),repeating-linear-gradient(90deg,rgba(190,160,255,.05) 0 1px,transparent 1px 22px),#0c0718}
 .map.m2{background:radial-gradient(circle at 55% 45%,rgba(58,255,216,.14),transparent 60%),radial-gradient(circle at 20% 90%,rgba(255,226,58,.08),transparent 40%),repeating-linear-gradient(0deg,rgba(58,255,216,.05) 0 1px,transparent 1px 22px),repeating-linear-gradient(90deg,rgba(58,255,216,.05) 0 1px,transparent 1px 22px),#06121a}
 .geo{filter:drop-shadow(0 0 14px rgba(180,140,255,.35))}.map.m2 .geo{filter:drop-shadow(0 0 14px rgba(58,255,216,.3))}
@@ -282,7 +282,7 @@ canvas.logoC.sm{width:min(70vw,calc(15vh*320/104));height:auto;margin-left:-.4em
 .mini .rec .sleeve{font-size:1.8em;color:var(--dim)}.mini .rec.open{border-color:var(--pc)!important}.mini .rec.done{opacity:.55}.mini .rec .disc{width:2.2em;height:2.2em;border-radius:50%;background:radial-gradient(circle,var(--pc) 0 22%,#0c0c12 24% 100%);box-shadow:0 0 10px var(--pc)}.mini .rec b{color:var(--pc);font-size:.85em}
 .mini .tapw{display:flex;align-items:center;justify-content:center;gap:1.2em;padding:.4em}.mini .mbpulse{width:4.5em;height:4.5em;border-radius:50%;border:3px solid var(--gc);opacity:.35}.mini .mbpulse.on{animation:pz .35s ease-out}@keyframes pz{0%{transform:scale(1.25);opacity:1;background:var(--gc)}100%{transform:scale(1);opacity:.35}}.mini .tcnt{font-size:1.6em}
 @media (max-width:640px){.mini .kiste.k12{grid-template-columns:repeat(4,1fr)}}
-.igim{width:0;min-width:100%;box-sizing:border-box;margin:.45em auto 0;padding-top:.4em;border-top:1px solid rgba(255,255,255,.15);font-size:.82em;line-height:1.35;text-align:center;white-space:normal}.igim div{margin:.15em 0}.igim b{letter-spacing:.08em;margin-right:.4em}
+.igim{width:0;min-width:100%;box-sizing:border-box;margin:.55em auto 0;padding-top:.5em;border-top:1px solid rgba(255,255,255,.18);font-size:1em;line-height:1.35;text-align:center;white-space:normal}.igim div{margin:.15em 0}.igim b{letter-spacing:.08em;margin-right:.4em}
 .gimrow{margin:.2em 0 0;font-size:.9em;letter-spacing:.06em}
 .over{max-width:min(36em,94vw);border-top:3px solid var(--gc)}.over h2{margin:0;color:var(--red)}
 .dres{font-size:1.1em;padding:.5em 0}.dres.won{color:var(--gold)}.dres.lost{color:var(--red)}
