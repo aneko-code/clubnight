@@ -6441,6 +6441,25 @@ function padMini(now,prev){const pr=k=>now[k]&&!prev[k];const dir=pr('l')?0:pr('
  if(UI.cur==='pMini'&&MG.kind==='beat'&&MG.phase==='play'){if(pr(0)||pr(2)||pr(3)||pr(7)){beatHit();return true}return false}
  return false}
 
+/* ---------------- Boden-Effekte nur dort, wo sie Sinn ergeben ----------------
+   Eis, Schlamm, LED-Boden, Laufbänder und Pools nur auf freiem, begehbarem Boden:
+   nicht unter Blöcken/Treppen, nicht unter oberen Plattformen, nicht an Aufzügen,
+   Sprungboxen oder Pressen – und nicht zu viele pro Level. */
+const PATCH_MAX={pool:3,hot:5,esc:5,ice:5,mud:5};
+function freeGround(L){const A=L.arena?L.arena.x-200:L.w;let free=L.solids.filter(s=>s.kind==='ground').map(s=>[s.x,Math.min(s.x+s.w,A)]).filter(q=>q[1]-q[0]>20);const block=[];
+ for(const s of L.solids){if(s.kind==='ground'||s.kind==='train'||s.kind==='gate'||s.kind==='wallR')continue;const bot=s.y+(s.h||0);
+  if(bot>=FLOOR_Y-2)block.push([s.x-14,s.x+s.w+14]);else if(s.y>FLOOR_Y-155)block.push([s.x-6,s.x+s.w+6])}
+ for(const m of L.movers||[])block.push([m.x-20,m.x+(m.w||40)+20]);
+ for(const h of L.hazards||[])if(h.x!=null)block.push([h.x-12,h.x+(h.w||30)+12]);
+ for(const c of L.checkpoints||[])block.push([c.x-70,c.x+70]);
+ for(const n of L.npcs||[])if(n.kind==='duelist')block.push([n.x-80,n.x+80]);
+ for(const[b0,b1] of block)free=free.flatMap(([a,b])=>b1<=a||b0>=b?[[a,b]]:[[a,b0],[b1,b]].filter(([u,v])=>v-u>20));return free}
+function clipTo(list,free,min){const out=[];for(const q of list||[])for(const[a,b] of free){const x0=Math.max(q.x0,a),x1=Math.min(q.x1,b);if(x1-x0>=min)out.push(Object.assign({},q,{x0,x1}))}return out}
+function thin(list,max){if(list.length<=max)return list;const out=[];for(let k=0;k<max;k++)out.push(list[Math.floor((k+.5)*list.length/max)]);return out}
+{const _pl=postLevel;postLevel=function(L){_pl(L);if(L.menu||!L.gim||!L.gim.length)return;let free=freeGround(L);
+ for(const key of['pool','hot','esc','ice','mud']){if(!L[key])continue;let l=clipTo(L[key],free,key==='pool'?110:64);l=thin(l,PATCH_MAX[key]);L[key]=l;
+  for(const q of l)free=free.flatMap(([a,b])=>q.x1+40<=a||q.x0-40>=b?[[a,b]]:[[a,q.x0-40],[q.x1+40,b]].filter(([u,v])=>v-u>20))}}}
+
 /* ================= INPUT ================= */
 const KEYMAP={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',ArrowDown:'down',KeyS:'down',ArrowUp:'jump',KeyW:'jump',Space:'jump',
  KeyJ:'shoot',KeyX:'shoot',KeyC:'shoot',KeyK:'drop',KeyF:'drop',ShiftLeft:'dash',ShiftRight:'dash',KeyL:'dash',KeyQ:'prev',KeyE:'next',KeyI:'aimUp',
