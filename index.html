@@ -6069,7 +6069,8 @@ Object.assign(ZONES,{
 });
 for(const t in SIGOF){const base={ibiza:'sonar',london:'tresor',amsterdam:'kater',tbilisi:'berghain',detroit:'ms',newyork:'ms',saopaulo:'timewarp',tokyo:'bootshaus',karoo:'fusion',tempelhof:'fusion',
  era74:'rj',era77:'distillery',era85:'ms',era88:'tresor',era89:'natureone',era90:'berghain',era99:'loveparade',era05:'sisyphos',era20:'distillery',era2077:'hive'}[t];
- KS[t]=KS[base];EVT_THEME[t]=EVT_THEME[base]||{extra:'lights',drop:'mug'}}
+ KS[t]=KS[base];EVT_THEME[t]=EVT_THEME[base]||{extra:'lights',drop:'mug'};
+ for(const T of [MVSTY,SPINSTY,CRCOL,KSET,ZUNIQ])if(!(t in T)&&(base in T))T[t]=T[base]}
 Object.assign(SND,{
  ibiza:{kick:'four',hats:'shaker',perc:'clap',swing:.1,leads:['piano','chop','strings'],bass:'off',arr:'deep'},
  london:{kick:'rumble',hats:'ride',perc:'snare',swing:.05,leads:['dub','stab','acid'],bass:'reese',arr:'classic',hard:.6},
