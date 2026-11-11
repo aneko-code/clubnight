@@ -283,6 +283,10 @@ canvas.logoC.sm{width:min(70vw,calc(15vh*320/104));height:auto;margin-left:-.4em
 .mini .tapw{display:flex;align-items:center;justify-content:center;gap:1.2em;padding:.4em}.mini .mbpulse{width:4.5em;height:4.5em;border-radius:50%;border:3px solid var(--gc);opacity:.35}.mini .mbpulse.on{animation:pz .35s ease-out}@keyframes pz{0%{transform:scale(1.25);opacity:1;background:var(--gc)}100%{transform:scale(1);opacity:.35}}.mini .tcnt{font-size:1.6em}
 @media (max-width:640px){.mini .kiste.k12{grid-template-columns:repeat(4,1fr)}}
 .igim{width:0;min-width:100%;box-sizing:border-box;margin:.55em auto 0;padding-top:.5em;border-top:1px solid rgba(255,255,255,.18);font-size:1em;line-height:1.35;text-align:center;white-space:normal}.igim div{margin:.15em 0}.igim b{letter-spacing:.08em;margin-right:.4em}
+.rack{display:grid;grid-template-columns:repeat(auto-fill,minmax(15em,1fr));gap:.7em;overflow:auto;padding-bottom:1em}.rk{padding:.7em .8em;display:flex;flex-direction:column;gap:.4em}.rk h3{margin:0}.rk p{margin:0;color:var(--dim);font-size:.85em}.rk.lock{opacity:.5}
+.btn.mod{padding:.45em .6em!important;text-align:left}.btn.mod div{display:flex;flex-direction:column;gap:.15em;width:100%}.btn.mod small{font-size:.75em;opacity:.8;text-transform:none;letter-spacing:0}.btn.mod .mst{font-size:.7em;color:var(--gold)}.btn.mod.own .mst{color:var(--dim)}.btn.mod.on{border-color:#b6ff3a!important;box-shadow:0 0 12px rgba(182,255,58,.35)}.btn.mod.on .mst{color:#b6ff3a}
+.rank{display:flex;gap:.8em;align-items:center;border:1px solid var(--rc);padding:.3em .7em;box-shadow:0 0 18px color-mix(in srgb,var(--rc) 35%,transparent)}.rank .rl{font-size:2.4em;line-height:1;color:var(--rc);text-shadow:0 0 18px var(--rc);font-family:var(--f-lab)}.rank .rb{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:.15em .8em;font-size:.68em}.rank .rb small{grid-column:1/-1}.rank .rb div{display:grid;grid-template-columns:6.5em 1fr;align-items:center;gap:.5em}.rank .rb i{height:.5em;background:rgba(255,255,255,.1);display:block}.rank .rb i b{display:block;height:100%;background:var(--rc)}.rank small{color:var(--dim)}
+.node .rk{position:absolute;right:-.6em;top:-.7em;font-size:.75em;font-weight:bold;text-shadow:0 0 6px #000,0 0 2px #000}
 .gimrow{margin:.2em 0 0;font-size:.9em;letter-spacing:.06em}
 .over{max-width:min(36em,94vw);border-top:3px solid var(--gc)}.over h2{margin:0;color:var(--red)}
 .dres{font-size:1.1em;padding:.5em 0}.dres.won{color:var(--gold)}.dres.lost{color:var(--red)}
@@ -314,6 +318,8 @@ canvas.logoC.sm{width:min(70vw,calc(15vh*320/104));height:auto;margin-left:-.4em
      <button class="btn" data-act="tour"><div>Tour · Levelwahl<small id="tourSub"></small></div></button>
      <button class="btn" data-act="skills"><div>Skilltree<small>Bass · Groove · Vibe</small></div><i class="badge" id="ptsBadge" hidden></i></button>
      <button class="btn" data-act="wardrobe"><div>Garderobe<small id="wardSub"></small></div></button>
+     <button class="btn" data-act="afterhour"><div>Afterhour<small>Endlos-Modus</small></div></button>
+     <button class="btn" data-act="rack"><div>Plattenkoffer<small>Waffen-Effekte</small></div></button>
      <button class="btn" data-act="shop"><div>Merch-Stand<small id="shopSub"></small></div></button>
      <button class="btn" data-act="archiv"><div>Archiv<small id="archSub"></small></div></button>
      <button class="btn" data-act="options"><div>Optionen</div></button>
@@ -331,6 +337,9 @@ canvas.logoC.sm{width:min(70vw,calc(15vh*320/104));height:auto;margin-left:-.4em
   <section id="pOver" class="scr center dim" hidden></section>
   <section id="pMini" class="scr center dim" hidden></section>
   <section id="pMB" class="scr center dim" hidden></section>
+  <section id="pRack" class="scr sub dim" hidden></section>
+  <section id="pAfter" class="scr center dim" hidden></section>
+  <section id="pAfterEnd" class="scr center dim" hidden></section>
   <section id="pArchiv" class="scr sub dim" hidden></section>
   <section id="pSkills" class="scr sub dim" hidden></section>
   <section id="pWardrobe" class="scr sub dim" hidden></section>
@@ -661,7 +670,7 @@ const BOSSES={
  emo:{name:'Seitenscheitel-Sven',hp:990,attacks:['homing','beam','slam'],p2:['spiral','rain'],intro:'Niemand versteht mich. Am wenigsten euer Minimal.',defeat:'Das … ist … keine Phase … das ist … Techno.',
   look:{skin:'#f4e0d0',hair:'#1a1a1a',hs:'fringe',suit:'#1a1a1a',suit2:'#ff3a5a',shirt:'#ff3a5a',pants:'#1a1a1a',shoes:'#ffffff',item:'guitarAc',extra:'studs'}},
  lofi:{name:'Chillhop-Charlie',hp:1020,attacks:['rain','homing','spread'],p2:['spiral','beam'],intro:'Psst … ich lerne gerade. Beats zum Entspannen, nicht zum Tanzen.',defeat:'Na gut … eine Lernpause … zum Tanzen.',
-  look:{skin:'#f0d0b8',hair:'#3a2a2a',hs:'beanie',suit:'#c8b8a8',suit2:'#6a5a8a',shirt:'#6a5a8a',pants:'#3a3a4a',shoes:'#e8e8e8',item:'book',glasses:'round'}},
+  look:{skin:'#f0d0b8',hair:'#3a2a2a',hs:'beanie',hatC:'#6a5a8a',suit:'#c8b8a8',suit2:'#6a5a8a',shirt:'#6a5a8a',pants:'#3a3a4a',shoes:'#e8e8e8',item:'book',glasses:'round'}},
  kimusik:{name:'Die KI-Playlist',hp:1250,attacks:['spread','rain','charge','beam'],p2:['spiral','homing'],p3:['summon','slam'],intro:'Ich habe alle Bosse analysiert. Ich BIN alle Bosse. Generiere Endgegner …',defeat:'Fehler … ich habe gelernt … Techno … kann man nicht berechnen.',
   look:{skin:'#c8d8e8',hair:'#3affff',hs:'holo',suit:'#1a1a2a',suit2:'#3affff',shirt:'#ff2fd6',pants:'#1a1a2a',shoes:'#3affff',item:'tablet',cape:'#1a3a5a',extra:'necklace'}}
 };
@@ -6260,6 +6269,167 @@ const MAPPAL3={a:'#3a2a14',b:'#4a3418',edge:'#ffb03a',edge2:'#8a5a1a',hi:'#3afff
    <p class="hint" style="text-transform:none;letter-spacing:.04em">Fan-Projekt. Clubs, Festivals und Epochen sind echte Orte und Zeiten – Bosse und Szenen sind frei erfunden.</p>
    <div class="brow"><button class="btn" data-act="tour" data-focus><div>Tour · freie Wahl</div></button><button class="btn ghost" data-act="menu"><div>Hauptmenü</div></button></div></div>`;return}
  _be();if(f===2){const r=$('#pEnding .rew');if(r)r.insertAdjacentHTML('afterbegin','<div class="o">Neue Karte: Welttournee – 10 legendäre Orte weltweit</div>');const b=$('#pEnding .brow');if(b)b.insertAdjacentHTML('afterbegin','<button class="btn" data-act="play"><div>Welttournee starten<small>Ibiza</small></div></button>')}}}
+
+/* =====================================================================
+   PLATTENKOFFER (Waffen-Mods) · BEWERTUNG PRO LEVEL · AFTERHOUR (endlos) · ABSPANN
+   ===================================================================== */
+
+/* ---------------- 1) WAFFEN-MODS ---------------- */
+const WMODS={
+ note:[{id:'arp',n:'Arpeggiator',d:'Jeder dritte Schuss feuert drei Noten im Fächer.',c:400},{id:'delay',n:'Delay',d:'Jede Note kommt als Echo noch einmal hinterher.',c:600},{id:'homing',n:'Autotune',d:'Noten lenken sich selbst zum nächsten Gegner.',c:800}],
+ wave:[{id:'chorus',n:'Chorus',d:'Drei Sinustöne auf einmal, leicht gefächert.',c:500},{id:'reso',n:'Resonanz',d:'Der Ton wird im Flug größer und stärker (bis +80 %).',c:600},{id:'sustain',n:'Sustain',d:'Durchschlägt vier Gegner statt einem.',c:400}],
+ cd:[{id:'multi',n:'Doppel-CD',d:'Wirft zwei CDs zum Preis von einer.',c:500},{id:'shatter',n:'Splitter',d:'Kaputte CDs zerspringen in vier scharfe Splitter.',c:700},{id:'magnet',n:'Rückspulen',d:'CDs kommen zu dir zurück – gefangen gibt es die Munition wieder.',c:800}],
+ vinyl:[{id:'heavy',n:'180-Gramm',d:'Schwerer und größer: +60 % Schaden, aber langsamer.',c:600},{id:'scratch',n:'Scratch',d:'Die Platte fliegt einmal zurück und trifft erneut.',c:700},{id:'pitch',n:'Pitch +8',d:'Viel schneller und +20 % Schaden.',c:500}],
+ kick:[{id:'wide',n:'Breitband',d:'Sieben statt fünf Schrotkugeln, breiterer Fächer.',c:500},{id:'range',n:'Long Tail',d:'Doppelte Reichweite.',c:600},{id:'rocket',n:'Rückstoß',d:'Dreifacher Rückstoß – nach unten geschossen ein Raketensprung!',c:700}],
+ laser:[{id:'cool',n:'Kühlung',d:'Überhitzt 40 % langsamer.',c:600},{id:'prism',n:'Prisma',d:'Zwei zusätzliche Strahlen im Winkel.',c:900},{id:'strobe',n:'Stroboskop',d:'+35 % Schaden, aber wird schneller heiß.',c:600}]};
+function ensureMore(S){S.wmod=S.wmod||{owned:{},on:{}};S.rank=padArr(S.rank,NLV,0);S.after=S.after||{best:0,bestRound:0,daily:{d:'',best:0}};return S}
+{const _e=ensureX;ensureX=function(S){_e(S);return ensureMore(S)}}ensureMore(SAVE);
+const modOn=(w,m)=>!!(SAVE.wmod.on[w]&&SAVE.wmod.on[w].includes(m));
+function rot(b,da){const sp=Math.hypot(b.vx,b.vy),a=Math.atan2(b.vy,b.vx)+da;return Object.assign({},b,{vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,hit:new Set(),t:0})}
+G.echoQ=[];
+{const _f=fire;fire=function(p,a,W){const n0=G.bullets.length,ok=_f(p,a,W);if(!ok)return ok;const nb=G.bullets.slice(n0).filter(b=>b.kind!=='flash'),id=W.id;if(!nb.length)return ok;const ca=Math.cos(a),sa=Math.sin(a);
+ if(id==='note'){if(modOn(id,'arp')){p.arpN=(p.arpN||0)+1;if(p.arpN%3===0)for(const d of[-.22,.22])G.bullets.push(rot(nb[0],d))}
+  if(modOn(id,'delay'))for(const b of nb)G.echoQ.push({t:G.t+.13,b:Object.assign({},b,{dmg:b.dmg*.6,hit:new Set(),t:0}),px:p})
+  if(modOn(id,'homing'))for(const b of G.bullets.slice(n0))b.home=1}
+ if(id==='wave'){const b=nb[0];if(modOn(id,'chorus'))for(const d of[-.14,.14]){const c=rot(b,d);c.bx=b.bx;c.by=b.by;G.bullets.push(c)}
+  for(const q of G.bullets.slice(n0)){if(modOn(id,'reso')){q.reso=1;q.r0=q.r;q.d0=q.dmg}if(modOn(id,'sustain'))q.pierce=4}}
+ if(id==='cd'){const b=nb[0];if(modOn(id,'multi'))G.bullets.push(rot(b,.22));for(const q of G.bullets.slice(n0)){if(modOn(id,'shatter'))q.shatter=1;if(modOn(id,'magnet')){q.mag=1;q.bounce=99;q.life=3.2}}}
+ if(id==='vinyl')for(const b of nb){if(modOn(id,'heavy')){b.dmg*=1.6;b.r*=1.4;b.vx*=.8;b.vy*=.8}if(modOn(id,'pitch')){b.dmg*=1.2;b.vx*=1.6;b.vy*=1.6;b.life*=.75}if(modOn(id,'scratch'))b.scratch=1}
+ if(id==='kick'){if(modOn(id,'wide'))for(const d of[-.45,.45])G.bullets.push(rot(nb[2]||nb[0],d));if(modOn(id,'range'))for(const q of G.bullets.slice(n0))q.life=.4;
+  if(modOn(id,'rocket')){p.vx-=ca*220;if(sa>.5)p.vy=Math.min(p.vy,-280);else if(!p.onGround)p.vy-=sa*120}}
+ return ok}}
+{const _ub=updateBullets;updateBullets=function(dt){const p=G.player;
+ for(const b of G.bullets){if(b.dead)continue;
+  if(b.home&&b.t>.05){let best=null,bd=160;for(const e of G.enemies){if(!e.alive||!e.act)continue;const d=Math.hypot(e.x+e.w/2-b.x,e.y+e.h/2-b.y);if(d<bd){bd=d;best=e}}const B=G.boss;if(B&&B.state==='fight'){const d=Math.hypot(B.x+B.w/2-b.x,B.y+B.h/2-b.y);if(d<bd)best=B}
+   if(best){const sp=Math.hypot(b.vx,b.vy),a0=Math.atan2(b.vy,b.vx),a1=Math.atan2(best.y+best.h/2-b.y,best.x+best.w/2-b.x);let da=((a1-a0+Math.PI*3)%(Math.PI*2))-Math.PI;da=clamp(da,-6*dt,6*dt);b.vx=Math.cos(a0+da)*sp;b.vy=Math.sin(a0+da)*sp}}
+  if(b.reso){const f=Math.min(1.8,1+b.t*1.4);b.r=b.r0*f;b.dmg=b.d0*f}
+  if(b.scratch&&b.t>.42){b.scratch=0;b.vx*=-1;b.vy*=-1;b.hit.clear();b.life=Math.max(b.life,.9)}
+  if(b.mag&&b.t>.35&&p){const dx=p.x+p.w/2-b.x,dy=p.y+10-b.y,d=Math.hypot(dx,dy)||1,sp=300;b.vx+=(dx/d*sp-b.vx)*Math.min(1,dt*5);b.vy+=(dy/d*sp-b.vy)*Math.min(1,dt*5);
+   if(d<12&&b.t>.5){b.dead=true;p.ammo.cd=Math.min(AMMO_MAX.cd||40,p.ammo.cd+1);AU.sfx('ammo')}}}
+ const sh=G.bullets.filter(b=>b.shatter&&!b.dead);_ub(dt);
+ for(const b of sh)if(b.dead||!G.bullets.includes(b))for(let k=0;k<4;k++){const a=k*Math.PI/2+.4;G.bullets.push({x:b.x,y:b.y,vx:Math.cos(a)*240,vy:Math.sin(a)*240,kind:'note',dmg:1.1*dmgMul(),life:.35,r:2.5,col:'#a0c8ff',t:0,hit:new Set(),pierce:0})}}}
+{const _u=updatePlay;updatePlay=function(dt){_u(dt);if(G.echoQ.length){const now=G.t;G.echoQ=G.echoQ.filter(q=>{if(q.t>now)return true;if(G.state==='play')G.bullets.push(q.b);return false})}}}
+/* Laser-Mods */
+{const _dm=dmgMul;dmgMul=function(){return _dm()*(G.modDm||1)}}
+{const _fl=fireLaser;fireLaser=function(p,a,dt){G.modDm=modOn('laser','strobe')?1.35:1;const lt=p.laserTick;_fl(p,a,dt);const main=p.laser,after=p.laserTick;p.laserX=null;
+ if(modOn('laser','prism')){p.laserX=[];for(const d of[-.2,.2]){p.laserTick=lt;_fl(p,a+d,dt);p.laserX.push(p.laser)}}p.laser=main;p.laserTick=after;G.modDm=1}}
+{const _up=updatePlayer;updatePlayer=function(dt){const p=G.player;if(p)p.laserX=null;_up(dt);if(!p||G.state!=='play')return;
+ if(p.laser&&curWeapon(p).id==='laser'){if(modOn('laser','cool'))p.heat=Math.max(0,p.heat-dt*.17);if(modOn('laser','strobe'))p.heat=Math.min(1,p.heat+dt*.1)}}}
+{const _dp=drawParts;drawParts=function(cx,cy){_dp(cx,cy);const p=G.player;if(!p||!p.laserX||G.state==='menu')return;for(const L of p.laserX){if(!L)continue;const x0=L.x0-cx,y0=L.y0+cy,x1=L.x1-cx,y1=L.y1+cy;
+ for(const[ctx,w,c] of[[RD.e,2,L.col],[RD.p,1,'#ffffff']]){ctx.strokeStyle=c;ctx.lineWidth=w;ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x1,y1);ctx.stroke()}addL(L.x1,L.y1,24,L.col,.7)}}}
+/* HUD: aktive Mods unter dem Waffennamen */
+{const _h=drawHUD;drawHUD=function(){_h();const p=G.player;if(G.state!=='play'||!p)return;const W=curWeapon(p),on=SAVE.wmod.on[W.id]||[];if(!on.length)return;const S=RD.S;
+ hudText(RD.d,on.map(m=>WMODS[W.id].find(q=>q.id===m).n).join(' + '),11*S,31*S,4.2,'#b6ff3a','left')}}
+/* Panel: Plattenkoffer */
+UI.panels.push('pRack');
+UI.b_pRack=function(){const ws=WEAPONS.filter(weaponUnlocked);
+ $('#pRack').innerHTML=`<div class="subhead"><button class="btn ghost" data-act="back">◂ Zurück</button><h2>Plattenkoffer</h2><span class="spacer"></span><span class="pill gold">Wertmarken <b>${fmtN(SAVE.coins)}</b></span></div><div class="shopwrap">
+ <p class="hint" style="margin:0 0 .6em;text-transform:none;letter-spacing:.03em">Effekte machen jede Waffe anders. Pro Waffe kannst du bis zu <b>zwei</b> Effekte gleichzeitig einschalten.</p>
+ <div class="rack">${ws.map(w=>`<div class="card rk"><h3>${esc(w.name)}</h3><p>${esc(w.desc)}</p>${(WMODS[w.id]||[]).map(m=>{const own=(SAVE.wmod.owned[w.id]||[]).includes(m.id),on=modOn(w.id,m.id);
+   return`<button class="btn mod ${on?'on':''} ${own?'own':''}" data-act="rackmod" data-w="${w.id}" data-m="${m.id}"><div><b>${esc(m.n)}</b><small>${esc(m.d)}</small><span class="mst">${on?'AN':own?'aus · antippen zum Einschalten':m.c+' Wertmarken'}</span></div></button>`}).join('')}</div>`).join('')}
+  ${WEAPONS.filter(w=>!weaponUnlocked(w)).map(w=>`<div class="card rk lock"><h3>🔒 ${esc(w.name)}</h3><p>Wird in Level ${w.unlock+1} freigeschaltet.</p></div>`).join('')}</div></div>`;this.focusFirst($('#pRack'))};
+function rackMod(w,m){const def=WMODS[w].find(q=>q.id===m),own=(SAVE.wmod.owned[w]=SAVE.wmod.owned[w]||[]),on=(SAVE.wmod.on[w]=SAVE.wmod.on[w]||[]);
+ if(!own.includes(m)){if(SAVE.coins<def.c){AU.sfx('deny');toastMsg('Zu wenig Wertmarken – sammle mehr in den Levels oder im Afterhour.');return}SAVE.coins-=def.c;own.push(m);AU.sfx('buy');if(on.length<2)on.push(m)}
+ else if(on.includes(m)){on.splice(on.indexOf(m),1);AU.sfx('ui')}
+ else{if(on.length>=2)on.shift();on.push(m);AU.sfx('uiok')}persist();UI.b_pRack()}
+
+/* ---------------- 2) BEWERTUNG PRO LEVEL ---------------- */
+const RANKS=[{l:'S',m:90,c:'#ffe23a'},{l:'A',m:75,c:'#3aff9a'},{l:'B',m:55,c:'#2ff3ff'},{l:'C',m:35,c:'#c8a8ff'},{l:'D',m:0,c:'#ff8a8a'}];
+const rankOf=sc=>RANKS.find(r=>sc>=r.m);
+{const _sl=startLevel;startLevel=function(i){_sl(i);const L=G.level;G.rk={coins:(L.pickups||[]).filter(k=>k.type==='coin').length,enemies:G.enemies.length}}}
+function calcRank(){const s=G.stats,i=G.li,par=SAVE.par[i]||Math.max(60,(G.level.w||6000)/70);
+ const tP=s.time<=par?30:Math.max(0,30*(1-(s.time-par)/par)),hP=Math.max(0,25-s.hits*4),vP=s.vinyls.filter(Boolean).length*8,
+  cP=11*Math.min(1,s.coins/Math.max(1,G.rk?G.rk.coins:1)),kP=10*Math.min(1,s.kills/Math.max(1,G.rk?G.rk.enemies*.8:1));
+ const sc=Math.round(tP+hP+vP+cP+kP);return{sc,parts:[['Zeit',tP,30],['Treffer',hP,25],['Gold-Vinyls',vP,24],['Wertmarken',cP,11],['K.O.s',kP,10]]}}
+{const _cl=completeLevel;completeLevel=function(){if(G.after)return;const i=G.li,R=calcRank(),old=SAVE.rank[i]||0,rk=rankOf(R.sc);let bonus=0;
+ if(R.sc>old){if(R.sc>=90&&old<90)bonus=500;else if(R.sc>=75&&old<75)bonus=150;SAVE.rank[i]=R.sc}SAVE.coins+=bonus;G.lastRank={i,R,rk,best:Math.max(old,R.sc),bonus,neu:R.sc>old};_cl()}}
+{const _br=UI.b_pResult.bind(UI);UI.b_pResult=function(){_br();const r=this.res,q=G.lastRank;if(!q||q.i!==r.i)return;const card=$('#pResult .card');if(!card)return;
+ card.insertAdjacentHTML('afterbegin',`<div class="rank" style="--rc:${q.rk.c}"><div class="rl">${q.rk.l}</div><div class="rb">${q.R.parts.map(([n,v,m])=>`<div><span>${n}</span><i><b style="width:${Math.round(v/m*100)}%"></b></i></div>`).join('')}
+  <small>${q.R.sc} / 100 Punkte${q.neu&&q.best>0?' · neuer Bestwert':''}${q.bonus?' · +'+q.bonus+' Wertmarken':''}</small></div></div>`)}}
+{const _bt=UI.b_pTour.bind(UI);UI.b_pTour=function(){_bt();document.querySelectorAll('#pTour .node[data-i]').forEach(n=>{const sc=SAVE.rank[+n.dataset.i];if(sc>0){const r=rankOf(sc);n.insertAdjacentHTML('beforeend',`<span class="rk" style="color:${r.c}">${r.l}</span>`)}})}}
+ACH.push({id:'rankS',name:'Headliner-Set',desc:'Hol dir ein S in irgendeinem Level.',rw:600,ok:()=>SAVE.rank.some(v=>v>=90)},{id:'rankAllS',name:'Perfekte Tour',desc:'S in allen 40 Leveln.',rw:20000,ok:()=>SAVE.rank.every(v=>v>=90)});
+
+/* ---------------- 3) AFTERHOUR: endlos, jede Runde ein neu gewürfelter Abschnitt ---------------- */
+const AFTER_KITS=['k_roll','k_bounce','k_gate','k_crumble','k_rain','k_press','k_swing','k_jets','k_wind','k_climb','k_combo','k_swingpress'];
+function afterRng(seed){let s=seed>>>0||7;return()=>(s=(s*1103515245+12345)>>>0)/4294967296}
+function todayKey(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
+function startAfter(daily){const seed=daily?[...todayKey()].reduce((a,c)=>a*31+c.charCodeAt(0)>>>0,7):Math.floor(Math.random()*1e9);
+ G.after={seed,daily,round:0,score:0,lives:3,coins:0,kills:0,r:afterRng(seed)};AU.init();AU.resume();afterRound()}
+function afterRound(){const A=G.after,r=A.r;A.round++;const pool=LEVELS.map((_,i)=>i).filter(i=>SAVE.completed[i]);if(!pool.length)pool.push(0);
+ const win=Math.min(pool.length,3+A.round*2),li=pool[Math.floor(r()*win)],th=LEVELS[li].theme,T=TOURS[th],bak=T.z.map(z=>z.s);
+ const kits=AFTER_KITS.slice(0,Math.min(12,li+2)),pick=()=>kits[Math.floor(r()*kits.length)],n=2+Math.min(3,Math.floor(A.round/2));
+ T.z.forEach((z,k)=>{const s=[];for(let q=0;q<n;q++)s.push(pick());if(k===1)s.splice(1,0,UPPER[Math.floor(r()*UPPER.length)]);if(k===2&&A.round%3===0)s.splice(1,0,UPPER[Math.floor(r()*UPPER.length)]);z.s=s});
+ try{startLevel(li)}finally{T.z.forEach((z,k)=>z.s=bak[k])}
+ const L=G.level;L.pickups=L.pickups.filter(k=>k.type!=='gold');G.player.hp=Math.min(G.player.maxHp,G.player.hp);if(A.hp!=null)G.player.hp=A.hp;
+ $('#introCard').classList.remove('on');UI.toast('AFTERHOUR · Runde '+A.round+' · '+(LEVELS[li].short||LEVELS[li].club));}
+function afterTick(){const A=G.after,L=G.level,p=G.player;if(!A||!L||!p||G.state!=='play')return;
+ if(L.arena&&p.x>L.arena.x-170){const bonus=1000+A.round*250+Math.max(0,Math.round(600-G.stats.time*4));A.score+=bonus+G.stats.coins*5+G.stats.kills*25;A.coins+=G.stats.coins;A.kills+=G.stats.kills;
+  A.hp=Math.min(p.maxHp,p.hp+1);AU.sfx('vinylGet');popup(p.x,p.y-12,'RUNDE '+A.round+' · +'+bonus,'#ffe23a',true);afterRound()}}
+{const _u=updatePlay;updatePlay=function(dt){_u(dt);afterTick()}}
+{const _h=drawHUD;drawHUD=function(){_h();const A=G.after;if(!A||G.state!=='play')return;const d=RD.d,S=RD.S,W=RD.W;d.save();d.fillStyle='rgba(8,4,20,.75)';d.fillRect(W/2-70*S,RD.H-30*S,140*S,16*S);
+ hudText(d,'AFTERHOUR · RUNDE '+A.round+' · '+fmtN(A.score+G.stats.coins*5+G.stats.kills*25)+' P · '+'♥'.repeat(Math.max(0,A.lives)),W/2,RD.H-19*S,5,'#ffe23a','center');d.restore()}}
+{const _rp=respawnPlayer;respawnPlayer=function(){const A=G.after;if(A){A.lives--;if(A.lives<=0){afterOver();return}UI.toast('Noch '+A.lives+(A.lives===1?' Leben':' Leben')+' in der Afterhour')}_rp()}}
+function afterOver(){const A=G.after;A.score+=G.stats.coins*5+G.stats.kills*25;A.coins+=G.stats.coins;A.kills+=G.stats.kills;G.state='over';IN.clear();UI.showTouch(false);AU.muffle(true);
+ const S=SAVE.after,newBest=A.score>S.best;if(newBest){S.best=A.score;S.bestRound=A.round}let dailyBest=false;if(A.daily){if(S.daily.d!==todayKey())S.daily={d:todayKey(),best:0};if(A.score>S.daily.best){S.daily.best=A.score;dailyBest=true}}
+ persist();A.newBest=newBest;A.dailyBest=dailyBest;UI.show('pAfterEnd')}
+{const _gm=goMenu;goMenu=function(){G.after=null;return _gm()}}
+UI.panels.push('pAfter','pAfterEnd');
+UI.b_pAfter=function(){const S=SAVE.after,dOk=S.daily.d===todayKey();
+ $('#pAfter').innerHTML=`<div class="card box" style="max-width:min(40em,94vw)"><span class="lab">Endlos-Modus</span><h2>Afterhour</h2>
+  <p style="margin:0;line-height:1.45">Die Party hört nicht auf: Jede Runde ist ein neu gewürfelter Abschnitt aus einem Club, den du schon gerettet hast – mit dessen Regeln. Es wird immer schwerer. Du hast <b>3 Leben</b>, nach jeder Runde gibt es 1 Energie zurück.</p>
+  <div class="res"><div><span class="lab">Bestwert</span><b>${S.best}</b></div><div><span class="lab">Weiteste Runde</span><b>${S.bestRound||0}</b></div><div><span class="lab">Heute</span><b>${dOk?S.daily.best:0}</b></div></div>
+  <div class="brow"><button class="btn" data-act="aftergo" data-d="1" data-focus><div>Tages-Afterhour<small>Für alle gleich – heute ${esc(todayKey())}</small></div></button><button class="btn" data-act="aftergo" data-d="0"><div>Freie Afterhour<small>Jedes Mal anders</small></div></button></div>
+  <div class="brow"><button class="btn ghost" data-act="back"><div>◂ Zurück</div></button></div></div>`};
+UI.b_pAfterEnd=function(){const A=G.after||{score:0,round:0,coins:0,kills:0};
+ $('#pAfterEnd').innerHTML=`<div class="card box over" style="--gc:#ff2fd6"><span class="lab">Afterhour vorbei · ${A.daily?'Tages-Afterhour':'Freie Afterhour'}</span><h2>Licht an!</h2>
+  <div class="res"><div><span class="lab">Punkte</span><b style="color:var(--gold)">${A.score}</b>${A.newBest?'<span class="lab" style="color:var(--lime)">Neuer Bestwert!</span>':''}</div><div><span class="lab">Runden</span><b>${A.round}</b></div><div><span class="lab">K.O.s</span><b>${A.kills}</b></div><div><span class="lab">Wertmarken</span><b>+${A.coins}</b></div></div>
+  ${A.dailyBest?'<div class="rew"><div class="o">Neuer Tagesbestwert!</div></div>':''}
+  <div class="brow"><button class="btn" data-act="aftergo" data-d="${A.daily?1:0}" data-focus><div>Nochmal</div></button><button class="btn ghost" data-act="menu"><div>Hauptmenü</div></button></div></div>`};
+{const _b=UI.back;UI.back=function(){if(this.cur==='pAfterEnd')return;return _b.call(this)}}
+
+/* ---------------- 4) ABSPANN: der Techno ist gerettet ---------------- */
+const OUTRO=[
+ {d:6,t:'Es ist geschafft. Alle 40 Bosse haben die Seiten gewechselt.',s:'o_bosses'},
+ {d:6,t:'König Kommerz hat sich Ohrstöpsel gekauft … und wippt heimlich mit.',s:'o_king'},
+ {d:6,t:'Von der Distillery bis in den Orbit: Überall läuft wieder Techno.',s:'o_map'},
+ {d:6,t:'Und unser Held? Hat endlich sein Wasser geholt.',s:'o_hero'},
+ {d:6.5,t:'',s:'o_end'}];
+function showOutro(){UI.show('pIntro');IN2.list=OUTRO;IN2.onDone=()=>{IN2.list=null;IN2.onDone=null;AU.play(menuSong());UI.show('pEnding')};AU.play(songForLevel(NLV-1,'level'));AU.genreAmt=0;AU.techAmt=1}
+{const _it=introTick;introTick=function(dt){if(!IN2.list)return _it(dt);if(!IN2.cv)return;IN2.t+=dt;let sc=IN2.list[IN2.si];
+ if(IN2.t>sc.d){IN2.t=0;IN2.si++;IN2.typed=0;if(IN2.si>=IN2.list.length){IN2.cv=null;IN2.onDone();return}sc=IN2.list[IN2.si];AU.sfx(sc.s==='o_end'?'buy':'checkpoint')}
+ IN2.typed=Math.min(sc.t.length,IN2.typed+dt*48);const cap=$('#icap');if(cap)cap.textContent=sc.t.slice(0,Math.floor(IN2.typed));drawOutro(IN2.cv,sc.s,IN2.t,sc.d)}}
+{const _if=introFinish;introFinish=function(){if(IN2.list&&IN2.onDone){const f=IN2.onDone;IN2.cv=null;f();return}return _if()}}
+function drawOutro(cv,s,t,d){const x=cv.getContext('2d'),W=480,H=270;x.imageSmoothingEnabled=false;const T=performance.now()/1000,beat=T*2.13,pul=Math.pow(1-(beat%1),3);
+ const sky=(a,b)=>{const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,a);g.addColorStop(1,b);x.fillStyle=g;x.fillRect(0,0,W,H)};
+ const lasers=()=>{x.save();x.globalCompositeOperation='lighter';for(let k=0;k<8;k++){const a=Math.sin(T*1.2+k)*.9;x.strokeStyle=['#ff2fd6','#2ff3ff','#ffe23a','#3aff9a'][k%4];x.globalAlpha=.3;x.lineWidth=2;x.beginPath();x.moveTo(W/2,8);x.lineTo(W/2+Math.sin(a)*520,8+Math.cos(a)*520);x.stroke()}x.restore()};
+ const fireworks=()=>{for(let k=0;k<5;k++){const ph=((T*.6+k*.37)%1),cx=60+k*90,cy=40+((k*37)%50),r=ph*40;x.globalAlpha=1-ph;for(let q=0;q<12;q++){const a=q/12*Math.PI*2;x.fillStyle=['#ff2fd6','#ffe23a','#2ff3ff','#3aff9a','#ffffff'][(k+q)%5];x.fillRect(cx+Math.cos(a)*r,cy+Math.sin(a)*r,3,3)}x.globalAlpha=1}};
+ switch(s){
+  case'o_bosses':{sky('#1a0630','#05020c');lasers();x.fillStyle='#120a20';x.fillRect(0,220,W,50);const keys=LEVELS.map(l=>l.genre);
+   const shown=Math.min(keys.length,Math.floor(t*9)+1);for(let k=0;k<shown;k++){const row=k%2,col=Math.floor(k/2),bx=10+col*23.5,by=150+row*48,jump=((beat+k*.29)%1)<.35?-4:0;
+    x.save();x.translate(bx,by+jump);x.scale(.62,.62);drawBig(x,null,0,0,{look:BOSSES[keys[k]].look,facing:k%2?1:-1,t:T+k,pose:'idle',pulse:pul});x.restore()}
+   x.fillStyle='#ffffff';x.font='10px Silkscreen, monospace';x.textAlign='center';x.fillText(shown+' / '+keys.length+' BOSSE TANZEN TECHNO',W/2,30);x.textAlign='left';break}
+  case'o_king':{sky('#2a0a3a','#0a0414');lasers();x.fillStyle='#1a0e2a';x.fillRect(0,215,W,55);const sw=Math.sin(T*4.26)*6;x.save();x.translate(W/2-20+sw,140);drawBig(x,null,0,0,{look:BOSSES.kommerz.look,facing:1,t:T,pose:'idle',pulse:pul});x.restore();
+   x.fillStyle='#ffe23a';x.fillRect(W/2-14+sw,138,6,6);x.fillRect(W/2+16+sw,138,6,6);x.fillStyle='#2ff3ff';x.fillRect(W/2-14+sw,132,36,3);
+   for(let k=0;k<6;k++){const ph=(T*1.5+k*.4)%2;x.fillStyle='#ffffff';x.globalAlpha=Math.max(0,1-ph/2);x.font='12px Silkscreen, monospace';x.fillText('♪',W/2+40+k*8+ph*20,130-ph*40);x.globalAlpha=1}break}
+  case'o_map':{sky('#05030c','#0a0618');const img=MAPIMG_OUT||(MAPIMG_OUT=Object.assign(new Image(),{src:pixelMapURL(-1,2)}));if(img.complete)x.drawImage(img,40,30,400,200);
+   const n=Math.min(NLV,Math.floor(t*8));for(let k=0;k<n;k++){const g=k<20?null:LEVELS[k].geo;let px,py;if(k>=20&&k<30){const q=wgeoP(g[0],g[1]);px=40+q[0]/WGEO.W*400;py=30+q[1]/WGEO.H*200}else{px=40+((k*97)%380);py=40+((k*53)%180)}
+    const r=3+2*pul;x.fillStyle=['#ff2fd6','#2ff3ff','#ffe23a','#3aff9a'][k%4];x.fillRect(px-r/2,py-r/2,r,r)}break}
+  case'o_hero':{sky('#120628','#050210');lasers();fireworks();x.fillStyle='#1a0e2a';x.fillRect(0,200,W,70);
+   for(let k=0;k<12;k++){const lx=10+k*39,look=NPCLOOKS[k%NPCLOOKS.length],jump=((beat+k*.37)%1)<.4?-3:0;x.save();x.translate(Math.round(lx),Math.round(176+jump*2+(k%3)*4));x.scale(2,2);drawHumanoid(x,null,0,0,{look,facing:k%2?1:-1,anim:'dance',t:T+k,pulse:pul});x.restore()}
+   x.save();x.translate(W/2-12,120);x.scale(3,3);drawHumanoid(x,null,0,0,{look:playerLook(),facing:1,anim:'dance',t:T,pulse:pul});x.restore();x.fillStyle='#8ae8ff';x.fillRect(W/2+22,150,6,12);x.fillStyle='#ffffff';x.fillRect(W/2+22,150,6,2);break}
+  case'o_end':{sky('#120628','#050210');lasers();fireworks();if(!IN2.lg){IN2.lg=document.createElement('canvas');IN2.lg.width=540;IN2.lg.height=176}drawLogo(IN2.lg,T,EQ);x.drawImage(IN2.lg,W/2-170,40,340,111);
+   x.textAlign='center';x.fillStyle='#ffe23a';x.font='16px Silkscreen, monospace';x.fillText('DER TECHNO IST GERETTET!',W/2,186);x.fillStyle='#c8bce8';x.font='8px Silkscreen, monospace';x.fillText('40 LEVEL · 40 BOSSE · 1 BEAT',W/2,206);x.fillText('DANKE FÜRS SPIELEN!',W/2,222);x.textAlign='left';break}}}
+let MAPIMG_OUT=null;
+/* Aktionen */
+{const _a=UI.act;UI.act=function(a,el){
+ if(a==='rack'){this.sub('pRack');return}if(a==='rackmod'){rackMod(el.dataset.w,el.dataset.m);return}
+ if(a==='afterhour'){if(!SAVE.gameDone){AU.sfx('deny');toastMsg('Die Afterhour öffnet nach dem Berghain-Finale.');return}this.sub('pAfter');return}
+ if(a==='aftergo'){UI.hideAll();startAfter(el.dataset.d==='1');return}
+ if(a==='ending'&&this.res&&this.res.finale===4){showOutro();return}
+ if(a==='outro'){showOutro();return}
+ return _a.call(this,a,el)}}
+/* Abspann im Finale-Bildschirm erneut ansehen */
+{const _be=UI.b_pEnding;UI.b_pEnding=function(){_be.call(this);if(this.res&&this.res.finale===4){const b=$('#pEnding .brow');if(b)b.insertAdjacentHTML('beforeend','<button class="btn ghost" data-act="outro"><div>Abspann nochmal</div></button>')}}}
 
 /* ================= INPUT ================= */
 const KEYMAP={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',ArrowDown:'down',KeyS:'down',ArrowUp:'jump',KeyW:'jump',Space:'jump',
