@@ -2725,10 +2725,8 @@ function updateMovers(dt){
    if(v.mode==='h')m.x=v.ox+Math.sin(v.t*v.sp+v.ph)*v.amp;else m.y=v.oy+Math.sin(v.t*v.sp+v.ph)*v.amp;
    m.dx=m.x-ox;m.dy=m.y-oy;
    if(p&&!p.dead&&p.ground===m&&p.onGround){p.x+=m.dx;p.y=m.y-p.h}}
-  else if(m.cr){const c=m.cr;
-   if(c.st===0&&p&&p.ground===m&&p.onGround){c.st=1;c.t=0}
-   if(c.st===1){c.t+=dt;if(c.t>.5){c.st=2;c.t=0;m.off=true;if(p)AU.sfx('land')}}
-   else if(c.st===2){c.t+=dt;m.y=c.oy+c.t*c.t*200;if(c.t>2.6){c.st=0;m.off=false;m.y=c.oy}}}
+  else if(m.cr){const c=m.cr,on=p&&!p.dead&&p.ground===m&&p.onGround,oy=m.y;   // Sinkplatte: gibt unter dir nach, verschwindet aber nie
+   m.off=false;c.st=on?1:0;m.y=approach(m.y,on?c.oy+(c.max||30):c.oy,(on?34:26)*dt);m.dy=m.y-oy;if(on)p.y=m.y-p.h}
   else if(m.pad){m.padT=Math.max(0,m.padT-dt);
    if(p&&!p.dead&&p.ground===m&&p.onGround&&p.vy>=0){p.vy=-485;p.onGround=false;p.ground=null;p.jumps=1;p.noCut=true;p.y-=1;m.padT=.3;AU.sfx('djump');
     burst(m.x+12,m.y,10,[G.level.th.accent,'#ffffff'],{a:-Math.PI/2,spread:1.6,speed:90,g:100,life:.4,em:true})}}
@@ -2788,10 +2786,10 @@ function drawDyn(L,cx,cy,beat,pulse){
    if(st.led){const c=L.th.spots[Math.floor(beat*2)%L.th.spots.length];p.fillStyle=c;e.fillStyle=c;p.fillRect(X,Y+5,w,1);e.fillRect(X,Y+5,w,1);addL(m.x+w/2,m.y+6,24,c,.5)}
    if(tk==='kater'){p.fillStyle='#fff0a0';e.fillStyle='#fff0a0';p.fillRect(X+2,Y+1,1,1);p.fillRect(X+w-3,Y+1,1,1);e.fillRect(X+2,Y+1,1,1)}
    e.fillStyle=L.th.accent;e.globalAlpha=.6;e.fillRect(X,Y,w,1);e.globalAlpha=1}
-  else if(m.cr){const c=CRCOL[tk]||'#6a6a74',sh=m.cr.st===1?Math.round((Math.random()-.5)*2):0,X=sx+sh,Y=sy;
-   if(Y>VH+10)continue;p.fillStyle=c;p.fillRect(X,Y,m.w,6);p.fillStyle=shade(c,.3);p.fillRect(X,Y,m.w,1);p.fillStyle=shade(c,-.45);
-   p.fillRect(X+8,Y+1,1,3);p.fillRect(X+9,Y+3,2,1);p.fillRect(X+22,Y+2,1,4);p.fillRect(X+23,Y+1,3,1);p.fillRect(X,Y+5,m.w,1);
-   if(m.cr.st===1){p.fillStyle='#ffffff';p.fillRect(X+Math.floor(Math.random()*m.w),Y+6,1,1)}}
+  else if(m.cr){const c=CRCOL[tk]||'#6a6a74',X=sx,Y=sy,dn=m.y-m.cr.oy;
+   p.fillStyle=shade(c,-.5);for(let q=0;q<dn+6;q+=3){p.fillRect(X+3,Y+6+q,1,2);p.fillRect(X+m.w-4,Y+6+q,1,2)}
+   p.fillStyle=c;p.fillRect(X,Y,m.w,6);p.fillStyle=shade(c,.3);p.fillRect(X,Y,m.w,1);p.fillStyle=shade(c,-.45);p.fillRect(X,Y+5,m.w,1);
+   const ac=m.cr.st===1?'#ff7a3a':'#3aff9a';p.fillStyle=ac;e.fillStyle=ac;for(let q=6;q<m.w-6;q+=8){p.fillRect(X+q,Y+2,3,1);e.fillRect(X+q,Y+2,3,1)}}
   else if(m.pad){const X=sx,Y=sy,sq=m.padT>0?2:0,ac=L.th.accent;
    p.fillStyle='#0c0c10';p.fillRect(X,Y,m.w,m.h);p.fillStyle='#26262e';p.fillRect(X+1,Y+1,m.w-2,m.h-1);
    p.fillStyle='#3a3a44';p.fillRect(X+3,Y-1-sq+(m.padT>0?0:Math.round(pulse)),m.w-6,2);p.fillStyle=ac;e.fillStyle=ac;p.fillRect(X+3,Y+m.h-3,m.w-6,1);e.fillRect(X+3,Y+m.h-3,m.w-6,1);
@@ -3789,7 +3787,7 @@ const ZUNIQ={
 /* ---------- Ablauf: Schritt für Schritt neue Elemente, am Ende schwer ---------- */
 const INTRO=['k_roll','k_bounce','k_gate','k_crumble','k_rain','k_press','k_swing','k_jets','k_wind','k_climb','k_combo','k_swingpress'];
 const KHINT={k_roll:'NEU: Rollende Hindernisse – im richtigen Moment drüberspringen!',k_bounce:'NEU: Sprungboxen – drauf landen und hoch hinaus!',
- k_gate:'NEU: Schranken – warte, bis das Licht grün ist!',k_crumble:'NEU: Bröckelplattformen – nicht stehen bleiben!',
+ k_gate:'NEU: Schranken – warte, bis das Licht grün ist!',k_crumble:'NEU: Sinkplatten – sie sacken unter dir ab. Nicht trödeln, sonst wird der nächste Sprung zu hoch!',
  k_rain:'NEU: Fallende Objekte – achte auf die rote Markierung am Boden!',k_press:'NEU: Pressen – loslaufen, sobald sie oben sind!',
  k_swing:'NEU: Schaukeln – springen, wenn sie sich nahekommen!',k_jets:'NEU: Düsen – CO2 schleudert dich hoch, Feuer tut weh!',
  k_wind:'NEU: Gebläse – gegen den Wind mit kurzen Sprüngen!',k_climb:'NEU: Aufzüge und Mauern – mit dem Lift nach oben!',
@@ -3937,7 +3935,7 @@ function updatePlayer(dt){
  else if(p.coyote<=0&&p.jumps===0)p.jumps=1;
  // sichere Position
  p.safeT-=dt;if(p.onGround&&p.safeT<=0&&p.ground&&p.ground.kind!=='gate'&&!p.ground.dyn&&groundAt(p.x+1,p.y+p.h+1)&&groundAt(p.x+p.w-1,p.y+p.h+1)){p.lastSafe={x:p.x,y:p.y};p.safeT=.25}
- if(p.y>VH+12&&!(p.med&&p.med.type==='water'))pitFall(p);
+ if(p.y>VH+12&&!(typeof belowOK==='function'&&belowOK(p)))pitFall(p);
  // Schießen
  const W=curWeapon(p);p.laser=null;
  const shooting=IN.act('shoot')||IN.mouse.down||IN.padShoot;
@@ -4074,7 +4072,7 @@ function updateEnemies(dt){
     break}
    case'hopper':{
     e.vy+=800*dt;if(e.onGround){e.vx=approach(e.vx,0,700*dt);if(e.cool<=0&&dist<230){e.vy=-250;e.vx=(dx>0?1:-1)*(80+G.li*4);e.cool=1.1+Math.random()*.8}}
-    moveBody(e,dt);e.facing=dx>0?1:-1;if(e.y>VH+30)killEnemy(e,true);break}
+    moveBody(e,dt);e.facing=dx>0?1:-1;if(e.y>VH+30&&!(typeof belowOK==='function'&&belowOK(e)))killEnemy(e,true);break}
    case'flyer':{
     e.x+=clamp(dx,-1,1)*(28+G.li*2)*dt*(Math.abs(dx)>40?1:-.4);e.y=e.baseY+Math.sin(e.t*2.2)*12;e.facing=dx>0?1:-1;
     if(dist<210&&e.cool<=0&&!p.dead){e.cool=2.6-G.li*.08;spawnEB(e.x+6,e.y+8,Math.atan2(dy,dx),105+G.li*5,e.g.proj,{r:3});AU.sfx('eshoot')}break}
@@ -4127,7 +4125,7 @@ function updatePickups(dt){
  const p=G.player,mag=hasSkill('v2');
  for(const k of G.pickups){
   if(k.taken)continue;k.t=(k.t||0)+dt;
-  if(k.dyn){k.vy+=500*dt;k.x+=k.vx*dt;k.vx*=Math.pow(.2,dt);const ny=k.y+k.vy*dt;if(k.vy>0&&groundAt(k.x,ny+3)){k.vy=-k.vy*.35;if(Math.abs(k.vy)<30){k.vy=0;k.dyn=false;k.y=Math.floor(ny)-1}}else k.y=ny;if(k.y>VH+20)k.taken=true}
+  if(k.dyn){k.vy+=500*dt;k.x+=k.vx*dt;k.vx*=Math.pow(.2,dt);const ny=k.y+k.vy*dt;if(k.vy>0&&groundAt(k.x,ny+3)){k.vy=-k.vy*.35;if(Math.abs(k.vy)<30){k.vy=0;k.dyn=false;k.y=Math.floor(ny)-1}}else k.y=ny;if(k.y>VH+20&&!(typeof belowOK==='function'&&belowOK({x:k.x-2,y:k.y,w:4})))k.taken=true}
   if(p.dead)continue;
   const px=p.x+p.w/2,py=p.y+p.h/2,d=Math.hypot(px-k.x,py-k.y);
   if(((mag&&d<80)||(k.type==='coin'&&d<22))&&k.t>.3){const s=(mag?260:180)*dt;k.x+=(px-k.x)/d*s;k.y+=(py-k.y)/d*s;k.dyn=false}
@@ -4817,6 +4815,7 @@ const UI={
   box.innerHTML=`<span class="lab">Level ${i+1} · ${esc(L.city)}${L.abroad?' · '+esc(L.abroad):''} · ${esc(L.since)}</span><h3>${esc(L.club)}</h3><p>${esc(L.fact)}</p>${(()=>{const P=typeof PLAN!=='undefined'&&PLAN[L.theme],T=P&&LTYPE[P.t],pa=[];if(T)pa.push(`<b style="color:${T.c}">${T.n}</b>`);if(P)pa.push(`<b style="color:#ffe23a">★ ${esc(P.en)}</b>`);
     if(typeof GIM!=='undefined')for(const g of GIM[L.theme]||[]){if(P&&(P.t==='fahrt'||P.t==='beat')&&(g==='chase'||g==='timer'||g==='train'))continue;pa.push(`<b style="color:${GIMDEF[g].c}">${gimName(L.theme,g)}</b>`)}
     if(typeof SETS!=='undefined'&&SETS[L.theme])for(const S of SETS[L.theme])pa.push('<b style="color:'+(S.k==='cl'?'#ffb13d':S.k==='dv'?'#6ad8ff':'#c8a0ff')+'">'+(S.k==='cl'?'▲ ':S.k==='dv'?'≈ ':'✦ ')+S.n.toUpperCase()+'</b>');
+    if(typeof UGS!=='undefined'&&UGS[L.theme]){const U=UGS[L.theme];pa.push('<b style="color:#d8b080">▼ '+U.n.toUpperCase()+(U.dep>1?' (2 EBENEN)':'')+'</b>')}
     if(P&&P.mb)pa.push('<b style="color:#c8bce8">ZWISCHENBOSS</b>');if(P&&P.x&&SAVE.sexit&&SAVE.sexit[i])pa.push('<b style="color:#ffe23a">GEHEIMAUSGANG ✓</b>');
     return pa.length?`<p class="gimrow">${pa.join(' · ')}</p>`:''})()}
    ${tr?`<div class="route">${[tr.out].concat(tr.z,[tr.boss]).map((z,k,a)=>`<span${k===a.length-1?' class="b"':''}>${esc(z.n)}</span>`).join('<i>▸</i>')}</div>`:''}
@@ -6531,8 +6530,8 @@ function sideOf(x0,x1){const p=G.player;if(!p||!p.onGround||!p.ground||p.ground.
 function runLight(H,x,n,gap,y0,sty){const L=H.L,ev={x0:x,x1:x+n*gap,dir:1,n};for(let q=0;q<n;q++){const m={x:x+q*gap+4,y:y0-((q%2)*16),w:gap-12,h:6,type:'oneway',kind:'runlight',dyn:true,dx:0,dy:0,q,ev,sty};
  m.upd=rlUpd;m.draw=rlDraw;L.solids.push(m);L.movers.push(m)}return ev}
 function rlIdx(ev){const rt=[.5,.75,1][clamp((SAVE.opts.diff===undefined?1:SAVE.opts.diff)|0,0,2)];return Math.floor(AU.beat()*rt)%(ev.n+4)}
-function rlUpd(m,dt,p){const ev=m.ev;if(m.q===0){const s=sideOf(ev.x0,ev.x1);if(s)ev.dir=s}const i=rlIdx(ev),k=ev.dir>0?m.q:ev.n-1-m.q,on=k<=i&&k>i-4;m.off=!on;m.nx=k===i+1;if(!on&&p&&p.ground===m){p.ground=null;p.onGround=false}}
-function rlDraw(p,e,X,Y,m,beat){const ac=G.level.th.accent,on=!m.off,fr=beat%1;p.fillStyle='#2a2a30';p.fillRect(X,Y+4,m.w,4);
+function rlUpd(m,dt,p){const ev=m.ev;if(m.q===0){const s=sideOf(ev.x0,ev.x1);if(s)ev.dir=s}const i=rlIdx(ev),k=ev.dir>0?m.q:ev.n-1-m.q,on=k<=i&&k>i-4;m.off=false;m.lit=on;m.nx=k===i+1;if(m.oy===undefined)m.oy=m.y;{const oy=m.y;m.y=approach(m.y,m.oy+(on?0:26),140*dt);m.dy=m.y-oy;if(p&&!p.dead&&p.ground===m&&p.onGround)p.y=m.y-p.h}if(false){p.ground=null;p.onGround=false}}
+function rlDraw(p,e,X,Y,m,beat){const ac=G.level.th.accent,on=m.lit!==false,fr=beat%1;p.fillStyle='#2a2a30';p.fillRect(X,Y+4,m.w,4);
  if(on){const c=m.sty==='white'?'#ffffff':ac;p.fillStyle=c;e.fillStyle=c;p.fillRect(X,Y,m.w,4);e.fillRect(X,Y,m.w,3);addL(m.x+m.w/2,m.y,26,c,.7)}
  else{p.fillStyle=m.nx&&fr>.5?rgba(ac,.6):'rgba(255,255,255,.15)';p.fillRect(X,Y,m.w,2)}
  if(m.sty==='seq'){p.fillStyle=on?'#ff3030':'#4a1010';p.fillRect(X+m.w/2-1,Y+5,2,2)}}
@@ -6879,7 +6878,7 @@ const LTYPE={
  fahrt:{n:'FAHRT',d:'Das Bild läuft von allein weiter – bleib im Bild, sonst wirst du geschoben!',c:'#b6ff3a'},
  beat:{n:'MUSIK-LEVEL',d:'Alles läuft im Takt: Plattformen und Laser schalten auf den Beat. Hör hin!',c:'#ff2fd6'},
  expedition:{n:'EXPEDITION',d:'Das große Finale der Karte: vier Bereiche, zwei Highlights.',c:'#ffb13d'}};
-const EVDEF={drop:'DROP',konvoi:'KONVOI',einsturz:'EINSTURZ',flut:'FLUT',tuer:'TÜRSTEHER',crowd:'CROWDSURFING',kanone:'KANONE',seilbahn:'SEILBAHN',laser:'LASER IM TAKT'};
+const EVDEF={drop:'DROP',konvoi:'KONVOI',einsturz:'ABRISS',flut:'FLUT',tuer:'TÜRSTEHER',crowd:'CROWDSURFING',kanone:'KANONE',seilbahn:'SEILBAHN',laser:'LASER IM TAKT'};
 const FOES={schild:{n:'TÜRSTEHER-TYPEN',d:'blocken Schüsse von vorn – von oben oder hinten erwischen!'},sprinter:{n:'SPRINTER',d:'stürmen los, wenn sie dich sehen.'},
  teiler:{n:'CLIQUEN',d:'kommen nie allein – getroffen teilen sie sich auf.'},blitzer:{n:'SELFIE-JÄGER',d:'blenden dich mit dem Handyblitz.'}};
 
@@ -6887,7 +6886,7 @@ const FOES={schild:{n:'TÜRSTEHER-TYPEN',d:'blocken Schüsse von vorn – von ob
 const PLAN={
  distillery:{t:'klassik',f:'roll',e:'drop',en:'Bass-Drop im Keller',et:'Beim Drop bebt der Boden – sei in der Luft oder auf einer Box!',mb:1},
  rj:{t:'suche',f:'bounce',e:'konvoi',es:'raft',en:'Flöße auf dem Main',et:'Spring von Floß zu Floß – sie treiben flussabwärts!',rn:'PLATTEN',rt:'Drei Platten sind beim Aufbau verschwunden'},
- omen:{t:'klassik',f:'gate',e:'einsturz',es:'concrete',en:'Die letzte Nacht',et:'Das Omen wird abgerissen – renn, bevor der Boden nachgibt!',mb:1,a:'einsturz',foe:'schild',x:1},
+ omen:{t:'klassik',f:'gate',e:'einsturz',es:'concrete',en:'Die Abrissbirnen',et:'Das Omen wird abgerissen – reite auf den Abrissbirnen über die Baugrube!',mb:1,a:'einsturz',foe:'schild',x:1},
  bootshaus:{t:'flucht',f:'crumble',e:'kanone',es:'pyro',en:'Pyro-Kanone',et:'Stell dich in die Kanone – ab über das Hafenbecken!',foe:'sprinter'},
  blitz:{t:'sprint',f:'rain',e:'crowd',en:'Wiesn-Gedränge',et:'Unten kommt keiner durch – surf über die Köpfe!'},
  ms:{t:'beat',f:'press',e:'drop',en:'Stahlwerk-Drop',et:'Beim Drop stampft das Stahlwerk – rauf auf die Plattformen!',foe:'schild',x:1},
@@ -6899,7 +6898,7 @@ const PLAN={
  loveparade:{t:'fahrt',f:'combo',e:'konvoi',es:'float',en:'Truck-Hopping',et:'Spring von Wagen zu Wagen!',foe:'sprinter'},
  fusion:{t:'suche',f:'sp',e:'kanone',es:'co2',en:'Startrampe',et:'Der alte Militärflughafen: ab in die Startrampe!',mb:1,foe:'teiler',x:1,rn:'ZELTE',rt:'Finde die drei Zelte deiner Crew'},
  melt:{t:'klassik',f:'wind',e:'seilbahn',es:'bagger',en:'Baggerschaufel',et:'Steig in die Schaufel – sie trägt dich über den See!',a:'beweglich',foe:'blitzer'},
- natureone:{t:'sprint',f:'crumble',e:'einsturz',es:'bunker',en:'Der Bunker bröckelt',et:'Die alte Raketenbasis stürzt ein – nichts wie raus!',foe:'sprinter'},
+ natureone:{t:'sprint',f:'crumble',e:'einsturz',es:'bunker',en:'Die Lastenhaken',et:'Über dem Bunkerschacht schwingen die alten Lastenhaken – spring von Haken zu Haken!',foe:'sprinter'},
  timewarp:{t:'beat',f:'jets',e:'laser',en:'Laser-Kathedrale',et:'Die Laser schalten im Takt – lauf mit der Welle!',x:1},
  parooka:{t:'flucht',f:'roll',e:'konvoi',es:'cart',en:'Gepäckwagen',et:'Die Gepäckwagen rollen übers Rollfeld – aufspringen!',foe:'blitzer'},
  kappa:{t:'klassik',f:'press',e:'seilbahn',es:'crane',en:'Kran im Parco Dora',et:'Häng dich an den Kran – er fährt über die Stahlpfeiler!',mb:1,a:'einsturz',foe:'sprinter'},
@@ -6915,15 +6914,15 @@ const PLAN={
  newyork:{t:'sprint',f:'gate',e:'tuer',en:'Geheime Warehouse-Party',et:'Vorne kommt keiner rein – über die Feuertreppe aufs Dach!',foe:'schild'},
  saopaulo:{t:'flucht',f:'crumble',e:'crowd',en:'Karneval',et:'Die Straße ist voller Tänzer – surf über die Köpfe!',foe:'teiler',x:1},
  tokyo:{t:'klassik',f:'climb',e:'drop',en:'Discokugel-Drop',et:'Beim Drop bebt der Floor – sei in der Luft!',mb:1,a:'einsturz',foe:'blitzer'},
- karoo:{t:'suche',f:'wind',e:'einsturz',es:'wood',en:'Die Skulptur brennt',et:'Die Holzskulptur fällt in sich zusammen – lauf!',foe:'sprinter',rn:'KUNSTWERKE',rt:'Drei kleine Kunstwerke für den großen Burn'},
+ karoo:{t:'suche',f:'wind',e:'einsturz',es:'wood',en:'Die brennenden Balken',et:'Die Holzskulptur brennt – schwing dich über die glühenden Balken!',foe:'sprinter',rn:'KUNSTWERKE',rt:'Drei kleine Kunstwerke für den großen Burn'},
  tempelhof:{t:'expedition',f:'combo',e:'konvoi',es:'cart',en:'Gepäckband',et:'Die Gepäckwagen rollen – aufspringen!',e2:'kanone',es2:'plane',en2:'Katapultstart',et2:'Ab auf die Startbahn – du wirst katapultiert!',mb:1,a:'beweglich',foe:'schild',
   z4:['Vorfeld','Auf dem Vorfeld standen einst die Rosinenbomber der Luftbrücke.']},
  era74:{t:'beat',f:'roll',e:'laser',en:'Oszilloskop',et:'Die Wellen schalten im Takt – lauf mit!'},
  era77:{t:'klassik',f:'bounce',e:'drop',en:'Disco-Drop',et:'Beim Drop explodiert der Leuchtboden – sei in der Luft!',mb:1,a:'beweglich',foe:'blitzer'},
  era85:{t:'fahrt',f:'rain',e:'konvoi',es:'train',en:'Hochbahn-Waggons',et:'Spring von Waggon zu Waggon!',foe:'schild',x:1},
- era88:{t:'sprint',f:'press',e:'einsturz',es:'concrete',en:'Die Fabrik bricht zusammen',et:'Die leere Autofabrik stürzt ein – lauf!',foe:'sprinter'},
+ era88:{t:'sprint',f:'press',e:'einsturz',es:'concrete',en:'Die Kranhaken',et:'In der leeren Autofabrik schwingen die alten Kranhaken – reite sie über die Grube!',foe:'sprinter'},
  era89:{t:'flucht',f:'crumble',e:'crowd',en:'Acid-Gedränge',et:'Das ganze Feld tanzt – surf über die Menge!',foe:'teiler'},
- era90:{t:'suche',f:'gate',e:'einsturz',es:'wall',en:'Die Mauer fällt!',et:'Die Mauer bricht – über die Trümmer!',mb:1,a:'einsturz',foe:'schild',x:1,rn:'MAUERSTÜCKE',rt:'Sammle drei Stücke der Mauer als Andenken'},
+ era90:{t:'suche',f:'gate',e:'einsturz',es:'wall',en:'Die Mauer fällt!',et:'Kräne heben die Mauerteile weg – spring von Teil zu Teil!',mb:1,a:'einsturz',foe:'schild',x:1,rn:'MAUERSTÜCKE',rt:'Sammle drei Stücke der Mauer als Andenken'},
  era99:{t:'fahrt',f:'jets',e:'kanone',es:'confetti',en:'Konfetti vom Wagen',et:'Der Wagen schießt dich über die Menge!',foe:'sprinter'},
  era05:{t:'beat',f:'swing',e:'drop',en:'Minimal-Drop',et:'Klick … klick … DROP – sei in der Luft!'},
  era20:{t:'suche',f:'bounce',e:'flut',es:'water',en:'Die Badewanne läuft über',et:'Das Wasser steigt – rauf auf die Möbel!',mb:1,foe:'blitzer',rn:'KABEL',rt:'Ohne drei Kabel kein Stream'},
@@ -6954,11 +6953,10 @@ const EVSEG={
    v.upd=vehUpd;v.draw=vehDraw;L.solids.push(v);L.movers.push(v)}
   H.coinArc(x+120,x+w-120,FLOOR_Y-60,20);H.spawn('flyer',x+w/2,FLOOR_Y-130);(L.hardSpots=L.hardSpots||[]).push({x:x+w/2,y:FLOOR_Y-110,p:2});return w},
  /* Einsturz: der Boden bricht von hinten weg */
- einsturz(x,H,k){const L=H.L,I=evInfo(H,k),tw=48,n=13,w=60+n*tw+60;H.ground(x,60);H.ground(x+w-60,60);kPit(H,x+60,n*tw);evBanner(H,x,k);
-  const ev=PEV(L,{type:'einsturz',x0:x+60,x1:x+w-60,on:false,t:0,tiles:[]});
-  for(let q=0;q<n;q++){if(q===5||q===10)continue;const tl={x:x+60+q*tw,y:FLOOR_Y,w:tw,h:10,type:'oneway',kind:'ctile',dyn:true,dx:0,dy:0,oy:FLOOR_Y,q,st:0,sty:I.s||'concrete',ev};
-   tl.draw=tileDraw;tl.upd=tileUpd;L.solids.push(tl);L.movers.push(tl);ev.tiles.push(tl);if(q%3===1)H.coin(tl.x+tw/2,FLOOR_Y-16)}
-  H.spawn('flyer',x+w*.6,FLOOR_Y-120);return w},
+ einsturz(x,H,k){// ABRISS: statt einstürzendem Boden schwingen Abrissbirnen/Kranhaken über die Grube – man reitet von einer zur nächsten
+  const L=H.L,I=evInfo(H,k),n=4,gap=116,pw=40,pit=n*gap+40,w=60+pit+60,D=DF().kd;H.ground(x,60);H.ground(x+w-60,60);kPit(H,x+60,pit);evBanner(H,x,k);
+  for(let q=0;q<n;q++){const px=x+138+q*gap,s=kSwing(H,px,FLOOR_Y-175,150,.44,1.55+D*.25,q%2?Math.PI:0,pw);s.skin=null;s.sty2=I.s||'concrete';s.draw=wreckDraw;if(q%2===0)H.coin(px,FLOOR_Y-48)}
+  H.spawn('flyer',x+w*.55,FLOOR_Y-130);return w},
  /* Flut: Flüssigkeit steigt – über eine Treppe aus Plattformen nach oben und über die Wand */
  flut(x,H,k){const w=700,L=H.L,I=evInfo(H,k);H.ground(x,w);evBanner(H,x,k);
   const st=[[60,36],[130,72],[60,108],[150,140],[262,160]];st.forEach(([dx,h])=>{H.plat(x+dx,FLOOR_Y-h,58);H.coin(x+dx+29,FLOOR_Y-h-12)});
@@ -6993,7 +6991,7 @@ for(const k in EVSEG){GSEG['ev_'+k]=(x,H)=>EVSEG[k](x,H,1);GSEG['ev2_'+k]=(x,H)=
 /* Beat-Brücke: zwei/drei Plattform-Gruppen wechseln alle 2 Beats */
 function beatBridge(n){return(x,H)=>{const L=H.L,cnt=7+n,w=80+cnt*50+80,g=n>=3?3:2;H.ground(x,80);H.ground(x+w-80,80);kPit(H,x+80,cnt*50);
  for(let q=0;q<cnt;q++){const b={x:x+86+q*50,y:FLOOR_Y-28-((q%2)*18),w:38,h:6,type:'oneway',kind:'beatplat',dyn:true,dx:0,dy:0,grp:q%g,ng:g,off:false};b.upd=bpUpd;b.draw=bpDraw;L.solids.push(b);L.movers.push(b);H.coin(b.x+19,b.y-12)}
- if(!H.menu&&!L.bbHint){L.bbHint=1;(L.hints=L.hints||[]).push({x:x-20,text:'NEU: Beat-Brücke – die Plattformen leuchten im Wechsel. Spring, wenn deine Gruppe aufleuchtet!'})}
+ if(!H.menu&&!L.bbHint){L.bbHint=1;(L.hints=L.hints||[]).push({x:x-20,text:'NEU: Beat-Brücke – die Plattformen heben und senken sich im Takt. Spring, wenn die nächste oben leuchtet!'})}
  return w}}
 for(let n=1;n<=3;n++)GSEG['bb@'+n]=beatBridge(n);
 
@@ -7010,6 +7008,11 @@ function vehDraw(p,e,X,Y,m,beat){const c=VEHC[m.sty]||VEHC.truck,w=m.w,ac=G.leve
  if(m.sty==='float'){const b=((beat+m.q)%1)<.5;for(let k=0;k<3;k++){p.fillStyle='#2a2a30';p.fillRect(X+8+k*22,Y-14,12,14);p.fillStyle=b?ac:'#5a5a66';e.fillStyle=ac;p.fillRect(X+11+k*22,Y-10,6,6);if(b)e.fillRect(X+11+k*22,Y-10,6,6)}addL(m.x+w/2,m.y-10,50,ac,.6)}
  if(m.sty==='car'){p.fillStyle=c[0];p.fillRect(X+12,Y-8,w-28,8);p.fillStyle='#9ad8ff';p.fillRect(X+16,Y-6,w-36,4)}
  if(m.sty==='cart'){p.fillStyle='#c84a2a';p.fillRect(X+6,Y-8,16,8);p.fillStyle='#3a6aaa';p.fillRect(X+26,Y-10,18,10);p.fillStyle='#2a8a3a';p.fillRect(X+48,Y-6,14,6)}}
+function wreckDraw(p,e,X,Y,m){const v=m.mv,PX=Math.round(X+m.w/2+(v.ox-m.x-m.w/2)),PY=Math.round(Y+(v.oy-m.y)),cx2=X+m.w/2,sty=m.sty2;
+ const ball=sty==='wood'?'#5a3a1a':sty==='wall'?'#c8c8c0':'#2a2a30';p.fillStyle='#3a3a44';p.fillRect(PX-10,PY-6,20,6);p.fillStyle='#ffb020';for(let q=-10;q<10;q+=6)p.fillRect(PX+q,PY-6,3,6);
+ const n=22;e.globalAlpha=.75;e.fillStyle='#a0a0aa';for(let k=0;k<n;k++){const t=k/n,qx=Math.round(PX+(cx2-PX)*t)-1,qy=Math.round(PY+(Y-PY)*t);p.fillStyle=k%2?'#8a8a94':'#b0b0ba';p.fillRect(qx,qy,2,3);if(k%2)e.fillRect(qx,qy,2,2)}e.globalAlpha=1;addL(m.x+m.w/2,m.y+10,46,'#ffc070',.85);addL(m.mv.ox,m.mv.oy,30,'#ffb020',.6);
+ pcirc(p,cx2,Y+14,12,ball);pcirc(p,cx2-3,Y+10,4,shade(ball,.35));e.globalAlpha=.55;e.fillStyle='#ffc070';e.fillRect(cx2-9,Y+6,3,8);e.fillRect(cx2-6,Y+4,6,2);e.globalAlpha=1;p.fillStyle='#4a4a54';p.fillRect(X,Y,m.w,5);p.fillStyle='#9a9aa4';p.fillRect(X,Y,m.w,1);const ac=G.level.th.accent;e.fillStyle=ac;e.globalAlpha=.6;e.fillRect(X,Y,m.w,1);e.globalAlpha=1;
+ if(sty==='wood'&&Math.random()<.3)part({x:m.x+Math.random()*m.w,y:m.y+18,vx:(Math.random()-.5)*20,vy:-40,g:-20,life:.5,col:pick(['#ffb13d','#ff6a2a']),s:2,em:true})}
 function tileUpd(m,dt,p){const ev=m.ev;if(!ev.on){m.st=0;m.off=false;m.y=m.oy;return}const tt=ev.t-1.2-(ev.dir<0?12-m.q:m.q)*ev.iv;
  if(tt>-.45&&m.st===0)m.st=1;if(tt>0&&m.st<2){m.st=2;m.vt=0;m.off=true;if(p&&p.ground===m){p.ground=null;p.onGround=false}if(Math.abs(m.x-G.cam.x-VW/2)<VW)AU.sfx('land');
   burst(m.x+m.w/2,m.y,6,['#8a8a94','#5a5a66',G.level.th.accent],{a:-Math.PI/2,spread:2,speed:60,g:300,life:.6})}
@@ -7033,11 +7036,11 @@ function hookDraw(p,e,X,Y,m){const ac=G.level.th.accent;p.fillStyle='#2a2a30';p.
  else{p.fillStyle='#ffb13d';p.fillRect(X,Y,m.w,6);p.fillStyle='#14141a';for(let k=0;k<m.w;k+=6)p.fillRect(X+k,Y+1,3,1)}
  p.fillStyle=ac;e.fillStyle=ac;p.fillRect(X+m.w/2-2,Y-36,4,3);e.fillRect(X+m.w/2-2,Y-36,4,3)}
 function bpActive(m){const b=AU.beat();return Math.floor(b/2)%m.ng===m.grp||Math.floor((b+.25)/2)%m.ng===m.grp}
-function bpUpd(m,dt,p){const on=bpActive(m);m.off=!on;if(!on&&p&&p.ground===m){p.ground=null;p.onGround=false}}
-function bpDraw(p,e,X,Y,m,beat){const ac=G.level.th.accent,on=!m.off,fr=(beat/2)%1,warn=on&&fr>.72&&(Math.floor(beat*8)%2===0),next=!on&&(Math.floor(beat/2)+1)%m.ng===m.grp;
+function bpUpd(m,dt,p){const on=bpActive(m),oy=m.y;m.on=on;m.off=false;if(m.oy===undefined)m.oy=m.y;m.y=approach(m.y,m.oy+(on?0:30),150*dt);m.dy=m.y-oy;if(p&&!p.dead&&p.ground===m&&p.onGround)p.y=m.y-p.h}
+function bpDraw(p,e,X,Y,m,beat){const ac=G.level.th.accent,on=m.on!==false,fr=(beat/2)%1,warn=on&&fr>.72&&(Math.floor(beat*8)%2===0),next=!on&&(Math.floor(beat/2)+1)%m.ng===m.grp;
  if(on&&!warn){p.fillStyle=ac;e.fillStyle=ac;p.fillRect(X,Y,m.w,4);e.fillRect(X,Y,m.w,4);p.fillStyle=shade(ac,-.4);p.fillRect(X,Y+4,m.w,2);addL(m.x+m.w/2,m.y,30,ac,.7)}
  else if(warn){p.fillStyle='#ffffff';e.fillStyle='#ffffff';p.fillRect(X,Y,m.w,4);e.fillRect(X,Y,m.w,2)}
- else{p.fillStyle=next?rgba(ac,.55):'rgba(255,255,255,.18)';for(let k=0;k<m.w;k+=4)p.fillRect(X+k,Y,2,1);p.fillRect(X,Y,1,4);p.fillRect(X+m.w-1,Y,1,4)}}
+ else{p.fillStyle='#2a2a32';p.fillRect(X,Y,m.w,4);p.fillStyle=next?rgba(ac,.7):'rgba(255,255,255,.25)';for(let k=0;k<m.w;k+=4)p.fillRect(X+k,Y,2,1);p.fillRect(X,Y,1,4);p.fillRect(X+m.w-1,Y,1,4)}}
 
 /* ---------- Bauplan je Level aus dem Plan erzeugen ---------- */
 const BP0={};for(const th in BP)BP0[th]=BP[th].map(z=>z.slice());
@@ -7098,7 +7101,7 @@ for(const th in PLAN)planBuild(th);
   if(o>=0&&typeof MBTYPES!=='undefined')for(const n of L.npcs)if(n.kind==='duelist')n.mg=MBTYPES[(o+k++)%MBTYPES.length]}
  // Bossraum wandelbar
  if(L.arena&&P.a){const A=L.arena,pl=L.solids.filter(s=>s.type==='oneway'&&!s.dyn&&s.x>=A.x&&s.x<A.x+A.w&&s.y<FLOOR_Y-30),topY=Math.min(...pl.map(s=>s.y));for(let q=pl.length-1;q>=0;q--)if(pl[q].y===topY)pl.splice(q,1);
-  if(P.a==='einsturz')pl.forEach(s=>{s.kind='crumble';s.dyn=true;s.cr={st:0,t:0,oy:s.y};L.movers.push(s)});
+  if(P.a==='einsturz')pl.forEach(s=>{s.kind='crumble';s.dyn=true;s.cr={st:0,t:0,oy:s.y,max:22};L.movers.push(s)});
   if(P.a==='beweglich')pl.forEach((s,k)=>{s.kind='mover';s.dyn=true;s.dx=0;s.dy=0;s.mv={mode:'h',amp:46,sp:.9+k*.15,ph:k*1.7,ox:s.x,oy:s.y,t:0};L.movers.push(s)});
   if(P.a==='flut')PEV(L,{type:'flut',arena:1,x0:A.x,x1:A.x+A.w,y:FLOOR_Y+6,top:FLOOR_Y-40,sty:(PLAN[L.def.theme].es||'foam'),st:0,t:0})}}}
 function AU_PX(L){return LEVELS[L.i].bpm/60*24}
@@ -7110,6 +7113,8 @@ function AU_PX(L){return LEVELS[L.i].bpm/60*24}
  // Gegner-Eigenschaft
  if(L.plan.foe){let n=0;for(const e of G.enemies)if((e.type==='walker'||e.type==='hopper')&&(n++%2===0))e.trait=L.plan.foe}}}
 function evReset(L,full){for(const v of L.pev||[]){if(v.type==='einsturz'){v.on=false;v.t=0;v.iv=clamp(.56-DF().kd*.45,.48,.66)}if(v.type==='flut'){v.st=0;v.t=0;v.y=FLOOR_Y+6}if(v.type==='banner'&&full)v.seen=false;if(v.type==='kanone')v.t=0;if(v.type==='konvoi')v.dir=1}}
+// Fahrt-/Musik-Level: nach einem Sturz springt das Bild zurück, damit man vernünftig wieder einsteigen kann
+{const _pf=pitFall;pitFall=function(p){_pf(p);const a=G.auto,L=G.level;if(a&&a.on&&L&&p.lastSafe){const want=clamp(p.lastSafe.x-110,0,L.w-VW);if(want<a.x){a.x=want;G.cam.x=want}a.hold=Math.max(a.hold||0,1.3)}}}
 {const _rp=respawnPlayer;respawnPlayer=function(){_rp();const L=G.level;if(!L||!L.plan)return;evReset(L,false);
  if(G.auto){G.auto.x=clamp(G.respawn.x-90,0,L.w-VW);G.auto.hold=1.2}}}
 
@@ -7271,7 +7276,7 @@ const SETS={
  newyork:[{k:'cl',z:0,rep:'bar',t:3,sty:'feuer',n:'Die Feuertreppe',d:'Über die Feuertreppe aufs Dach des Warehouse!'}],
  saopaulo:[{k:'cl',z:1,rep:'u_split',t:3,sty:'favela',n:'Die Treppen der Favela',d:'Haus auf Haus – nach oben, die Party ist auf dem Dach!'}],
  tokyo:[{k:'cl',z:1,rep:'u_tower',t:4,sty:'neon',n:'Die Neon-Fassade',d:'Klettere an den Leuchtreklamen nach oben – manche flackern!'}],
- karoo:[{k:'cl',z:2,rep:'u_tower',t:4,sty:'fels',n:'Die Tankwa-Felsen',d:'Hoch auf die Felsen über dem Burn – Vorsicht, manches bröckelt!'}],
+ karoo:[{k:'cl',z:2,rep:'u_tower',t:4,sty:'fels',n:'Die Tankwa-Felsen',d:'Hoch auf die Felsen über dem Burn – Vorsicht, manche Vorsprünge sacken ab!'}],
  tempelhof:[{k:'cl',z:3,rep:'u_tower',t:4,sty:'tower',n:'Der Flughafen-Tower',d:'Ganz nach oben auf den Tower – von dort sieht man ganz Berlin!'}],
  era77:[{k:'cl',z:1,rep:'u_split',t:3,sty:'disco',n:'Die Empore',d:'Hinauf auf die verspiegelte Empore über dem Dancefloor!'}],
  era88:[{k:'cl',z:0,rep:'k_press@3',t:4,sty:'fabrik',n:'Die Fabrikhalle',d:'Über die Stahlträger der leeren Autofabrik!'}],
@@ -7530,7 +7535,7 @@ function mediaPhys(L,p,dt){const m=mediaAt(L,p);p.med=m;if(!m||p.dead)return;
   if(IN.act('down')||IN.padY>.5)p.vy+=420*dt;
   if(Math.random()<.06)part({x:p.x+p.w/2+p.facing*3,y:p.y+3,vx:(Math.random()-.5)*8,vy:-26,g:-30,life:.9,col:'#dff8ff',s:1,em:true})}
  else{PHYS.g=.16;PHYS.fall=.36;PHYS.jump=.56;PHYS.spd*=.9;if(G.air>.04)p.jumps=Math.min(p.jumps,1)}}
-function inSet(L,x){return(L.climbs||[]).some(c=>x>c.x0-40&&x<c.x1)||(L.media||[]).some(m=>x>m.x0-60&&x<m.x1+40)}
+function inSet(L,x){return(L.climbs||[]).some(c=>x>c.x0-40&&x<c.x1)||(L.ugs||[]).some(u=>x>u.x0-60&&x<u.x1+20)||(L.media||[]).some(m=>x>m.x0-60&&x<m.x1+40)}
 function mediaTick(dt){const L=G.level,p=G.player;
  // Die Walze bremst, solange man klettert/taucht – sonst wird es unfair
  if(L&&p&&G.state==='play'&&G.chase&&G.chase.on&&L.chaseSp&&!p.dead&&inSet(L,p.x))G.chase.x-=L.chaseSp*dt*.65;
@@ -7557,7 +7562,7 @@ function mediaTick(dt){const L=G.level,p=G.player;
 {const _rp=respawnPlayer;respawnPlayer=function(){_rp();G.air=1}}
 
 /* ---------- Kamera folgt beim Klettern nach oben ---------- */
-{const _uc=updateCamera;updateCamera=function(dt){_uc(dt);const L=G.level,p=G.player;let ty=0;
+{const _uc=updateCamera;updateCamera=function(dt){_uc(dt);const L=G.level,p=G.player;let ty=0;if(typeof ugAt==='function'&&L&&p&&!p.dead&&ugAt(L,p.x+p.w/2)&&p.y>FLOOR_Y-60)return;
  if(L&&p&&L.climbs&&!G.bossStarted&&!p.dead){const c=L.climbs.find(c=>p.x+p.w/2>c.x0&&p.x+p.w/2<c.x1);if(c)ty=clamp(Math.round(p.y-125),c.top-110,0)}
  if(L&&p&&L.media&&!p.dead){const m=L.media.find(m=>m.type==='water'&&p.x+p.w/2>m.x0-30&&p.x+p.w/2<m.x1+30);if(m)ty=clamp(Math.round(p.y-140),0,m.bot+46-VH)}
  const cy=G.cam.y||0;G.cam.y=cy+(ty-cy)*Math.min(1,dt*(ty<cy?5:3));if(Math.abs(G.cam.y)<.4&&ty===0)G.cam.y=0}}
@@ -7933,6 +7938,231 @@ const MVN={walk:'stampft über die Bühne',hover:'schwebt über der Bühne',hop:
 {const _bc=UI.bossCard.bind(UI);UI.bossCard=function(b){_bc(b);const el=$('#bossCard'),S=BSIG[LEVELS[G.li].genre],th=LEVELS[G.li].theme;if(!el||!S)return;const box=el.querySelector('.task');if(!box)return;
  const T=envTier(G.li),en=(G.after?[]:(BENV[th]||[])).filter((k,i)=>T[i]).map(k=>ENVDEF[k].n);
  box.insertAdjacentHTML('beforeend',`<div class="bz">★ ${esc(S.s.map(x=>x[1].n).join(' · '))}<br>${esc(b.def.name.split(' ').slice(-1)[0])} ${esc(MVN[S.mv]||'')}${en.length?`<br>🎛 Bühne: ${esc(en.join(' → '))}`:''}</div>`)}}
+
+/* =====================================================================
+   EBENEN: Jeder Club bekommt ein Untergeschoss, das zu ihm passt.
+   Straße → rein in den Club → Treppe runter in den Keller (1 oder 2 Ebenen
+   tief, eigenes Leveldesign) → Treppe wieder hoch → weiter zum Boss.
+   Oben ist der Weg zu (Wand), unten geht's weiter – in beide Richtungen.
+   ===================================================================== */
+const UG_D1=150,UG_D2=140,UG_RUN=22;          // Tiefe Ebene -1, Tiefe Ebene -2, Stufenbreite
+const UGSTY={
+ keller:{n:'KELLER',wall:'#4a3228',w2:'#2e1e18',pat:'vault',fl:'#5a4436',amb:'#3c2e30',lamp:'#ffc070',prop:'keg',roll:'barrel',jet:'#e8f0ff',m1:['stack','roll','shelf','jets'],m2:['enemy','stack']},
+ kuehl:{n:'KÜHLHAUS',wall:'#3a4a5a',w2:'#24303c',pat:'tile',fl:'#5a6a7a',amb:'#2a3448',lamp:'#bfe8ff',prop:'crate',roll:'cart',jet:'#dff8ff',m1:['stack','trip','shelf','enemy'],m2:['trip','stack']},
+ kanal:{n:'KANAL',wall:'#3e4636',w2:'#262c22',pat:'brick',fl:'#3a3a2a',amb:'#2a3228',lamp:'#d8e8a0',prop:'pipe',roll:'rat',jet:'#b0d8a0',m1:['water','roll','shelf','water'],m2:['enemy','water']},
+ bunker:{n:'BUNKER',wall:'#4e4e4a',w2:'#30302e',pat:'concrete',fl:'#3a3a38',amb:'#2c2c2e',lamp:'#ffe8a0',prop:'sandbag',roll:'cart',jet:'#c8d0a0',m1:['stack','press','enemy','jets'],m2:['trip','shelf']},
+ maschine:{n:'MASCHINENRAUM',wall:'#3e3632',w2:'#241f1c',pat:'metal',fl:'#2e2826',amb:'#382a24',lamp:'#ff9a4a',prop:'crate',roll:'barrel',jet:'#ffffff',m1:['press','jets','shelf','press'],m2:['jets','enemy']},
+ mine:{n:'STOLLEN',wall:'#4a3624',w2:'#2e2014',pat:'rock',fl:'#3a2a1a',amb:'#3a2a1c',lamp:'#ffb050',prop:'ore',roll:'cart',jet:'#ffb050',m1:['roll','stack','shelf','roll'],m2:['enemy','jets','stack']},
+ tresor:{n:'TRESOR',wall:'#5a5a62',w2:'#3a3a42',pat:'safe',fl:'#2a2a30',amb:'#2a2a36',lamp:'#ff3a3a',prop:'safe',roll:'cart',jet:'#ff3a3a',m1:['trip','stack','enemy','shelf'],m2:['trip','press','shelf']},
+ ubahn:{n:'U-BAHN',wall:'#c8c4a8',w2:'#8a8670',pat:'tile',fl:'#4a4a4a',amb:'#3a3a40',lamp:'#f0f0d0',prop:'bench',roll:'cart',jet:'#ffffff',m1:['train','stack','enemy','train'],m2:['train','shelf']},
+ garage:{n:'TIEFGARAGE',wall:'#5a5a60',w2:'#3a3a40',pat:'garage',fl:'#3a3a40',amb:'#2e3036',lamp:'#d8f0ff',prop:'car',roll:'fork',jet:'#ffffff',m1:['stack','roll','shelf','enemy'],m2:['roll','stack']},
+ reaktor:{n:'REAKTOR',wall:'#2a3444',w2:'#1a2230',pat:'panel',fl:'#2a3040',amb:'#1a2a3a',lamp:'#6ad8ff',prop:'crate',roll:'drone',jet:'#6ad8ff',m1:['trip','jets','press','shelf'],m2:['jets','trip','enemy']}};
+// z = Bereich (Index im Levelplan), rep = Segment, das ersetzt wird
+const UGS={
+ distillery:{z:2,rep:'k_roll@3',sty:'keller',dep:1,n:'Der Bierkeller',d:'Runter in den Keller der Tille: Fässer, Kisten, Dampf aus den Kühlrohren!'},
+ rj:{z:1,rep:'k_bounce@3',sty:'kanal',dep:1,n:'Der Uferkeller',d:'Der alte Keller am Main steht halb unter Wasser.'},
+ omen:{z:2,rep:'k_gate@3',sty:'bunker',dep:1,n:'Der Bunkerkeller',d:'Unter dem Omen liegt ein alter Luftschutzkeller.'},
+ bootshaus:{z:2,rep:'k_crumble@3',sty:'maschine',dep:1,n:'Der Maschinenraum',d:'Stampfende Kolben im Bauch des Bootshauses!'},
+ blitz:{z:1,rep:'k_rain@3',sty:'mine',dep:2,n:'Das Museums-Bergwerk',d:'Unter dem Deutschen Museum liegt ein echtes Schaubergwerk – zwei Sohlen tief!'},
+ ms:{z:1,rep:'k_press@2',sty:'maschine',dep:1,n:'Das Kesselhaus',d:'Unten im alten Kesselhaus geht es im Takt weiter.'},
+ sisyphos:{z:2,rep:'k_swing@3',sty:'keller',dep:1,n:'Der Fabrikkeller',d:'Unter der alten Hundekuchenfabrik.'},
+ kater:{z:1,rep:'k_jets@2',sty:'keller',dep:1,n:'Die Kellerbar',d:'Kurz runter in die Kellerbar – das Bild fährt weiter!'},
+ tresor:{z:2,rep:'k_wind@3',sty:'tresor',dep:2,n:'Der Tresorraum',d:'Zwei Etagen tief in die alten Tresore – Lichtschranken überall!'},
+ berghain:{z:2,rep:'k_climb@3',sty:'bunker',dep:1,n:'Die Katakomben',d:'Unter dem Kraftwerk: dunkle Gänge und Stampfer.'},
+ loveparade:{z:1,rep:'k_combo@2',sty:'ubahn',dep:1,n:'Der Tiergartentunnel',d:'Unter der Straße des 17. Juni durch!'},
+ fusion:{z:2,rep:'k_swingpress@3',sty:'bunker',dep:1,n:'Der Flugzeugbunker',d:'Die alten Bunker des Militärflughafens.'},
+ melt:{z:2,rep:'k_wind@3',sty:'mine',dep:1,n:'Der Tagebau-Stollen',d:'Unter Ferropolis: Loren rollen durch den Stollen!'},
+ natureone:{z:1,rep:'k_crumble@4',sty:'bunker',dep:2,n:'Das Raketensilo',d:'Zwei Ebenen hinab in das alte Raketensilo!'},
+ timewarp:{z:1,rep:'k_jets@2',sty:'garage',dep:1,n:'Die Tiefgarage',d:'Unter der Maimarkthalle durch die Tiefgarage.'},
+ parooka:{z:2,rep:'k_roll@3',sty:'kanal',dep:1,n:'Die Kanalisation',d:'Unter Parookaville fließt die Kanalisation.'},
+ kappa:{z:2,rep:'k_press@3',sty:'ubahn',dep:1,n:'Die Metro di Torino',d:'Unter dem Parco Dora durch die Metro!'},
+ hive:{z:2,rep:'k_gate@3',sty:'garage',dep:1,n:'Die Messegarage',d:'Gabelstapler in der Tiefgarage der Messe!'},
+ sonar:{z:2,rep:'k_bounce@3',sty:'garage',dep:1,n:'Das Parkdeck der Fira',d:'Unter der Fira Gran Via.'},
+ tml:{z:3,rep:'k_combo@4',sty:'mine',dep:2,n:'Die Zwergenmine',d:'Im Märchenwald führt ein Schacht zwei Sohlen tief zu den Zwergen!'},
+ ibiza:{z:2,rep:'k_bounce@3',sty:'keller',dep:1,n:'Der Kellerclub',d:'Unter der Terrasse liegt der geheime Kellerclub.'},
+ london:{z:1,rep:'k_roll@2',sty:'kuehl',dep:1,n:'Das alte Kühlhaus',d:'Fabric liegt in einem alten Fleisch-Kühlhaus – und das Bild fährt weiter!'},
+ amsterdam:{z:2,rep:'k_swing@3',sty:'kanal',dep:1,n:'Der Grachtenkeller',d:'Unter den Grachten steht das Wasser im Keller.'},
+ tbilisi:{z:1,rep:'k_press@2',sty:'bunker',dep:1,n:'Unter dem Stadion',d:'Bassiani liegt unter dem Dinamo-Stadion – runter in die Katakomben!'},
+ detroit:{z:2,rep:'k_jets@3',sty:'bunker',dep:2,n:'Der Underground',d:'Underground Resistance: zwei Ebenen tief in den Untergrund!'},
+ newyork:{z:1,rep:'k_gate@3',sty:'ubahn',dep:1,n:'Die Subway',d:'Durch die Subway-Station – Achtung, Züge!'},
+ saopaulo:{z:2,rep:'k_crumble@3',sty:'ubahn',dep:1,n:'Die Metro',d:'Unter der Avenida durch die Metro.'},
+ tokyo:{z:2,rep:'k_climb@3',sty:'ubahn',dep:2,n:'Die U-Bahn von Shibuya',d:'Zwei Ebenen tief in das Labyrinth der Shibuya-Station!'},
+ karoo:{z:1,rep:'k_wind@3',sty:'mine',dep:1,n:'Die alte Mine',d:'Unter der Tankwa-Wüste liegt eine verlassene Mine.'},
+ tempelhof:{z:2,rep:'k_combo@3',sty:'bunker',dep:2,n:'Der Flughafenbunker',d:'Unter dem Flughafen Tempelhof liegen echte Bunker – zwei Ebenen tief!'},
+ era74:{z:1,rep:'k_roll@2',sty:'maschine',dep:1,n:'Das Kling-Klang-Studio',d:'Im Keller stehen die Maschinen – sie spielen im Takt.'},
+ era77:{z:2,rep:'k_bounce@3',sty:'keller',dep:1,n:'Der Keller des Studio 54',d:'Der berüchtigte Keller unter dem Studio 54.'},
+ era85:{z:1,rep:'k_rain@2',sty:'ubahn',dep:1,n:'Der Geisterbahnhof',d:'Ost-Berlin 1985: Die Züge fahren durch – aber halten nicht!'},
+ era88:{z:1,rep:'k_press@4',sty:'maschine',dep:1,n:'Der Fabrikkeller',d:'Unter der stillgelegten Autofabrik.'},
+ era89:{z:2,rep:'k_crumble@3',sty:'keller',dep:1,n:'Der Lagerkeller',d:'Die Acid-Party geht im Lagerkeller weiter.'},
+ era90:{z:2,rep:'k_gate@3',sty:'tresor',dep:2,n:'Der Tresorraum',d:'1990: Im alten Wertheim-Tresor entsteht ein Club – zwei Etagen tief!'},
+ era99:{z:1,rep:'k_jets@2',sty:'ubahn',dep:1,n:'Der Tiergartentunnel',d:'Die Wagen rollen durch den Tunnel!'},
+ era05:{z:1,rep:'k_swing@2',sty:'keller',dep:1,n:'Der Minimal-Keller',d:'Klick … klick … unten geht es weiter.'},
+ era20:{z:2,rep:'k_bounce@3',sty:'keller',dep:1,n:'Der Hobbykeller',d:'Lockdown: Die Party findet im eigenen Keller statt!'},
+ era2077:{z:3,rep:'k_swingpress@4',sty:'reaktor',dep:2,n:'Das Reaktordeck',d:'Zwei Decks tief zum Reaktor der Station!'}};
+
+/* ---------- Bausteine im Untergeschoss ---------- */
+const UGW={stack:170,roll:280,shelf:150,jets:190,press:170,trip:140,enemy:150,train:200,water:150};
+function ugFloor(L,x0,x1,y){if(x1>x0)hiSolid(L,x0,y,x1-x0,60,'ugfloor')}
+function ugModule(k,x,H,U,R,auto){const L=H.L,Fy=R.fy,Cy=R.cy,t=U.t,w=UGW[k]||150,st=U.st;
+ const haz=o=>{o.room=R;U.haz.push(o);return o},prop=(px,h,pw)=>{hiSolid(L,px,Fy-h,pw,h,'ugprop');U.parts.push(['prop',px,Fy-h,pw,h])};
+ switch(k){
+  case'stack':ugFloor(L,x,x+w,Fy);prop(x+30,18,30);prop(x+78,t>=3?38:32,30);prop(x+118,18,30);H.coinArc(x+28,x+150,Fy-46,18);break;
+  case'roll':ugFloor(L,x,x+w,Fy);haz({type:'roll',x0:x+6,x1:x+w-6,y:Fy,per:Math.max(1.8,3-t*.25),sp:70+t*14,list:[],t:0,skin:st.roll});H.coinArc(x+60,x+w-60,Fy-34,10);break;
+  case'shelf':{ugFloor(L,x,x+w,Fy);prop(x+14,30,30);const sy=Cy+34;hiSolid(L,x+52,sy,76,6,'ugshelf','oneway');U.parts.push(['shelf',x+52,sy,76,6]);
+   for(let q=0;q<4;q++)H.coin(x+60+q*20,sy-12);L.hardSpots=L.hardSpots||[];L.hardSpots.push({x:x+110,y:sy-16,p:1});break}
+  case'jets':ugFloor(L,x,x+w,Fy);for(let q=0;q<3;q++)haz({type:'jet',x:x+40+q*55,y:Fy,h:Math.min(Fy-Cy-8,74),per:2.6-t*.15,ph:q*.75,on:.95});H.coinArc(x+20,x+w-20,Fy-30,8);break;
+  case'press':ugFloor(L,x,x+w,Fy);for(let q=0;q<2;q++)haz({type:'press',x:x+40+q*70,w:30,top:Cy,bot:Fy,per:2.6-t*.15,ph:q*1.2,ext:0});H.coinArc(x+20,x+w-20,Fy-20,6);break;
+  case'trip':ugFloor(L,x,x+w,Fy);haz({type:'trip',x0:x+18,x1:x+w-18,y:Fy-9,per:2.2,ph:0,on:1});if(t>=3)haz({type:'trip',x0:x+18,x1:x+w-18,y:Fy-52,per:2.2,ph:1.1,on:1});U.parts.push(['emit',x+12,Fy-60,6,60],['emit',x+w-18,Fy-60,6,60]);break;
+  case'enemy':ugFloor(L,x,x+w,Fy);H.spawn('walker',x+50,Fy-22);H.spawn(t>=3?'thrower':'hopper',x+w-40,Fy-22);H.coinArc(x+30,x+w-30,Fy-40,14);break;
+  case'train':{const tx0=x+30,tx1=x+w-30,dp=28;ugFloor(L,x,tx0,Fy);ugFloor(L,tx1,x+w,Fy);ugFloor(L,tx0,tx1,Fy+dp);U.parts.push(['track',tx0,Fy,tx1-tx0,dp]);
+   haz({type:'train',x0:tx0,x1:tx1,y:Fy+dp,top:Fy-34,per:auto?99:5.4-t*.3,ph:Math.random()*2,dur:1.3,warn:1.3});break}
+  case'water':{const bx0=x+20,bx1=x+w-20,dp=44;ugFloor(L,x,bx0,Fy);ugFloor(L,bx1,x+w,Fy);ugFloor(L,bx0,bx1,Fy+dp);U.parts.push(['pool',bx0,Fy,bx1-bx0,dp]);
+   (L.media=L.media||[]).push({type:'water',ug:1,x0:bx0,x1:bx1,y:Fy+8,bot:Fy+dp,st:{w:'#2a4a3a',s:'#9ad8b0'},vents:[],urch:[],jelly:[]});H.coin((bx0+bx1)/2,Fy+dp-12);break}}
+ return w}
+function ugStairs(L,U,x,yTop,yBot,dir){const n=Math.ceil((yBot-yTop)/18),rise=(yBot-yTop)/n;
+ for(let k=1;k<=n;k++){const sx=dir>0?x+(k-1)*UG_RUN:x+(n-k)*UG_RUN,top=Math.round(yTop+k*rise);hiSolid(L,sx,top,UG_RUN,yBot+60-top,'ugstep');U.parts.push(['step',sx,top,UG_RUN,yBot+60-top])}
+ return n*UG_RUN}
+function stairsW(d){return Math.ceil(d/18)*UG_RUN}
+function buildUnder(x,H,S){const L=H.L,st=UGSTY[S.sty]||UGSTY.keller,li=L.i,t=li<6?1:li<16?2:li<28?3:4,P=PLAN[L.def.theme]||{},auto=P.t==='fahrt'||P.t==='beat';
+ const F1=FLOOR_Y+UG_D1,C1=FLOOR_Y+24,F2=F1+UG_D2,C2=F1+22,A=70;
+ let m1=st.m1.slice(0,li<6?3:4),m2=st.m2.slice();if(auto){const ok=k=>['stack','roll','shelf','enemy','water'].includes(k);m1=m1.filter(ok);m2=m2.filter(ok);if(m1.length<2)m1=['stack','shelf','enemy'];if(!m2.length)m2=['stack']}
+ const U={x0:x+A,x1:0,top:FLOOR_Y,bot:S.dep>1?F2:F1,st,t,parts:[],haz:[],rooms:[],dep:S.dep,ox:x,w:0,name:S.n,stn:S.sty};
+ H.ground(x,A);setBanner(H,x,{k:'ug',n:S.n,d:S.d});if(!L.ugHint&&SETFIRST_UG===L.def.theme){L.ugHint=1;hint(H,x+20,'NEU: EBENEN – manche Clubs haben einen Keller. Oben ist zu – geh die Treppe runter und unten weiter!')}
+ let cx=x+A;const S1=stairsW(UG_D1);ugStairs(L,U,cx,FLOOR_Y,F1,1);U.parts.push(['well',cx,FLOOR_Y,S1,F1-FLOOR_Y]);cx+=S1;
+ const R1={fy:F1,cy:C1,x0:cx};U.rooms.push(R1);
+ const half=S.dep>1?Math.ceil(m1.length/2):m1.length;
+ cx+=20;ugFloor(L,cx-20,cx,F1);for(const k of m1.slice(0,half))cx+=ugModule(k,cx,H,U,R1,auto);
+ if(S.dep>1){const S2=stairsW(UG_D2);ugStairs(L,U,cx,F1,F2,1);U.parts.push(['well',cx,F1,S2,F2-F1]);cx+=S2;const R2={fy:F2,cy:C2,x0:cx,deep:1};U.rooms.push(R2);
+  cx+=20;ugFloor(L,cx-20,cx,F2);for(const k of m2)cx+=ugModule(k,cx,H,U,R2,auto);ugFloor(L,cx,cx+20,F2);cx+=20;R2.x1=cx;
+  hiSolid(L,R2.x0,C1,R2.x1-R2.x0,C2-C1,'ugrock');U.parts.push(['rock',R2.x0,C1,R2.x1-R2.x0,C2-C1]);
+  ugStairs(L,U,cx,F1,F2,-1);U.parts.push(['well',cx,F1,S2,F2-F1]);cx+=S2;for(const k of m1.slice(half))cx+=ugModule(k,cx,H,U,R1,auto)}
+ ugFloor(L,cx,cx+20,F1);cx+=20;R1.x1=cx;
+ // Oben ist zu: Gebäudewand vom Himmel bis zur Kellerdecke
+ hiSolid(L,R1.x0,-400,R1.x1-R1.x0,C1+400,'ugblock');
+ ugStairs(L,U,cx,FLOOR_Y,F1,-1);U.parts.push(['well',cx,FLOOR_Y,S1,F1-FLOOR_Y]);cx+=S1;H.ground(cx,A);cx+=A;
+ U.x1=cx-A;U.w=cx-x;U.R1=R1;
+ // Lampen
+ for(const R of U.rooms)for(let lx=R.x0+40;lx<R.x1-20;lx+=110)L.lights.push({x:lx,y:R.cy+10,r:70,col:st.lamp,a:.8});
+ (L.ugs=L.ugs||[]).push(U);L.noSpots.push({x0:x,x1:cx});L.noCeil.push({x0:R1.x0,x1:R1.x1});
+ return cx-x}
+const SETFIRST_UG='distillery';
+for(const th in UGS){GSEG['ug_'+th]=(x,H)=>buildUnder(x,H,UGS[th])}
+function ugPlan(th){const T=TOURS[th],S=UGS[th];if(!T||!S)return;const z=T.z[Math.min(S.z,T.z.length-1)];if(!z)return;const id='ug_'+th;if(z.s.includes(id))return;
+ let i=z.s.indexOf(S.rep);if(i<0)i=z.s.findIndex(s=>/^k_[a-z]+@[34]$/.test(s)&&!s.startsWith('k_combo'));
+ if(i>=0)z.s[i]=id;else z.s.push(id);if(BP[th])BP[th]=T.z.map(z=>z.s.slice())}
+for(const th in UGS)ugPlan(th);
+// Banner-Art „Ebene“
+{const _sb=setBanner;setBanner=function(H,x,S){if(S.k!=='ug')return _sb(H,x,S);if(H.menu)return;PEV(H.L,{type:'banner',x:x+10,n:'Ebene -1: '+S.n,t:S.d})}}
+
+/* ---------- Laufzeit: Gefahren, Kamera, Licht, Absturzschutz ---------- */
+function ugAt(L,x){if(!L||!L.ugs)return null;for(const U of L.ugs)if(x>U.x0-4&&x<U.x1+4)return U;return null}
+function belowOK(b){const L=G.level;if(!L)return false;const cx=b.x+b.w/2;
+ if(L.media)for(const m of L.media)if(m.type==='water'&&cx>m.x0-4&&cx<m.x1+4&&b.y<m.bot+4)return true;
+ const U=ugAt(L,cx);return!!(U&&b.y<U.bot+6)}
+function ugTick(dt){const L=G.level,p=G.player;if(!L||!L.ugs||!p)return;const live=!p.dead&&!G.done&&G.state==='play';
+ for(const U of L.ugs){if(Math.abs((U.x0+U.x1)/2-p.x)>(U.x1-U.x0)/2+VW)continue;
+  for(const h of U.haz){
+   if(h.type==='jet'){const c=((G.t+h.ph)%h.per)/h.per;h.warn=c>.62&&c<.72;h.act=c>=.72;if(h.act&&live&&Math.abs(p.x+p.w/2-h.x)<9&&p.y+p.h>h.y-h.h&&p.y<h.y)hurtPlayer(h.x)}
+   else if(h.type==='press'){const c=((G.t+h.ph)%h.per)/h.per;h.shake=c>.5&&c<.62;h.ext=c<.62?0:c<.68?(c-.62)/.06:c<.8?1:Math.max(0,1-(c-.8)/.2);const by=h.top+8+(h.bot-h.top-8)*h.ext;h.by=by;
+    if(h.ext>.15&&live&&p.x+p.w>h.x+2&&p.x<h.x+h.w-2&&p.y<by&&p.y+p.h>h.top){hurtPlayer(h.x+h.w/2);p.vx=(p.x+p.w/2<h.x+h.w/2?-1:1)*180}}
+   else if(h.type==='trip'){const c=((G.t+h.ph)%h.per)/h.per;h.warn=c>.45&&c<.6;h.act=c>=.6;if(h.act&&live&&p.x+p.w>h.x0&&p.x<h.x1&&p.y<h.y+2&&p.y+p.h>h.y-2)hurtPlayer(p.x)}
+   else if(h.type==='roll'){h.t+=dt;if(h.t>h.per&&h.list.length<3){h.t=0;const d=p.x<(h.x0+h.x1)/2?-1:1;h.list.push({x:d<0?h.x1-10:h.x0+10,d})}
+    for(const o of h.list){o.x+=o.d*h.sp*dt;o.a=(o.a||0)+o.d*h.sp*dt/7;if(o.x<h.x0||o.x>h.x1)o.dead=true;if(live&&p.x+p.w>o.x-7&&p.x<o.x+7&&p.y+p.h>h.y-14&&p.y<h.y)hurtPlayer(o.x)}
+    h.list=h.list.filter(o=>!o.dead)}
+   else if(h.type==='train'){const c=(G.t+h.ph)%h.per;h.warnOn=c>h.per-h.dur-h.warn&&c<=h.per-h.dur;h.on=c>h.per-h.dur;h.prog=h.on?(c-(h.per-h.dur))/h.dur:0;
+    if(h.on&&live&&p.x+p.w>h.x0&&p.x<h.x1&&p.y+p.h>h.y-30){hurtPlayer(p.x);p.vy=-260;p.vx=(p.x<(h.x0+h.x1)/2?-1:1)*120}}}}
+ const U=ugAt(L,p.x+p.w/2);G.ugAmb=U&&p.y>FLOOR_Y-10?(U.ambL||(U.ambL=shade(U.st.amb,.45))):null}
+{const _up=updatePlayer;updatePlayer=function(dt){_up(dt);ugTick(dt)}}
+{const _uc=updateCamera;updateCamera=function(dt){_uc(dt);const L=G.level,p=G.player;if(!L||!L.ugs||!p||p.dead)return;const U=ugAt(L,p.x+p.w/2);if(!U)return;
+ const ty=clamp(Math.round(p.y-130),0,U.bot+56-VH);if(p.y>FLOOR_Y-60){const cy=G.cam.y||0;G.cam.y=cy+(ty-cy)*Math.min(1,dt*(ty>cy?4:3))}}}
+
+/* ---------- Malen ---------- */
+function paintUnder(U,L){const st=U.st,th=L.th;
+ const o={x0c:U.ox,x1c:U.ox+U.w,y0c:-60,y1c:U.bot+70,paint:(P)=>{const{F,FE,r}=P,X0=U.ox,W=U.w,x=P.x;
+  const earth=shade(th.floorC,-.25);F(earth,X0,VH-2,W,U.bot+70-VH+2);
+  for(let k=0;k<W*(U.bot+70-VH)/90;k++)F(shade(earth,(r()-.4)*.35),X0+r()*W,VH+r()*(U.bot+70-VH),2+r()*5,2+r()*3);
+  // Erdreich zwischen Bodenkante und Ebene -1 (über dem Raum ist die Gebäudewand)
+  F(earth,U.x0,FLOOR_Y,U.x1-U.x0,VH-FLOOR_Y);
+  const room=(x0,x1,y0,y1,deep)=>{const c=deep?shade(st.wall,-.15):st.wall,c2=st.w2;F(c,x0,y0,x1-x0,y1-y0);
+   switch(st.pat){
+    case'vault':for(let ax=x0;ax<x1;ax+=64){for(let k=0;k<14;k++){const a=Math.PI*(k/13);F(c2,ax+32-Math.cos(a)*30,y0+8+(1-Math.sin(a))*14,3,3)}for(let yy=y0+26;yy<y1;yy+=6){const off=((yy-y0)/6)%2?6:0;for(let bx=ax-off;bx<ax+64;bx+=12)F(shade(c,(r()-.5)*.18),Math.max(x0,bx)+1,yy+1,Math.min(10,x1-Math.max(x0,bx)-1),4)}}break;
+    case'brick':for(let yy=y0;yy<y1;yy+=6){const off=((yy-y0)/6)%2?7:0;for(let bx=x0-off;bx<x1;bx+=14)F(shade(c,(r()-.5)*.2),Math.max(x0,bx)+1,yy+1,Math.min(12,x1-Math.max(x0,bx)-1),4)}F(rgba('#6a8a3a',.25),x0,y1-24,x1-x0,24);break;
+    case'concrete':for(let yy=y0;yy<y1;yy+=28)for(let bx=x0;bx<x1;bx+=40){F(shade(c,(r()-.5)*.12),bx+1,yy+1,Math.min(38,x1-bx-1),26)}for(let bx=x0+30;bx<x1;bx+=90){F('#c8b020',bx,y1-34,30,4);for(let q=0;q<30;q+=8)F('#1a1a1a',bx+q,y1-34,4,4)}break;
+    case'metal':for(let bx=x0;bx<x1;bx+=4)F(shade(c,((bx/4)%2)*.1),bx,y0,3,y1-y0);for(let yy=y0+20;yy<y1;yy+=40){F(c2,x0,yy,x1-x0,5);for(let bx=x0+6;bx<x1;bx+=14)F(shade(c2,.4),bx,yy+2,2,2)}break;
+    case'rock':for(let k=0;k<(x1-x0)*(y1-y0)/70;k++)pcirc(x,x0+r()*(x1-x0)-P.X0,y0+r()*(y1-y0)-P.Y0,3+r()*6,shade(c,(r()-.5)*.35));for(let bx=x0+20;bx<x1;bx+=80){F('#6a4424',bx,y0,8,y1-y0);F('#6a4424',bx-10,y0,28,7)}break;
+    case'safe':for(let yy=y0+4;yy<y1-4;yy+=16)for(let bx=x0+4;bx<x1-4;bx+=22){F(shade(c,(r()-.5)*.1),bx,yy,20,14);F(shade(c,.25),bx,yy,20,1);pcirc(x,bx+15-P.X0,yy+7-P.Y0,2,c2);F(c2,bx+3,yy+5,6,1)}break;
+    case'tile':F(c,x0,y0,x1-x0,y1-y0);for(let yy=y0;yy<y1;yy+=6)F(shade(c,-.08),x0,yy,x1-x0,1);for(let bx=x0;bx<x1;bx+=10)F(shade(c,-.08),bx,y0,1,y1-y0);F(th.accent,x0,y0+30,x1-x0,4);for(let bx=x0+50;bx<x1;bx+=160){F('#1a3a8a',bx,y0+44,60,14);const tc=textCanvas(st.n.slice(0,8),'#ffffff',8);x.drawImage(tc,bx+30-tc.width/2-P.X0,y0+47-P.Y0)}break;
+    case'garage':for(let bx=x0+30;bx<x1;bx+=100){F(c2,bx,y0,16,y1-y0);F('#e8c820',bx,y1-30,16,4);F('#1a1a1a',bx+4,y1-30,4,4);F('#1a1a1a',bx+12,y1-30,4,4)}F('#e8e8e0',x0,y1-2,x1-x0,1);break;
+    case'panel':for(let yy=y0;yy<y1;yy+=22)for(let bx=x0;bx<x1;bx+=30){F(shade(c,(r()-.5)*.12),bx+1,yy+1,28,20);if(r()<.15)FE(r()<.5?'#6ad8ff':'#3aff9a',bx+4,yy+4,2,2,.9)}break}
+   // Rohre & Lampen
+   F(shade(c2,-.2),x0,y0,x1-x0,3);for(let bx=x0+12;bx<x1-10;bx+=170){F('#5a5a62',bx,y0+3,x1-x0>200?120:40,4);F('#8a8a94',bx,y0+3,x1-x0>200?120:40,1)}
+   for(let lx=x0+40;lx<x1-20;lx+=110){F('#1a1a1e',lx-1,y0,2,8);F('#2a2a30',lx-5,y0+8,10,4);FE(st.lamp,lx-3,y0+11,6,2,.9)}};
+  // Treppenhäuser, Räume
+  for(const pt of U.parts)if(pt[0]==='well'){const[_,wx,wy,ww,wh]=pt;room(wx,wx+ww,wy,wy+wh,wy>FLOOR_Y+10)}
+  for(const R of U.rooms)room(R.x0,R.x1,R.cy,R.fy,R.deep);
+  // Wand oben (kein Durchgang) + Decke
+  const R1=U.R1,bw=shade(th.wallC2||'#1a1a20',-.15);F(bw,R1.x0,-60,R1.x1-R1.x0,FLOOR_Y+60);
+  for(let yy=-60;yy<FLOOR_Y;yy+=8){const off=((yy+60)/8)%2?8:0;for(let bx=R1.x0-off;bx<R1.x1;bx+=16)F(shade(bw,(r()-.5)*.14),Math.max(R1.x0,bx)+1,yy+1,Math.min(14,R1.x1-Math.max(R1.x0,bx)-1),6)}
+  F(shade(bw,.3),R1.x0,-60,3,FLOOR_Y+60);F(shade(bw,.3),R1.x1-3,-60,3,FLOOR_Y+60);
+  F('#6a6a70',R1.x0,FLOOR_Y,R1.x1-R1.x0,24);F('#8a8a90',R1.x0,FLOOR_Y,R1.x1-R1.x0,2);for(let bx=R1.x0;bx<R1.x1;bx+=30)F('#4a4a50',bx,FLOOR_Y+2,1,22);
+  const tc=neonSign(st.n,th.accent,14);ugArrow(F,FE,R1.x0+12+tc.width+8,FLOOR_Y-92,th.accent);x.drawImage(tc,R1.x0+12-P.X0,FLOOR_Y-90-P.Y0);P.e.drawImage(tc,R1.x0+12-P.X0,FLOOR_Y-90-P.Y0);
+  ugArrow(F,FE,R1.x1-26,FLOOR_Y-92,th.accent);
+  F('#2a2228',R1.x0+40,FLOOR_Y-56,28,56);F('#3a3038',R1.x0+42,FLOOR_Y-54,24,54);const pv=textCanvas('PRIVAT','#c8c8c0',8);x.drawImage(pv,R1.x0+54-pv.width/2-P.X0,FLOOR_Y-48-P.Y0);
+  // Fels zwischen den Ebenen, Böden, Stufen, Requisiten
+  for(const pt of U.parts){const[k,px,py,pw,ph]=pt;
+   if(k==='rock'){F(earth,px,py,pw,ph);for(let q=0;q<pw*ph/80;q++)F(shade(earth,(r()-.4)*.35),px+r()*pw,py+r()*ph,2+r()*4,2+r()*3);F('#6a6a70',px,py+ph-22,pw,22);F('#8a8a90',px,py+ph-22,pw,1)}
+   else if(k==='step'){F(shade(st.fl,.1),px,py,pw,ph);F(shade(st.fl,.4),px,py,pw,2);F(shade(st.fl,-.3),px+pw-1,py,1,ph);F('#c8b020',px,py,pw,1)}
+   else if(k==='prop')ugProp(F,FE,r,x,P,px,py,pw,ph,st.prop);
+   else if(k==='shelf'){F('#5a5a62',px,py,pw,4);F('#9a9aa4',px,py,pw,1);F('#3a3a42',px+4,py+4,2,10);F('#3a3a42',px+pw-6,py+4,2,10);for(let q=0;q<pw-8;q+=12)F(pick(['#c82a2a','#2a6ac8','#e8c020','#3a8a3a']),px+4+q,py-8,8,8)}
+   else if(k==='emit'){F('#22222a',px,py,pw,ph);F('#ff2a4a',px+2,py+ph-12,2,2);F('#ff2a4a',px+2,py+8,2,2)}
+   else if(k==='track'){F('#1a1a1e',px,py,pw,ph);F('#8a8a94',px,py+ph-6,pw,2);for(let q=0;q<pw;q+=10)F('#4a3a2a',px+q,py+ph-4,6,4);F('#e8c020',px-4,py,4,2);F('#e8c020',px+pw,py,4,2)}
+   else if(k==='pool'){F('#1a2a24',px,py,pw,ph)}}
+  for(const R of U.rooms){F(st.fl,R.x0,R.fy,R.x1-R.x0,60);F(shade(st.fl,.35),R.x0,R.fy,R.x1-R.x0,2);for(let bx=R.x0;bx<R.x1;bx+=24)F(shade(st.fl,-.25),bx,R.fy+2,1,58)}
+ }};U.cvo=o;return o}
+function ugArrow(F,FE,x,y,c){FE(c,x+5,y,4,14,1);for(let k=0;k<6;k++)FE(c,x+k,y+10+k,9-2*k>0?9-2*k:1,1,1);}
+function ugProp(F,FE,r,x,P,px,py,pw,ph,kind){
+ switch(kind){
+  case'keg':for(let yy=py;yy<py+ph;yy+=18){const h=Math.min(18,py+ph-yy);F('#7a4a24',px,yy,pw,h);F('#9a6a34',px+2,yy,pw-4,h);F('#3a3a40',px,yy+2,pw,2);F('#3a3a40',px,yy+h-4,pw,2);F('#c8c8d0',px+pw/2-2,yy+h/2-1,4,2)}break;
+  case'crate':for(let yy=py;yy<py+ph;yy+=18){const h=Math.min(18,py+ph-yy);F('#8a6a3a',px,yy,pw,h);F('#5a4224',px,yy,pw,1);F('#5a4224',px,yy,1,h);F('#5a4224',px+pw-1,yy,1,h);for(let q=0;q<h;q+=2)F('#5a4224',px+q*pw/h,yy+q,2,1)}break;
+  case'sandbag':for(let yy=py;yy<py+ph;yy+=8)for(let bx=px-(((yy-py)/8)%2?6:0);bx<px+pw;bx+=12){const x0=Math.max(px,bx),w=Math.min(11,px+pw-x0);if(w>0){F('#8a7a54',x0,yy,w,7);F('#a89a6a',x0+1,yy,w-2,2)}}break;
+  case'ore':F('#3a3a40',px,py+ph-10,pw,10);pcirc(x,px+pw/2-P.X0,py+ph-10-P.Y0,Math.min(pw/2,ph-8),'#5a4a3a');for(let q=0;q<5;q++)F(pick(['#ffd23a','#8a8a94','#c87a3a']),px+4+r()*(pw-8),py+ph-14-r()*(ph-14),2,2);break;
+  case'safe':F('#5a5a62',px,py,pw,ph);F('#7a7a84',px+2,py+2,pw-4,ph-4);pcirc(x,px+pw/2-P.X0,py+ph/2-P.Y0,Math.min(6,ph/3),'#3a3a42');F('#c8c8d0',px+pw/2-1,py+ph/2-1,2,2);break;
+  case'bench':F('#3a6aaa',px,py,pw,4);F('#2a2a30',px+2,py+4,2,ph-4);F('#2a2a30',px+pw-4,py+4,2,ph-4);if(ph>24){F('#e8e8e0',px,py+8,pw,ph-8);F('#c82a2a',px,py+10,pw,3)}break;
+  case'car':{const c=pick(['#c82a2a','#2a5ac8','#e8e8e0','#2a2a2a','#3a8a3a']);F(c,px-6,py+ph*.4,pw+12,ph*.6);F(shade(c,-.2),px,py,pw,ph*.45);F('#8ac8e8',px+3,py+3,pw-6,ph*.3);pcirc(x,px-1-P.X0,py+ph-2-P.Y0,5,'#111');pcirc(x,px+pw+1-P.X0,py+ph-2-P.Y0,5,'#111');FE('#ffe8a0',px+pw+4,py+ph*.5,2,2,.9);break}
+  case'pipe':F('#5a6a5a',px,py,pw,ph);for(let yy=py;yy<py+ph;yy+=10)F('#3a4a3a',px,yy,pw,2);F('#7a8a7a',px+2,py,2,ph);break;
+  default:F('#5a5a62',px,py,pw,ph)}}
+{const _dh=drawHigh;drawHigh=function(L,cx,cy){_dh(L,cx,cy);if(!L.ugs)return;const p=RD.p,e=RD.e;
+ for(const U of L.ugs){const o=U.cvo||paintUnder(U,L);if(o.x1c<cx-4||o.x0c>cx+VW+4)continue;setCanvas(o);const X=Math.round(o.x0c-cx),Y=Math.round(o.y0c+cy);
+  e.globalCompositeOperation='destination-out';e.drawImage(o.cv,X,Y);e.globalCompositeOperation='source-over';p.drawImage(o.cv,X,Y);e.drawImage(o.ce,X,Y)}}}
+// bewegliche Gefahren im Untergeschoss (hinter den Figuren)
+{const _de=drawExtras;drawExtras=function(cx,cy,beat,pulse){_de(cx,cy,beat,pulse);const L=G.level;if(!L||!L.ugs)return;const p=RD.p,e=RD.e,v=RD.v;
+ for(const U of L.ugs){if(U.ox>cx+VW||U.ox+U.w<cx)continue;const st=U.st;
+  for(const h of U.haz){
+   if(h.type==='jet'){const X=Math.round(h.x-cx),Y=Math.round(h.y+cy);p.fillStyle='#2a2a30';p.fillRect(X-6,Y-4,12,4);p.fillStyle='#4a4a54';p.fillRect(X-4,Y-6,8,2);
+    if(h.warn&&Math.floor(G.t*12)%2){p.fillStyle='#ff6a2a';e.fillStyle='#ff6a2a';p.fillRect(X-4,Y-7,8,1);e.fillRect(X-4,Y-7,8,1)}
+    if(h.act){for(let k=0;k<h.h;k+=3){const w=7-k/h.h*3+Math.sin(G.t*30+k)*1.5;p.globalAlpha=.85-k/h.h*.5;p.fillStyle=st.jet;p.fillRect(X-w/2,Y-6-k,w,3)}p.globalAlpha=1;e.fillStyle=st.jet;e.globalAlpha=.5;e.fillRect(X-3,Y-6-h.h,6,h.h);e.globalAlpha=1;addL(h.x,h.y-h.h/2,50,st.jet,.8)}}
+   else if(h.type==='press'){const X=Math.round(h.x-cx),T=Math.round(h.top+cy),B=Math.round((h.by||h.top+8)+cy),sh=h.shake?Math.round((Math.random()-.5)*2):0;
+    p.fillStyle='#2a2a30';p.fillRect(X+sh-2,T,h.w+4,8);p.fillStyle='#8a8a94';p.fillRect(X+h.w/2-3+sh,T+8,6,Math.max(0,B-T-14));p.fillStyle='#4a4a54';p.fillRect(X+sh,B-8,h.w,8);p.fillStyle='#ffb020';for(let q=0;q<h.w;q+=8)p.fillRect(X+q+sh,B-3,4,3);
+    if(h.shake){p.fillStyle='#ff3a3a';e.fillStyle='#ff3a3a';p.fillRect(X+h.w/2-1,T+2,3,3);e.fillRect(X+h.w/2-1,T+2,3,3)}}
+   else if(h.type==='trip'){const x0=Math.round(h.x0-cx),x1=Math.round(h.x1-cx),y=Math.round(h.y+cy);
+    if(h.warn&&Math.floor(G.t*16)%2){p.fillStyle='#ff2a4a';e.fillStyle='#ff2a4a';p.fillRect(x0,y,x1-x0,1);e.fillRect(x0,y,x1-x0,1)}
+    else if(h.act){p.fillStyle='#ff2a4a';p.fillRect(x0,y-1,x1-x0,3);p.fillStyle='#ffffff';p.fillRect(x0,y,x1-x0,1);e.fillStyle='#ff2a4a';e.fillRect(x0,y-2,x1-x0,5);addL((h.x0+h.x1)/2,h.y,60,'#ff2a4a',.8)}}
+   else if(h.type==='roll')for(const o of h.list){const X=Math.round(o.x-cx),Y=Math.round(h.y+cy);
+    if(h.skin==='barrel'){pcirc(p,X,Y-7,7,'#7a4a24');pcirc(p,X,Y-7,5,'#9a6a34');const a=o.a||0;p.fillStyle='#3a3a40';p.fillRect(X+Math.round(Math.cos(a)*5)-1,Y-7+Math.round(Math.sin(a)*5)-1,2,2);p.fillRect(X-Math.round(Math.cos(a)*5)-1,Y-7-Math.round(Math.sin(a)*5)-1,2,2)}
+    else if(h.skin==='rat'){p.fillStyle='#5a4a44';p.fillRect(X-6,Y-6,12,6);p.fillRect(X+o.d*6,Y-5,3,3);p.fillStyle='#c88a8a';p.fillRect(X-o.d*9,Y-3,4,1);p.fillStyle='#ff3a3a';p.fillRect(X+o.d*7,Y-5,1,1)}
+    else if(h.skin==='fork'){p.fillStyle='#e8a020';p.fillRect(X-8,Y-14,16,10);p.fillStyle='#2a2a30';p.fillRect(X-6,Y-20,10,6);pcirc(p,X-5,Y-3,3,'#111');pcirc(p,X+5,Y-3,3,'#111');p.fillStyle='#8a8a94';p.fillRect(X+o.d*9,Y-12,2,12);p.fillRect(X+o.d*9,Y-2,o.d*6,2);e.fillStyle='#ffb020';if(Math.floor(G.t*6)%2)e.fillRect(X-1,Y-21,3,2)}
+    else if(h.skin==='drone'){p.fillStyle='#3a4454';p.fillRect(X-7,Y-12,14,6);e.fillStyle='#6ad8ff';p.fillStyle='#6ad8ff';p.fillRect(X-2,Y-10,4,2);e.fillRect(X-2,Y-10,4,2);addL(o.x,h.y-10,24,'#6ad8ff',.7)}
+    else{p.fillStyle='#5a5a62';p.fillRect(X-8,Y-12,16,8);p.fillStyle='#3a3a40';p.fillRect(X-9,Y-13,18,2);pcirc(p,X-5,Y-3,3,'#111');pcirc(p,X+5,Y-3,3,'#111');p.fillStyle='#c87a3a';p.fillRect(X-6,Y-15,12,3)}}
+   else if(h.type==='train'){const x0=Math.round(h.x0-cx),x1=Math.round(h.x1-cx),y=Math.round(h.y+cy),sig=h.warnOn||h.on?'#ff3a3a':'#3aff9a';
+    p.fillStyle='#1a1a1e';p.fillRect(x0-8,y-62,4,30);p.fillStyle=sig;e.fillStyle=sig;p.fillRect(x0-9,y-66,6,4);e.fillRect(x0-9,y-66,6,4);addL(h.x0-6,h.y-64,20,sig,.8);
+    if(h.warnOn){const k=(G.t*8)%1<.5;if(k){v.fillStyle='rgba(255,240,200,.18)';v.fillRect(x0,y-40,x1-x0,40)}}
+    if(h.on){p.save();p.beginPath();p.rect(x0,y-46,x1-x0,46);p.clip();const tx=x0-260+h.prog*(x1-x0+520);
+     for(let c=0;c<3;c++){const cxx=tx+c*130;p.fillStyle='#d8d8d0';p.fillRect(cxx,y-44,124,40);p.fillStyle='#c82a2a';p.fillRect(cxx,y-24,124,4);for(let wv=cxx+8;wv<cxx+118;wv+=18){p.fillStyle='#2a3a4a';p.fillRect(wv,y-38,12,10)}p.fillStyle='#2a2a30';p.fillRect(cxx,y-6,124,4)}
+     p.restore();addShake(1.2)}}}}}}
+// Kamera-Füllung unter dem Bildschirm & Kellerlicht
+{const _za=zoneAmbTick;zoneAmbTick=function(dt){_za(dt);if(G.ugAmb&&G.zAmb)G.zAmb=mixHex(G.zAmb,G.ugAmb,Math.min(1,dt*3));else if(G.ugAmb)G.zAmb=G.ugAmb}}
+// Untergeschoss-Wasser wird nicht als Tauchbecken bemalt
+{const _dh=drawHigh;drawHigh=function(L,cx,cy){if(!L.media)return _dh(L,cx,cy);const keep=L.media;L.media=keep.filter(m=>!m.ug);try{_dh(L,cx,cy)}finally{L.media=keep}}}
 
 /* ================= INPUT ================= */
 const KEYMAP={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',ArrowDown:'down',KeyS:'down',ArrowUp:'jump',KeyW:'jump',Space:'jump',
