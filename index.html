@@ -253,7 +253,7 @@ canvas.logoC.sm{width:min(70vw,calc(15vh*320/104));height:auto;margin-left:-.4em
 @keyframes sweep{0%{transform:translateX(-50%) rotate(-38deg)}100%{transform:translateX(-50%) rotate(38deg)}}
 .btn.pulse{animation:bpulse 1.4s ease-in-out infinite}@keyframes bpulse{50%{box-shadow:inset 0 0 0 2px var(--mag),0 0 22px rgba(255,47,214,.55)}}
 @media (prefers-reduced-motion:reduce){.beams i,.btn.pulse{animation:none}}
-@media (max-height:500px){#introCard{top:3%;padding:.5em .9em .6em}#introCard p{font-size:.95em}#introCard .ifact{display:none}#introCard .igim{font-size:.85em}#pSplash{gap:.5em}#pSplash .story{display:none}canvas.logoC.big{width:min(80vw,calc(42vh*540/176))}}
+@media (max-height:500px){#introCard{top:3%;padding:.5em .9em .6em}#introCard p{font-size:.95em}#introCard .ifact{display:none}#introCard .igim{font-size:.85em}#introCard .iplan{font-size:.8em}#pSplash{gap:.5em}#pSplash .story{display:none}canvas.logoC.big{width:min(80vw,calc(42vh*540/176))}}
 .map.m1{background:radial-gradient(circle at 60% 40%,rgba(255,47,214,.16),transparent 60%),repeating-linear-gradient(0deg,rgba(190,160,255,.05) 0 1px,transparent 1px 22px),repeating-linear-gradient(90deg,rgba(190,160,255,.05) 0 1px,transparent 1px 22px),#0c0718}
 .map.m2{background:radial-gradient(circle at 55% 45%,rgba(58,255,216,.14),transparent 60%),radial-gradient(circle at 20% 90%,rgba(255,226,58,.08),transparent 40%),repeating-linear-gradient(0deg,rgba(58,255,216,.05) 0 1px,transparent 1px 22px),repeating-linear-gradient(90deg,rgba(58,255,216,.05) 0 1px,transparent 1px 22px),#06121a}
 .geo{filter:drop-shadow(0 0 14px rgba(180,140,255,.35))}.map.m2 .geo{filter:drop-shadow(0 0 14px rgba(58,255,216,.3))}
@@ -282,6 +282,7 @@ canvas.logoC.sm{width:min(70vw,calc(15vh*320/104));height:auto;margin-left:-.4em
 .mini .rec .sleeve{font-size:1.8em;color:var(--dim)}.mini .rec.open{border-color:var(--pc)!important}.mini .rec.done{opacity:.55}.mini .rec .disc{width:2.2em;height:2.2em;border-radius:50%;background:radial-gradient(circle,var(--pc) 0 22%,#0c0c12 24% 100%);box-shadow:0 0 10px var(--pc)}.mini .rec b{color:var(--pc);font-size:.85em}
 .mini .tapw{display:flex;align-items:center;justify-content:center;gap:1.2em;padding:.4em}.mini .mbpulse{width:4.5em;height:4.5em;border-radius:50%;border:3px solid var(--gc);opacity:.35}.mini .mbpulse.on{animation:pz .35s ease-out}@keyframes pz{0%{transform:scale(1.25);opacity:1;background:var(--gc)}100%{transform:scale(1);opacity:.35}}.mini .tcnt{font-size:1.6em}
 @media (max-width:640px){.mini .kiste.k12{grid-template-columns:repeat(4,1fr)}}
+.iplan{width:0;min-width:100%;box-sizing:border-box;margin:.5em auto 0;padding-top:.45em;border-top:1px solid rgba(255,255,255,.18);font-size:.95em;line-height:1.35;text-align:center;white-space:normal}.iplan div{margin:.15em 0}.iplan b{letter-spacing:.08em;margin-right:.3em}.idiff{opacity:.85;font-size:.9em}
 .igim{width:0;min-width:100%;box-sizing:border-box;margin:.55em auto 0;padding-top:.5em;border-top:1px solid rgba(255,255,255,.18);font-size:1em;line-height:1.35;text-align:center;white-space:normal}.igim div{margin:.15em 0}.igim b{letter-spacing:.08em;margin-right:.4em}
 .rack{display:grid;grid-template-columns:repeat(auto-fill,minmax(15em,1fr));gap:.7em;overflow:auto;padding-bottom:1em}.rk{padding:.7em .8em;display:flex;flex-direction:column;gap:.4em}.rk h3{margin:0}.rk p{margin:0;color:var(--dim);font-size:.85em}.rk.lock{opacity:.5}
 .btn.mod{padding:.45em .6em!important;text-align:left}.btn.mod div{display:flex;flex-direction:column;gap:.15em;width:100%}.btn.mod small{font-size:.75em;opacity:.8;text-transform:none;letter-spacing:0}.btn.mod .mst{font-size:.7em;color:var(--gold)}.btn.mod.own .mst{color:var(--dim)}.btn.mod.on{border-color:#b6ff3a!important;box-shadow:0 0 12px rgba(182,255,58,.35)}.btn.mod.on .mst{color:#b6ff3a}
@@ -867,7 +868,7 @@ const SAVE_KEY='klubnacht.save.v1',NLV=LEVELS.length;
 const padArr=(a,n,f)=>{a=Array.isArray(a)?a.slice(0,n):[];while(a.length<n)a.push(typeof f==='function'?f():f);return a};
 function defaultSave(){return{v:1,completed:Array(NLV).fill(false),gameDone:false,gameDone2:false,coins:0,earned:0,skills:{},outfits:['black'],outfit:'black',skin:1,
  vinyls:Array.from({length:NLV},()=>[false,false,false]),best:Array(NLV).fill(null),bossPts:Array(NLV).fill(false),vinylPts:Array(NLV).fill(false),seenIntro:false,
- opts:{music:.7,sfx:.8,shake:true,bloom:2,tilt:true,scan:false,fps:false,gfx:'auto',gq:0}}}
+ opts:{music:.7,sfx:.8,shake:true,bloom:2,tilt:true,scan:false,fps:false,gfx:'auto',gq:0,diff:1}}}
 function loadSave(){
  try{const raw=localStorage.getItem(SAVE_KEY);if(raw){const s=JSON.parse(raw);if(s&&s.v===1){const d=defaultSave();const o=Object.assign(d,s);o.opts=Object.assign(defaultSave().opts,s.opts||{});
   o.completed=padArr(o.completed,NLV,false);o.best=padArr(o.best,NLV,null);o.bossPts=padArr(o.bossPts,NLV,false);o.vinylPts=padArr(o.vinylPts,NLV,false);
@@ -3820,7 +3821,8 @@ KT.k_secret=(x,H)=>{const w=360,L=H.L,rx=x+40,rw=240;H.ground(x,w);
  (L.hardSpots=L.hardSpots||[]).push({x:rx+rw/2,y:FLOOR_Y-150,p:0});
  H.spawn('walker',x+200);H.spawn('walker',x+300);return w};
 const KCOUNT=[3,4,4,5,5,6,6,6,7,7, 7,7,8,8,8,9,9,9,10,10];
-const KD=i=>i<10?i/9*.7:i<20?.62+(i-10)/9*.45:i<30?.9+(i-20)/9*.2:1+(i-30)/9*.2;   // Schwierigkeit der Hindernisse: 0 … 1.07
+const KD0=i=>i<10?i/9*.7:i<20?.62+(i-10)/9*.45:i<30?.9+(i-20)/9*.2:1+(i-30)/9*.2;
+const KD=i=>Math.max(0,KD0(i)+(typeof DF==='function'?DF().kd:0));   // Schwierigkeit der Hindernisse: 0 … 1.07
 for(const t of Object.keys(KT)){const f=KT[t];
  GSEG[t]=(x,H)=>{const d=H.diff;H.diff=KD(H.L.i);const w=f(x,H);H.diff=d;return w};
  GSEG[t+'~e']=(x,H)=>{const d=H.diff;H.diff=Math.min(KD(H.L.i),.12);const w=f(x,H);H.diff=d;if(!H.menu)(H.L.hints=H.L.hints||[]).push({x:x-30,text:KHINT[t]});return w}}
@@ -4805,7 +4807,10 @@ const UI={
   document.querySelectorAll('.node').forEach(n=>n.classList.toggle('cur',+n.dataset.i===i));
   const play=levelPlayable(i),tr=TOURS[L.theme];let msg='';
   if(!play){const q=MAPINFO[mapOf(i)];msg=SAVE.completed[i]?'Schon gerettet. Nach dem Finale ('+q.fin+') ist die ganze Karte frei wählbar.':'Gesperrt – erst das vorherige Level befreien.'}
-  box.innerHTML=`<span class="lab">Level ${i+1} · ${esc(L.city)}${L.abroad?' · '+esc(L.abroad):''} · ${esc(L.since)}</span><h3>${esc(L.club)}</h3><p>${esc(L.fact)}</p>${typeof GIM!=='undefined'&&(GIM[L.theme]||[]).length?`<p class="gimrow">${GIM[L.theme].map(g=>`<b style="color:${GIMDEF[g].c}">${gimName(L.theme,g)}</b>`).join(' · ')}</p>`:''}
+  box.innerHTML=`<span class="lab">Level ${i+1} · ${esc(L.city)}${L.abroad?' · '+esc(L.abroad):''} · ${esc(L.since)}</span><h3>${esc(L.club)}</h3><p>${esc(L.fact)}</p>${(()=>{const P=typeof PLAN!=='undefined'&&PLAN[L.theme],T=P&&LTYPE[P.t],pa=[];if(T)pa.push(`<b style="color:${T.c}">${T.n}</b>`);if(P)pa.push(`<b style="color:#ffe23a">★ ${esc(P.en)}</b>`);
+    if(typeof GIM!=='undefined')for(const g of GIM[L.theme]||[]){if(P&&(P.t==='fahrt'||P.t==='beat')&&(g==='chase'||g==='timer'||g==='train'))continue;pa.push(`<b style="color:${GIMDEF[g].c}">${gimName(L.theme,g)}</b>`)}
+    if(P&&P.mb)pa.push('<b style="color:#c8bce8">ZWISCHENBOSS</b>');if(P&&P.x&&SAVE.sexit&&SAVE.sexit[i])pa.push('<b style="color:#ffe23a">GEHEIMAUSGANG ✓</b>');
+    return pa.length?`<p class="gimrow">${pa.join(' · ')}</p>`:''})()}
    ${tr?`<div class="route">${[tr.out].concat(tr.z,[tr.boss]).map((z,k,a)=>`<span${k===a.length-1?' class="b"':''}>${esc(z.n)}</span>`).join('<i>▸</i>')}</div>`:''}
    ${L.res&&L.res.name?`<div class="resl">🎧 ${esc(L.res.role==='RESIDENT'?'Resident':L.res.role==='GRÜNDER'?'Gründer':'Gründer & DJ')}: <b>${esc(L.res.name)}</b> – irgendwo im Level zu finden</div>`:''}
    <div class="row"><div><b>${L.bpm}</b>BPM</div><div><b style="color:${Gn.color}">${esc(Gn.label)}</b>Gegner</div><div><b>${fmtTime(SAVE.best[i])}</b>Bestzeit</div><div><b class="vin">${SAVE.vinyls[i].map(v=>`<i class="${v?'on':''}"></i>`).join('')}</b>Gold-Vinyls</div></div>
@@ -4871,6 +4876,7 @@ const UI={
    <div class="opt"><label for="oMus">Musik</label><input id="oMus" type="range" min="0" max="1" step="0.05" value="${o.music}"></div>
    <div class="opt"><label for="oSfx">Effekte</label><input id="oSfx" type="range" min="0" max="1" step="0.05" value="${o.sfx}"></div>
    <div class="opt"><span>Bildschirmwackeln</span>${seg('shake',[[true,'An'],[false,'Aus']])}</div>
+   <div class="opt"><span>Schwierigkeit</span>${seg('diff',[[0,'Leicht'],[1,'Normal'],[2,'Schwer']])}</div>
    <div class="opt"><span>Grafik</span>${seg('gfx',[['auto','Auto'],[0,'Hoch'],[1,'Mittel'],[2,'Niedrig'],[3,'Sparsam']])}</div>
    <div class="opt"><span>Bloom (Leuchten)</span>${seg('bloom',[[0,'Aus'],[1,'Mittel'],[2,'Hoch']])}</div>
    <div class="opt"><span>Tilt-Shift-Unschärfe</span>${seg('tilt',[[true,'An'],[false,'Aus']])}</div>
@@ -5055,7 +5061,7 @@ function checkAch(list){let got=0;for(const a of ACH){if(SAVE.ach[a.id]||!a.ok()
 function stampsOf(i){const s=SAVE.stp[i];return[
  {k:'done',n:'Gerettet',on:!!SAVE.completed[i]},{k:'gold',n:'3 Gold-Vinyls',on:SAVE.vinyls[i].every(Boolean)},{k:'fly',n:'Vintage-Flyer',on:!!SAVE.flyers[i]},
  {k:'nh',n:'Ohne Treffer',on:s.nh},{k:'sp',n:'Unter Richtzeit'+(SAVE.par[i]?' ('+fmtTime(SAVE.par[i])+')':''),on:s.sp},{k:'rx',n:'Remix · White Label',on:s.rx}]}
-const parOf=L=>Math.round(L.w/52);
+const parOf=L=>Math.round(L.auto?L.w/L.auto.sp*1.12+30:L.w/52);
 
 /* ---------- Im Takt schießen ---------- */
 function beatPhase(){
@@ -5431,7 +5437,7 @@ function drawIntroScene(cv,s,t,d){const x=cv.getContext('2d'),W=480,H=270;x.imag
 ACH.push({id:'duel1',name:'Schlagfertig',desc:'Gewinne dein erstes Wortgefecht.',rw:500,ok:()=>(SAVE.st.duels||0)>=1},{id:'duel20',name:'Großmaul vom Dienst',desc:'Gewinne 20 Wortgefechte.',rw:5000,ok:()=>(SAVE.st.duels||0)>=20});
 
 /* ---------- Boss: maximal 5 Versuche, dann beginnt das Level von vorn ---------- */
-const BOSS_TRIES=5;
+var BOSS_TRIES=5;
 {const _sl3=startLevel;startLevel=function(i){_sl3(i);G.bossTries=0}}
 {const _rp2=respawnPlayer;respawnPlayer=function(){
  if(G.boss&&G.bossStarted&&G.boss.state!=='dying'&&!G.done){G.bossTries=(G.bossTries||0)+1;
@@ -6377,7 +6383,7 @@ function rackMod(w,m){const def=WMODS[w].find(q=>q.id===m),own=(SAVE.wmod.owned[
 const RANKS=[{l:'S',m:90,c:'#ffe23a'},{l:'A',m:75,c:'#3aff9a'},{l:'B',m:55,c:'#2ff3ff'},{l:'C',m:35,c:'#c8a8ff'},{l:'D',m:0,c:'#ff8a8a'}];
 const rankOf=sc=>RANKS.find(r=>sc>=r.m);
 {const _sl=startLevel;startLevel=function(i){_sl(i);const L=G.level;G.rk={coins:(L.pickups||[]).filter(k=>k.type==='coin').length,enemies:G.enemies.length}}}
-function calcRank(){const s=G.stats,i=G.li,par=SAVE.par[i]||Math.max(60,(G.level.w||6000)/70);
+function calcRank(){const s=G.stats,i=G.li,par=SAVE.par[i]||Math.max(60,G.level.auto?parOf(G.level):(G.level.w||6000)/70);
  const tP=s.time<=par?30:Math.max(0,30*(1-(s.time-par)/par)),hP=Math.max(0,25-s.hits*4),vP=s.vinyls.filter(Boolean).length*8,
   cP=11*Math.min(1,s.coins/Math.max(1,G.rk?G.rk.coins:1)),kP=10*Math.min(1,s.kills/Math.max(1,G.rk?G.rk.enemies*.8:1));
  const sc=Math.round(tP+hP+vP+cP+kP);return{sc,parts:[['Zeit',tP,30],['Treffer',hP,25],['Gold-Vinyls',vP,24],['Wertmarken',cP,11],['K.O.s',kP,10]]}}
@@ -6499,6 +6505,373 @@ function thin(list,max){if(list.length<=max)return list;const out=[];for(let k=0
 {const _pl=postLevel;postLevel=function(L){_pl(L);if(L.menu||!L.gim||!L.gim.length)return;let free=freeGround(L);
  for(const key of['pool','hot','esc','ice','mud']){if(!L[key])continue;let l=clipTo(L[key],free,key==='pool'?110:64);l=thin(l,PATCH_MAX[key]);L[key]=l;
   for(const q of l)free=free.flatMap(([a,b])=>q.x1+40<=a||q.x0-40>=b?[[a,b]]:[[a,q.x0-40],[q.x1+40,b]].filter(([u,v])=>v-u>20))}}}
+
+/* =====================================================================
+   LEVELPLAN: jeder Club bekommt einen eigenen Ablauf (Level-Typ), eine
+   Leitidee (Mario-Prinzip: zeigen → Druck → Twist → Finale), ein eigenes
+   Highlight-Ereignis, eigene Gegner-Eigenschaft und ggf. einen Geheimausgang.
+   Dazu: wählbare Schwierigkeit, weniger Zwischenbosse, wandelbare Bossräume.
+   ===================================================================== */
+
+/* ---------- Schwierigkeit ---------- */
+const DIFFS=[
+ {n:'LEICHT',hp:2,ehp:.7,esp:.85,bhp:.7,tries:8,chase:.8,auto:.88,kd:-.18,timer:1.35,col:'#3aff9a'},
+ {n:'NORMAL',hp:0,ehp:1,esp:1,bhp:1,tries:5,chase:1,auto:1,kd:0,timer:1,col:'#ffe23a'},
+ {n:'SCHWER',hp:-1,ehp:1.3,esp:1.15,bhp:1.35,tries:3,chase:1.15,auto:1.08,kd:.12,timer:.85,col:'#ff3a6a'}];
+const DF=()=>DIFFS[clamp((SAVE.opts.diff===undefined?1:SAVE.opts.diff)|0,0,2)];
+
+/* ---------- Ablauf-Typen ---------- */
+const LTYPE={
+ klassik:{n:'KLASSIK',d:'Drei Bereiche, eine Leitidee – und am Ende der Boss.',c:'#c8bce8'},
+ suche:{n:'SUCHE',d:'Ohne die drei verlorenen Fundstücke bleibt die Bühne zu. Schau auch oben, unten und hinter Wände!',c:'#6ad8ff'},
+ flucht:{n:'FLUCHT',d:'Die Kommerz-Walze ist dir vom ersten Meter an auf den Fersen. Nicht stehen bleiben!',c:'#ff7ad8'},
+ sprint:{n:'SPRINT',d:'Kurz, schnell, gnadenlos: nur zwei Bereiche – Vollgas bis zum Boss.',c:'#ffe23a'},
+ fahrt:{n:'FAHRT',d:'Das Bild läuft von allein weiter – bleib im Bild, sonst wirst du geschoben!',c:'#b6ff3a'},
+ beat:{n:'MUSIK-LEVEL',d:'Alles läuft im Takt: Plattformen und Laser schalten auf den Beat. Hör hin!',c:'#ff2fd6'},
+ expedition:{n:'EXPEDITION',d:'Das große Finale der Karte: vier Bereiche, zwei Highlights.',c:'#ffb13d'}};
+const EVDEF={drop:'DROP',konvoi:'KONVOI',einsturz:'EINSTURZ',flut:'FLUT',tuer:'TÜRSTEHER',crowd:'CROWDSURFING',kanone:'KANONE',seilbahn:'SEILBAHN',laser:'LASER IM TAKT'};
+const FOES={schild:{n:'TÜRSTEHER-TYPEN',d:'blocken Schüsse von vorn – von oben oder hinten erwischen!'},sprinter:{n:'SPRINTER',d:'stürmen los, wenn sie dich sehen.'},
+ teiler:{n:'CLIQUEN',d:'kommen nie allein – getroffen teilen sie sich auf.'},blitzer:{n:'SELFIE-JÄGER',d:'blenden dich mit dem Handyblitz.'}};
+
+/* t=Typ, f=Leitidee (Kit), e/en/et/es=Highlight, mb=Zwischenboss, a=Bossraum, foe=Gegner, x=Geheimausgang, rn=Fundstücke, z4=4. Bereich, e2=2. Highlight */
+const PLAN={
+ distillery:{t:'klassik',f:'roll',e:'drop',en:'Bass-Drop im Keller',et:'Beim Drop bebt der Boden – sei in der Luft oder auf einer Box!',mb:1},
+ rj:{t:'suche',f:'bounce',e:'konvoi',es:'raft',en:'Flöße auf dem Main',et:'Spring von Floß zu Floß – sie treiben flussabwärts!',rn:'PLATTEN',rt:'Drei Platten sind beim Aufbau verschwunden'},
+ omen:{t:'klassik',f:'gate',e:'einsturz',es:'concrete',en:'Die letzte Nacht',et:'Das Omen wird abgerissen – renn, bevor der Boden nachgibt!',mb:1,a:'einsturz',foe:'schild',x:1},
+ bootshaus:{t:'flucht',f:'crumble',e:'kanone',es:'pyro',en:'Pyro-Kanone',et:'Stell dich in die Kanone – ab über das Hafenbecken!',foe:'sprinter'},
+ blitz:{t:'sprint',f:'rain',e:'crowd',en:'Wiesn-Gedränge',et:'Unten kommt keiner durch – surf über die Köpfe!'},
+ ms:{t:'beat',f:'press',e:'drop',en:'Stahlwerk-Drop',et:'Beim Drop stampft das Stahlwerk – rauf auf die Plattformen!',foe:'schild',x:1},
+ sisyphos:{t:'suche',f:'swing',e:'flut',es:'water',en:'Der Teich läuft über',et:'Das Wasser steigt – klettere nach oben!',mb:1,foe:'teiler',rn:'SOCKEN',rt:'Irgendwo auf dem Gelände liegen deine drei Glücks-Socken'},
+ kater:{t:'fahrt',f:'jets',e:'konvoi',es:'boat',en:'Bootstour auf der Spree',et:'Spring von Boot zu Boot!',foe:'blitzer'},
+ tresor:{t:'klassik',f:'wind',e:'laser',en:'Stroboskop-Tunnel',et:'Die Laser schalten im Takt – lauf mit der Welle!',mb:1,a:'beweglich',foe:'schild'},
+ berghain:{t:'expedition',f:'climb',e:'tuer',en:'Der Türsteher',et:'„Heute nicht.“ – Dann eben übers Dach!',e2:'drop',en2:'Panorama-Drop',et2:'Wenn die Fensterläden aufgehen, kommt der Drop!',mb:1,a:'einsturz',foe:'schild',
+  z4:['Panorama Bar','Ganz oben unterm Dach: die Panorama Bar mit den berühmten Fensterläden.']},
+ loveparade:{t:'fahrt',f:'combo',e:'konvoi',es:'float',en:'Truck-Hopping',et:'Spring von Wagen zu Wagen!',foe:'sprinter'},
+ fusion:{t:'suche',f:'sp',e:'kanone',es:'co2',en:'Startrampe',et:'Der alte Militärflughafen: ab in die Startrampe!',mb:1,foe:'teiler',x:1,rn:'ZELTE',rt:'Finde die drei Zelte deiner Crew'},
+ melt:{t:'klassik',f:'wind',e:'seilbahn',es:'bagger',en:'Baggerschaufel',et:'Steig in die Schaufel – sie trägt dich über den See!',a:'beweglich',foe:'blitzer'},
+ natureone:{t:'sprint',f:'crumble',e:'einsturz',es:'bunker',en:'Der Bunker bröckelt',et:'Die alte Raketenbasis stürzt ein – nichts wie raus!',foe:'sprinter'},
+ timewarp:{t:'beat',f:'jets',e:'laser',en:'Laser-Kathedrale',et:'Die Laser schalten im Takt – lauf mit der Welle!',x:1},
+ parooka:{t:'flucht',f:'roll',e:'konvoi',es:'cart',en:'Gepäckwagen',et:'Die Gepäckwagen rollen übers Rollfeld – aufspringen!',foe:'blitzer'},
+ kappa:{t:'klassik',f:'press',e:'seilbahn',es:'crane',en:'Kran im Parco Dora',et:'Häng dich an den Kran – er fährt über die Stahlpfeiler!',mb:1,a:'einsturz',foe:'sprinter'},
+ hive:{t:'flucht',f:'gate',e:'crowd',en:'Hallen-Gedränge',et:'Die Halle ist voll – surf über die Menge!',foe:'teiler',x:1},
+ sonar:{t:'suche',f:'bounce',e:'flut',es:'water',en:'Flut am Strand',et:'Das Meer kommt – rauf auf die Plattformen!',mb:1,foe:'blitzer',rn:'TICKETS',rt:'Drei Tickets für Sónar by Night sind weggeweht'},
+ tml:{t:'expedition',f:'combo',e:'kanone',es:'confetti',en:'Konfetti-Kanone',et:'Lass dich über den Märchensee schießen!',e2:'crowd',en2:'Vor der Mainstage',et2:'Zehntausende vor der Bühne – surf nach vorn!',mb:1,a:'flut',foe:'teiler',
+  z4:['Mainstage','Die riesige Mainstage – jedes Jahr ein neues Märchen-Bühnenbild.']},
+ ibiza:{t:'klassik',f:'bounce',e:'flut',es:'foam',en:'Schaumparty!',et:'Die Kanonen spucken Schaum – rauf, bevor er dich verschluckt!',a:'flut',foe:'blitzer',x:1},
+ london:{t:'fahrt',f:'roll',e:'konvoi',es:'tube',en:'Tube-Surfing',et:'Spring von Waggon zu Waggon!',foe:'schild'},
+ amsterdam:{t:'suche',f:'swing',e:'seilbahn',es:'crane',en:'Hafenkran',et:'Der Kran trägt dich übers Hafenbecken!',mb:1,foe:'blitzer',rn:'TULPEN',rt:'Drei Tulpen für die Crew – verteilt über die ganze Stadt'},
+ tbilisi:{t:'beat',f:'press',e:'drop',en:'Drop im leeren Becken',et:'Beim Drop bebt das Schwimmbecken – rauf auf die Plattformen!',foe:'schild',x:1},
+ detroit:{t:'klassik',f:'jets',e:'konvoi',es:'car',en:'Fließband-Autos',et:'Die Autos laufen vom Band – spring drüber!',mb:1,a:'beweglich',foe:'sprinter'},
+ newyork:{t:'sprint',f:'gate',e:'tuer',en:'Geheime Warehouse-Party',et:'Vorne kommt keiner rein – über die Feuertreppe aufs Dach!',foe:'schild'},
+ saopaulo:{t:'flucht',f:'crumble',e:'crowd',en:'Karneval',et:'Die Straße ist voller Tänzer – surf über die Köpfe!',foe:'teiler',x:1},
+ tokyo:{t:'klassik',f:'climb',e:'drop',en:'Discokugel-Drop',et:'Beim Drop bebt der Floor – sei in der Luft!',mb:1,a:'einsturz',foe:'blitzer'},
+ karoo:{t:'suche',f:'wind',e:'einsturz',es:'wood',en:'Die Skulptur brennt',et:'Die Holzskulptur fällt in sich zusammen – lauf!',foe:'sprinter',rn:'KUNSTWERKE',rt:'Drei kleine Kunstwerke für den großen Burn'},
+ tempelhof:{t:'expedition',f:'combo',e:'konvoi',es:'cart',en:'Gepäckband',et:'Die Gepäckwagen rollen – aufspringen!',e2:'kanone',es2:'plane',en2:'Katapultstart',et2:'Ab auf die Startbahn – du wirst katapultiert!',mb:1,a:'beweglich',foe:'schild',
+  z4:['Vorfeld','Auf dem Vorfeld standen einst die Rosinenbomber der Luftbrücke.']},
+ era74:{t:'beat',f:'roll',e:'laser',en:'Oszilloskop',et:'Die Wellen schalten im Takt – lauf mit!'},
+ era77:{t:'klassik',f:'bounce',e:'drop',en:'Disco-Drop',et:'Beim Drop explodiert der Leuchtboden – sei in der Luft!',mb:1,a:'beweglich',foe:'blitzer'},
+ era85:{t:'fahrt',f:'rain',e:'konvoi',es:'train',en:'Hochbahn-Waggons',et:'Spring von Waggon zu Waggon!',foe:'schild',x:1},
+ era88:{t:'sprint',f:'press',e:'einsturz',es:'concrete',en:'Die Fabrik bricht zusammen',et:'Die leere Autofabrik stürzt ein – lauf!',foe:'sprinter'},
+ era89:{t:'flucht',f:'crumble',e:'crowd',en:'Acid-Gedränge',et:'Das ganze Feld tanzt – surf über die Menge!',foe:'teiler'},
+ era90:{t:'suche',f:'gate',e:'einsturz',es:'wall',en:'Die Mauer fällt!',et:'Die Mauer bricht – über die Trümmer!',mb:1,a:'einsturz',foe:'schild',x:1,rn:'MAUERSTÜCKE',rt:'Sammle drei Stücke der Mauer als Andenken'},
+ era99:{t:'fahrt',f:'jets',e:'kanone',es:'confetti',en:'Konfetti vom Wagen',et:'Der Wagen schießt dich über die Menge!',foe:'sprinter'},
+ era05:{t:'beat',f:'swing',e:'drop',en:'Minimal-Drop',et:'Klick … klick … DROP – sei in der Luft!'},
+ era20:{t:'suche',f:'bounce',e:'flut',es:'water',en:'Die Badewanne läuft über',et:'Das Wasser steigt – rauf auf die Möbel!',mb:1,foe:'blitzer',rn:'KABEL',rt:'Ohne drei Kabel kein Stream'},
+ era2077:{t:'expedition',f:'sp',e:'kanone',es:'airlock',en:'Luftschleuse',et:'Die Schleuse schießt dich ins Gewächshaus!',e2:'laser',en2:'Laserkuppel',et2:'Die Kuppel-Laser schalten im Takt!',mb:1,a:'beweglich',foe:'teiler',
+  z4:['Andockring','Hier legen die Shuttles von der Erde an.']}};
+const PL=(L)=>{if(!L||L.menu||(typeof G!=='undefined'&&G.after))return null;return PLAN[L.def.theme]||null};
+
+/* ---------- Leitidee in Stufen: 1 = gefahrlos zeigen … 4 = Finale ---------- */
+const ST_D=[0,.12,.75,1,1.18];
+for(const t of Object.keys(KT)){if(t.startsWith('k_'))for(let n=1;n<=4;n++){const f=KT[t],nn=n;
+ GSEG[t+'@'+n]=(x,H)=>{const d=H.diff,b=KD(H.L.i);H.diff=clamp(nn===1?Math.min(b,.15):b*ST_D[nn]+(nn===4?.12:0),0,1.25);const w=f(x,H);H.diff=d;
+  if(nn===1&&!H.menu&&INTRO[H.L.i]===t&&KHINT[t])(H.L.hints=H.L.hints||[]).push({x:x-30,text:KHINT[t]});return w}}}
+
+/* ---------- Highlight-Ereignisse (Segmente) ---------- */
+const PEV=(L,o)=>{(L.pev=L.pev||[]).push(o);return o};
+const evInfo=(H,k)=>{const P=PLAN[H.L.def.theme]||{};return k===2?{n:P.en2,t:P.et2,s:P.es2||P.es}:{n:P.en,t:P.et,s:P.es}};
+let EVK=1;
+function evBanner(H,x,k){const I=evInfo(H,k);if(!H.menu&&I.n)PEV(H.L,{type:'banner',x:x-20,n:I.n,t:I.t})}
+const EVSEG={
+ /* Drop: alle 16 Beats bebt der Boden – Spieler muss in der Luft oder auf Plattformen sein */
+ drop(x,H,k){const w=640,L=H.L;H.ground(x,w);evBanner(H,x,k);
+  [[70,40],[180,58],[300,40],[420,66],[540,44]].forEach(([dx,h],q)=>{H.plat(x+dx,FLOOR_Y-h,52);H.coinArc(x+dx+4,x+dx+48,FLOOR_Y-h-14,4)});
+  H.solid(x+250,FLOOR_Y-24,30,24,'podium');H.spawn('walker',x+140);H.spawn('walker',x+360);if(H.diff>.5)H.spawn('hopper',x+500);
+  PEV(L,{type:'drop',x0:x+20,x1:x+w-20,last:-1});L.vinylSpots.push({x:x+446,y:FLOOR_Y-96});return w},
+ /* Konvoi: Fahrzeuge fahren über eine Lücke nach rechts */
+ konvoi(x,H,k){const w=780,L=H.L,I=evInfo(H,k),sp=38+H.diff*14;H.ground(x,70);H.ground(x+w-70,70);kPit(H,x+70,w-140);evBanner(H,x,k);
+  const n=6,len=w-140+90;for(let q=0;q<n;q++){const v={x:x+70+q*len/n-60,y:FLOOR_Y-24,w:76,h:6,type:'oneway',kind:'vehicle',dyn:true,dx:0,dy:0,x0:x+70-90,x1:x+w-70,sp,sty:I.s||'truck',q};
+   v.upd=vehUpd;v.draw=vehDraw;L.solids.push(v);L.movers.push(v)}
+  H.coinArc(x+120,x+w-120,FLOOR_Y-60,20);H.spawn('flyer',x+w/2,FLOOR_Y-130);(L.hardSpots=L.hardSpots||[]).push({x:x+w/2,y:FLOOR_Y-110,p:2});return w},
+ /* Einsturz: der Boden bricht von hinten weg */
+ einsturz(x,H,k){const L=H.L,I=evInfo(H,k),tw=48,n=13,w=60+n*tw+60;H.ground(x,60);H.ground(x+w-60,60);kPit(H,x+60,n*tw);evBanner(H,x,k);
+  const ev=PEV(L,{type:'einsturz',x0:x+60,x1:x+w-60,on:false,t:0,tiles:[]});
+  for(let q=0;q<n;q++){if(q===5||q===10)continue;const tl={x:x+60+q*tw,y:FLOOR_Y,w:tw,h:10,type:'oneway',kind:'ctile',dyn:true,dx:0,dy:0,oy:FLOOR_Y,q,st:0,sty:I.s||'concrete',ev};
+   tl.draw=tileDraw;tl.upd=tileUpd;L.solids.push(tl);L.movers.push(tl);ev.tiles.push(tl);if(q%3===1)H.coin(tl.x+tw/2,FLOOR_Y-16)}
+  H.spawn('flyer',x+w*.6,FLOOR_Y-120);return w},
+ /* Flut: Flüssigkeit steigt – über eine Treppe aus Plattformen nach oben und über die Wand */
+ flut(x,H,k){const w=700,L=H.L,I=evInfo(H,k);H.ground(x,w);evBanner(H,x,k);
+  const st=[[60,36],[130,72],[60,108],[150,140],[240,160]];st.forEach(([dx,h])=>{H.plat(x+dx,FLOOR_Y-h,58);H.coin(x+dx+29,FLOOR_Y-h-12)});
+  H.solid(x+330,FLOOR_Y-150,44,150,'mezz');H.plat(x+374,FLOOR_Y-150,120,'metal');H.plat(x+530,FLOOR_Y-96,60);H.coinArc(x+380,x+590,FLOOR_Y-170,8);
+  H.spawn('walker',x+420,FLOOR_Y-150-22);L.vinylSpots.push({x:x+260,y:FLOOR_Y-190});
+  PEV(L,{type:'flut',x0:x+10,x1:x+330,y:FLOOR_Y+6,top:FLOOR_Y-130,sty:I.s||'water',st:0,t:0});return w},
+ /* Türsteher: vorne zu – über das Dach */
+ tuer(x,H,k){const w=640,L=H.L;H.ground(x,w);evBanner(H,x,k);
+  H.solid(x+300,FLOOR_Y-146,70,146,'mezz');L.props.push({type:'door',x:x+300});L.npcs.push({x:x+282,y:FLOOR_Y-22,kind:'bouncer'});
+  H.plat(x+110,FLOOR_Y-46,56);H.plat(x+180,FLOOR_Y-92,56);mover(H,x+240,FLOOR_Y-118,44,'v',22,1.2,0);
+  H.coinArc(x+300,x+370,FLOOR_Y-160,5);H.spawn('thrower',x+330,FLOOR_Y-146-22);H.plat(x+400,FLOOR_Y-90,56);H.spawn('walker',x+520);
+  L.vinylSpots.push({x:x+335,y:FLOOR_Y-196});return w},
+ /* Crowdsurfing: unten trägt die Menge dich nach oben und zurück – über die Köpfe! */
+ crowd(x,H,k){const w=700,L=H.L;H.ground(x,w);evBanner(H,x,k);const x0=x+70,x1=x+w-70;
+  for(let q=0;q<7;q++){const c={x:x0+20+q*76,y:FLOOR_Y-34,w:40,h:6,type:'oneway',kind:'hands',dyn:true,dx:0,dy:0,oy:FLOOR_Y-34,q};c.upd=handsUpd;c.draw=handsDraw;L.solids.push(c);L.movers.push(c);H.coin(c.x+20,FLOOR_Y-52)}
+  PEV(L,{type:'crowd',x0,x1});H.spawn('flyer',x+w/2,FLOOR_Y-130);(L.hardSpots=L.hardSpots||[]).push({x:x+w/2,y:FLOOR_Y-96,p:2});return w},
+ /* Kanone: schießt dich in hohem Bogen über eine Lücke */
+ kanone(x,H,k){const w=760,L=H.L,I=evInfo(H,k);H.ground(x,130);H.ground(x+w-130,130);kPit(H,x+130,w-260);evBanner(H,x,k);
+  PEV(L,{type:'kanone',x:x+56,w:30,tx:x+w-90,sty:I.s||'pyro',t:0});
+  for(let q=1;q<10;q++){const t=q/10;H.coin(x+70+(w-160)*t,FLOOR_Y-24-Math.sin(t*Math.PI)*150)}
+  H.spawn('flyer',x+w/2-40,FLOOR_Y-110);H.spawn('walker',x+w-60);(L.hardSpots=L.hardSpots||[]).push({x:x+Math.round((66+w-90)/2),y:FLOOR_Y-188,p:3});return w},
+ /* Seilbahn/Kran: der Haken trägt dich, solange du draufstehst */
+ seilbahn(x,H,k){const w=780,L=H.L,I=evInfo(H,k);H.ground(x,90);H.ground(x+w-90,90);kPit(H,x+90,w-180);evBanner(H,x,k);
+  const hk={x:x+96,y:FLOOR_Y-48,w:46,h:6,type:'oneway',kind:'hook',dyn:true,dx:0,dy:0,x0:x+96,x1:x+w-142,sty:I.s||'crane'};hk.upd=hookUpd;hk.draw=hookDraw;L.solids.push(hk);L.movers.push(hk);
+  kDrop(H,x+220,w-440,1.7-H.diff*.4);H.spawn('flyer',x+w*.45,FLOOR_Y-120);if(H.diff>.5)H.spawn('flyer',x+w*.7,FLOOR_Y-100);
+  H.coinArc(x+140,x+w-140,FLOOR_Y-80,10);PEV(L,{type:'cable',x0:x+96,x1:x+w-96,y:FLOOR_Y-48-34,sty:I.s||'crane'});return w},
+ /* Laser im Takt: Säulen schalten als Welle */
+ laser(x,H,k){const w=620,L=H.L;H.ground(x,w);evBanner(H,x,k);const ev=PEV(L,{type:'blaser',cols:[]});
+  for(let q=0;q<8;q++)ev.cols.push({x:x+70+q*62,k:q});H.coinArc(x+60,x+560,FLOOR_Y-30,22);H.plat(x+250,FLOOR_Y-70,60);H.spawn('walker',x+580);return w}};
+for(const k in EVSEG){GSEG['ev_'+k]=(x,H)=>EVSEG[k](x,H,1);GSEG['ev2_'+k]=(x,H)=>EVSEG[k](x,H,2)}
+
+/* Beat-Brücke: zwei/drei Plattform-Gruppen wechseln alle 2 Beats */
+function beatBridge(n){return(x,H)=>{const L=H.L,cnt=7+n,w=80+cnt*50+80,g=n>=3?3:2;H.ground(x,80);H.ground(x+w-80,80);kPit(H,x+80,cnt*50);
+ for(let q=0;q<cnt;q++){const b={x:x+86+q*50,y:FLOOR_Y-28-((q%2)*18),w:38,h:6,type:'oneway',kind:'beatplat',dyn:true,dx:0,dy:0,grp:q%g,ng:g,off:false};b.upd=bpUpd;b.draw=bpDraw;L.solids.push(b);L.movers.push(b);H.coin(b.x+19,b.y-12)}
+ if(!H.menu&&!L.bbHint){L.bbHint=1;(L.hints=L.hints||[]).push({x:x-20,text:'NEU: Beat-Brücke – die Plattformen leuchten im Wechsel. Spring, wenn deine Gruppe aufleuchtet!'})}
+ return w}}
+for(let n=1;n<=3;n++)GSEG['bb@'+n]=beatBridge(n);
+
+/* ---------- Bewegung & Zeichnen der Ereignis-Objekte ---------- */
+function carry(m,p,dx){if(p&&!p.dead&&p.ground===m&&p.onGround){p.x+=dx;p.y=m.y-p.h}}
+function vehUpd(m,dt,p){const ox=m.x;m.x+=m.sp*dt*(G.bossStarted?0:1);if(m.x>m.x1){m.x=m.x0;if(p&&p.ground===m){p.ground=null;p.onGround=false}}m.dx=m.x-ox;if(m.dx>0)carry(m,p,m.dx)}
+const VEHC={raft:['#7a5a34','#a07a44'],boat:['#e8e8f0','#3a6aaa'],tube:['#d8d8e0','#c82a2a'],float:['#ff2fd6','#ffe23a'],cart:['#5a5a66','#ffb13d'],car:['#2a4a8a','#c8c8d0'],train:['#8a8a94','#3a3a44'],truck:['#3a3a44','#ffe23a']};
+function vehDraw(p,e,X,Y,m,beat){const c=VEHC[m.sty]||VEHC.truck,w=m.w,ac=G.level.th.accent;
+ if(m.sty==='raft'){for(let k=0;k<w;k+=8){p.fillStyle=k%16?c[0]:c[1];p.fillRect(X+k,Y,7,6)}p.fillStyle='#4a3a24';p.fillRect(X,Y+6,w,2);return}
+ if(m.sty==='boat'){p.fillStyle=c[0];p.fillRect(X,Y,w,7);p.fillStyle=c[1];p.fillRect(X+2,Y+7,w-4,4);p.fillRect(X+6,Y+11,w-12,2);p.fillStyle='#2a2a30';p.fillRect(X+w-18,Y-12,10,12);p.fillStyle=ac;e.fillStyle=ac;p.fillRect(X+w-16,Y-10,6,3);e.fillRect(X+w-16,Y-10,6,3);return}
+ p.fillStyle=c[0];p.fillRect(X,Y,w,14);p.fillStyle=c[1];p.fillRect(X,Y+5,w,3);p.fillStyle='#14141a';p.fillRect(X+6,Y+14,10,6);p.fillRect(X+w-16,Y+14,10,6);
+ if(m.sty==='tube'||m.sty==='train'){p.fillStyle='#9ad8ff';for(let k=6;k<w-8;k+=14){p.fillRect(X+k,Y+8,8,4)}}
+ if(m.sty==='float'){const b=((beat+m.q)%1)<.5;for(let k=0;k<3;k++){p.fillStyle='#2a2a30';p.fillRect(X+8+k*22,Y-14,12,14);p.fillStyle=b?ac:'#5a5a66';e.fillStyle=ac;p.fillRect(X+11+k*22,Y-10,6,6);if(b)e.fillRect(X+11+k*22,Y-10,6,6)}addL(m.x+w/2,m.y-10,50,ac,.6)}
+ if(m.sty==='car'){p.fillStyle=c[0];p.fillRect(X+12,Y-8,w-28,8);p.fillStyle='#9ad8ff';p.fillRect(X+16,Y-6,w-36,4)}
+ if(m.sty==='cart'){p.fillStyle='#c84a2a';p.fillRect(X+6,Y-8,16,8);p.fillStyle='#3a6aaa';p.fillRect(X+26,Y-10,18,10);p.fillStyle='#2a8a3a';p.fillRect(X+48,Y-6,14,6)}}
+function tileUpd(m,dt,p){const ev=m.ev;if(!ev.on){m.st=0;m.off=false;m.y=m.oy;return}const tt=ev.t-.9-m.q*ev.iv;
+ if(tt>-.45&&m.st===0)m.st=1;if(tt>0&&m.st<2){m.st=2;m.vt=0;m.off=true;if(p&&p.ground===m){p.ground=null;p.onGround=false}if(Math.abs(m.x-G.cam.x-VW/2)<VW)AU.sfx('land');
+  burst(m.x+m.w/2,m.y,6,['#8a8a94','#5a5a66',G.level.th.accent],{a:-Math.PI/2,spread:2,speed:60,g:300,life:.6})}
+ if(m.st===2){m.vt+=dt;m.y=m.oy+m.vt*m.vt*260}}
+const TILEC={concrete:['#6a6a74','#4a4a54'],bunker:['#5a6a4a','#3a4a34'],wood:['#8a5a2a','#5a3a1a'],wall:['#c8c8c0','#8a8a84'],ice:['#9ad8ff','#5a8aaa']};
+function tileDraw(p,e,X,Y,m){const c=TILEC[m.sty]||TILEC.concrete,sh=m.st===1?Math.round((Math.random()-.5)*2):0;
+ p.fillStyle=c[0];p.fillRect(X+sh,Y,m.w-1,m.h+8);p.fillStyle=c[1];p.fillRect(X+sh,Y+4,m.w-1,1);p.fillRect(X+sh+m.w*.4,Y,1,m.h+8);
+ if(m.sty==='wall'&&m.q%2===0){p.fillStyle='#ff2fd6';p.fillRect(X+6,Y+8,10,2);p.fillStyle='#2ff3ff';p.fillRect(X+20,Y+11,12,2)}
+ if(m.st===1){p.fillStyle='#ffe23a';e.fillStyle='#ffe23a';p.fillRect(X+sh,Y-1,m.w-1,1);e.fillRect(X+sh,Y-1,m.w-1,1)}}
+function handsUpd(m,dt,p){const oy=m.y;m.y=m.oy-Math.abs(Math.sin((AU.beat()+m.q*.5)*Math.PI))*6;m.dy=m.y-oy;if(p&&p.ground===m&&p.onGround)p.y=m.y-p.h}
+function handsDraw(p,e,X,Y,m,beat){const L=G.level;for(let k=0;k<5;k++){const hx=X+3+k*8,up=((beat+k*.3+m.q)%1)<.5?2:0;p.fillStyle='#f0d0b0';p.fillRect(hx,Y-up,2,6+up);p.fillRect(hx-1,Y-up-2,4,2);p.fillRect(hx-1,Y-up-3,1,1);p.fillRect(hx+2,Y-up-3,1,1)}
+ p.fillStyle=L.th.accent;e.fillStyle=L.th.accent;p.fillRect(X,Y+5,m.w,1);e.globalAlpha=.6;e.fillRect(X,Y+5,m.w,1);e.globalAlpha=1;addL(m.x+m.w/2,m.y,24,L.th.accent,.5)}
+function hookUpd(m,dt,p){const ox=m.x,on=p&&!p.dead&&p.ground===m&&p.onGround;
+ if(on)m.x=Math.min(m.x1,m.x+70*DF().auto*dt);else if(p&&p.x<m.x-30&&m.x>m.x0)m.x=Math.max(m.x0,m.x-110*dt);
+ m.dx=m.x-ox;if(m.dx)carry(m,p,m.dx)}
+function hookDraw(p,e,X,Y,m){const ac=G.level.th.accent;p.fillStyle='#2a2a30';p.fillRect(X+m.w/2-1,Y-34,2,34);
+ if(m.sty==='bagger'){p.fillStyle='#e8a82a';p.fillRect(X,Y-2,m.w,8);p.fillStyle='#8a5a1a';for(let k=2;k<m.w;k+=8)p.fillRect(X+k,Y+6,4,3)}
+ else{p.fillStyle='#ffb13d';p.fillRect(X,Y,m.w,6);p.fillStyle='#14141a';for(let k=0;k<m.w;k+=6)p.fillRect(X+k,Y+1,3,1)}
+ p.fillStyle=ac;e.fillStyle=ac;p.fillRect(X+m.w/2-2,Y-36,4,3);e.fillRect(X+m.w/2-2,Y-36,4,3)}
+function bpActive(m){return Math.floor(AU.beat()/2)%m.ng===m.grp}
+function bpUpd(m,dt,p){const on=bpActive(m);m.off=!on;if(!on&&p&&p.ground===m){p.ground=null;p.onGround=false}}
+function bpDraw(p,e,X,Y,m,beat){const ac=G.level.th.accent,on=!m.off,fr=(beat/2)%1,warn=on&&fr>.72&&(Math.floor(beat*8)%2===0),next=!on&&(Math.floor(beat/2)+1)%m.ng===m.grp;
+ if(on&&!warn){p.fillStyle=ac;e.fillStyle=ac;p.fillRect(X,Y,m.w,4);e.fillRect(X,Y,m.w,4);p.fillStyle=shade(ac,-.4);p.fillRect(X,Y+4,m.w,2);addL(m.x+m.w/2,m.y,30,ac,.7)}
+ else if(warn){p.fillStyle='#ffffff';e.fillStyle='#ffffff';p.fillRect(X,Y,m.w,4);e.fillRect(X,Y,m.w,2)}
+ else{p.fillStyle=next?rgba(ac,.55):'rgba(255,255,255,.18)';for(let k=0;k<m.w;k+=4)p.fillRect(X+k,Y,2,1);p.fillRect(X,Y,1,4);p.fillRect(X+m.w-1,Y,1,4)}}
+
+/* ---------- Bauplan je Level aus dem Plan erzeugen ---------- */
+const BP0={};for(const th in BP)BP0[th]=BP[th].map(z=>z.slice());
+const TZ0={},ZN0={};
+const AUTO_OK=k=>!['k_climb','k_deck'].includes(k);
+function planBuild(th){const P=PLAN[th],bp=BP0[th],T=TOURS[th],li=LEVELS.findIndex(l=>l.theme===th);if(!P||!bp||!T||li<0)return;
+ if(!TZ0[th]){TZ0[th]=T.z.slice();ZN0[th]=ZONES[th]?ZONES[th].slice():null}
+ const clean=t=>t.replace('*',''),isKit=t=>!!KABBR[t],U=bp.map(z=>z.map(clean).filter(t=>!isKit(t)&&t!=='duel'&&t!=='secret'&&!UPPER.includes(t)));
+ const UPS=[];bp.forEach(z=>z.forEach(t=>{t=clean(t);if(UPPER.includes(t)&&!UPS.includes(t))UPS.push(t)}));
+ const auto=P.t==='fahrt'||P.t==='beat';
+ let fk=KABBR[P.f]||'k_roll';if(li<INTRO.length&&!INTRO.slice(0,li+1).includes(fk))fk=INTRO[li];if(auto&&!AUTO_OK(fk))fk='k_roll';
+ const F=n=>fk+'@'+n,FIN=li>=10?'k_combo@4':F(4),EV='ev_'+P.e,EV2=P.e2?'ev2_'+P.e2:null,BB=n=>'bb@'+n;
+ const ups=auto?UPS.filter(u=>u==='u_split'||u==='u_cat'||u==='u_stairs'):UPS.slice();const up=k=>ups.length?ups[k%ups.length]:null;
+ const u=(z,k)=>(U[z]||[])[k]||null,secret=li%3===2;
+ let Z;// Liste von [Original-Bereich, Segmente]
+ switch(P.t){
+  case'sprint':Z=[[0,[u(0,0),F(2),u(0,1),F(3)]],[2,[EV,u(2,0),F(3),secret?'k_secret':null,F(4)]]];break;
+  case'flucht':Z=[[0,[u(0,0),F(1),F(2)]],[1,[u(1,0),F(2),up(0),u(1,1),F(3)]],[2,[EV,u(2,0),F(3),secret?'k_secret':null,FIN]]];break;
+  case'fahrt':Z=[[0,[u(0,0),F(1),F(2)]],[1,[u(1,0),F(2),up(0)]],[2,[EV,u(2,0),secret?'k_secret':null,F(3)]]];break;
+  case'beat':Z=[[0,[u(0,0),BB(1),F(1)]],[1,[u(1,0),BB(2),F(2)]],[2,[EV,BB(3),secret?'k_secret':null,F(3)]]];break;
+  case'suche':Z=[[0,[u(0,0),F(1),up(0),u(0,1),F(2)]],[1,[u(1,0),F(2),P.mb?'duel':null,up(1),u(1,1),F(3)]],[2,[u(2,0),EV,F(3),up(2),secret?'k_secret':null,u(2,1),FIN]]];break;
+  case'expedition':Z=[[0,[u(0,0),F(1),u(0,1),F(2)]],[1,[u(1,0),F(2),P.mb?'duel':null,up(0),u(1,1),F(3)]],[2,[u(2,0),EV,F(3),up(1),u(2,1),F(3)]],[3,[u(1,2)||'dance',EV2,F(4),up(2),'k_combo@4']]];break;
+  default:Z=[[0,[u(0,0),F(1),u(0,1),F(2)]],[1,[u(1,0),F(2),P.mb?'duel':null,up(0),u(1,1),F(3)]],[2,[u(2,0),EV,F(3),secret?'k_secret':null,u(2,1),FIN]]]}
+ const zs=TZ0[th],zn=ZN0[th];
+ T.z=Z.map(([oi,segs])=>{const base=oi<3?zs[oi]:{n:P.z4[0],f:P.z4[1]};return Object.assign({},base,{s:segs.filter(Boolean)})});
+ if(zn)ZONES[th]=Z.map(([oi])=>zn[oi<3?oi:1]);
+ BP[th]=T.z.map(z=>z.s.slice())}
+for(const th in PLAN)planBuild(th);
+
+/* ---------- Schwierigkeit anwenden ---------- */
+{const _mp=makePlayer;makePlayer=function(x,y,keep){const p=_mp(x,y,keep);const d=DF().hp;if(d){p.maxHp=Math.max(3,p.maxHp+d);p.hp=p.maxHp}return p}}
+{const _me=makeEnemy;makeEnemy=function(s){const e=_me(s),D=DF();e.hp*=D.ehp;e.maxHp=e.hp;e.speed*=D.esp;return e}}
+{const _sb=spawnBoss;spawnBoss=function(){_sb();if(G.boss&&!G.after){const m=DF().bhp;G.boss.hp*=m;G.boss.maxHp=G.boss.hp;G.boss.trail=G.boss.hp}}}
+
+/* ---------- Level-Aufbau: Typ-Regeln, Fundstücke, Bossraum ---------- */
+{const _pl=postLevel;postLevel=function(L){_pl(L);const P=PL(L);if(!P)return;const D=DF();L.plan=P;
+ // Regeln, die nicht zum Typ passen, fallen weg
+ if(L.gim){if(P.t==='fahrt'||P.t==='beat')L.gim=L.gim.filter(g=>g!=='chase'&&g!=='timer'&&g!=='train');
+  if(P.t==='flucht'&&!L.gim.includes('chase'))L.gim.push('chase');
+  if(L.gim.includes('chase'))L.chaseSp=(20+L.i*.55)*(P.t==='flucht'?1.18:1)*D.chase;else L.chaseSp=0;
+  if(!L.gim.includes('timer')){L.timeMax=0;L.clocks=[]}else if(L.timeMax)L.timeMax=Math.round(L.timeMax*(P.t==='sprint'?.8:1)*D.timer);
+  if(!L.gim.includes('train'))L.solids=L.solids.filter(s=>s.kind!=='train')}
+ if(P.t==='fahrt'||P.t==='beat')L.auto={sp:(P.t==='beat'?AU_PX(L):54)*D.auto};
+ // Suche: drei Fundstücke an schwer erreichbaren Orten
+ if(P.t==='suche'){const gold=L.pickups.filter(k=>k.type==='gold'),A=L.arena.x,far=(x,y)=>!gold.some(g=>Math.abs(g.x-x)<110)&&!(L.recs||[]).some(q=>Math.abs(q.x-x)<500);L.recs=[];
+  const cand=(L.hardSpots||[]).slice().sort((a,b)=>a.p-b.p).concat(L.vinylSpots.slice().reverse());
+  const zr=(L.tour||[]).filter(z=>!z.start&&!z.boss).slice(0,3).map(z=>[z.x0,z.x1]);while(zr.length<3)zr.push([500+(A-650)*zr.length/3,500+(A-650)*(zr.length+1)/3]);
+  for(const[z0,z1]of zr){const c=cand.find(c=>c.x>=Math.max(500,z0)&&c.x<Math.min(A-150,z1)&&far(c.x,c.y));if(c)L.recs.push({x:c.x,y:c.y,got:false,k:L.recs.length})}
+  for(const c of cand){if(L.recs.length>=3)break;if(c.x<500||c.x>A-150||!far(c.x,c.y))continue;L.recs.push({x:c.x,y:c.y,got:false,k:L.recs.length})}
+  for(let q=0;L.recs.length<3&&q<20;q++){const x=A*(.25+.22*L.recs.length)+q*37;L.recs.push({x,y:FLOOR_Y-150,got:false,k:L.recs.length})}
+  L.recs.sort((a,b)=>a.x-b.x)}
+ // Geheimausgang im Geheimraum
+ if(P.x&&L.secret){const s=L.secret;L.sexit={x:s.x+s.w-34,y:FLOOR_Y-114-26,w:18,h:26}}
+ // Zwischenbosse: die Minispiel-Arten der Reihe nach über alle Level mit Zwischenboss verteilen
+ {const mbl=LEVELS.map((l,i)=>i).filter(i=>PLAN[LEVELS[i].theme]&&PLAN[LEVELS[i].theme].mb),o=mbl.indexOf(L.i);let k=0;
+  if(o>=0&&typeof MBTYPES!=='undefined')for(const n of L.npcs)if(n.kind==='duelist')n.mg=MBTYPES[(o+k++)%MBTYPES.length]}
+ // Bossraum wandelbar
+ if(L.arena&&P.a){const A=L.arena,pl=L.solids.filter(s=>s.type==='oneway'&&!s.dyn&&s.x>=A.x&&s.x<A.x+A.w&&s.y<FLOOR_Y-30),topY=Math.min(...pl.map(s=>s.y));for(let q=pl.length-1;q>=0;q--)if(pl[q].y===topY)pl.splice(q,1);
+  if(P.a==='einsturz')pl.forEach(s=>{s.kind='crumble';s.dyn=true;s.cr={st:0,t:0,oy:s.y};L.movers.push(s)});
+  if(P.a==='beweglich')pl.forEach((s,k)=>{s.kind='mover';s.dyn=true;s.dx=0;s.dy=0;s.mv={mode:'h',amp:46,sp:.9+k*.15,ph:k*1.7,ox:s.x,oy:s.y,t:0};L.movers.push(s)});
+  if(P.a==='flut')PEV(L,{type:'flut',arena:1,x0:A.x,x1:A.x+A.w,y:FLOOR_Y+6,top:FLOOR_Y-40,sty:(PLAN[L.def.theme].es||'foam'),st:0,t:0})}}}
+function AU_PX(L){return LEVELS[L.i].bpm/60*24}
+
+/* ---------- Start / Respawn ---------- */
+{const _sl=startLevel;startLevel=function(i){if(typeof BOSS_TRIES!=='undefined')BOSS_TRIES=G.after?5:DF().tries;_sl(i);const L=G.level;G.auto=null;G.recN=0;G.sexitUsed=false;G.recMsg=0;
+ if(!L||!L.plan)return;if(L.auto)G.auto={x:0,on:false,sp:L.auto.sp};
+ for(const r of L.recs||[])r.got=false;evReset(L,true);
+ // Gegner-Eigenschaft
+ if(L.plan.foe){let n=0;for(const e of G.enemies)if((e.type==='walker'||e.type==='hopper')&&(n++%2===0))e.trait=L.plan.foe}}}
+function evReset(L,full){for(const v of L.pev||[]){if(v.type==='einsturz'){v.on=false;v.t=0;v.iv=(.47-DF().kd*.12)}if(v.type==='flut'){v.st=0;v.t=0;v.y=FLOOR_Y+6}if(v.type==='banner'&&full)v.seen=false;if(v.type==='kanone')v.t=0}}
+{const _rp=respawnPlayer;respawnPlayer=function(){_rp();const L=G.level;if(!L||!L.plan)return;evReset(L,false);
+ if(G.auto){G.auto.x=clamp(G.respawn.x-90,0,L.w-VW);G.auto.hold=1.2}}}
+
+/* ---------- Ablauf pro Frame ---------- */
+function planTick(dt){const L=G.level,p=G.player;if(!L||!L.plan||!p||G.state!=='play')return;const live=!p.dead&&!G.done,beat=AU.beat(),D=DF();
+ // Fahrt / Musik-Level: Bild läuft von selbst
+ const a=G.auto;if(a){const A=L.arena?L.arena.x:L.w,stopX=A-VW+40;
+  if(!a.on&&p.x>320&&!G.bossStarted){a.on=true;a.x=G.cam.x;UI.toast(L.plan.t==='beat'?'Das Level läuft im Takt – bleib im Bild!':'Es geht los – das Bild fährt mit!')}
+  if(a.on&&(G.bossStarted||a.x>=stopX))a.on=false;
+  if(a.on&&live){if(a.hold>0)a.hold-=dt;else a.x=Math.min(stopX,a.x+a.sp*dt);
+   const lx=a.x+3;if(p.x<lx){p.x=lx;if(p.vx<0)p.vx=0;
+    const blk=L.solids.find(s=>s.type==='solid'&&!s.off&&p.x+p.w>s.x&&p.x<s.x+s.w&&p.y+p.h>s.y+2&&p.y<s.y+s.h);
+    if(blk){p.y=blk.y-p.h-1;p.vy=0;hurtPlayer(p.x-30);popup(p.x+5,p.y-8,'Mitgerissen!','#ff7ad8')}}
+   const rx=a.x+VW-p.w-4;if(p.x>rx){p.x=rx;if(p.vx>0)p.vx=0}}}
+ // auf Fahrzeugen/Haken kein Sturm
+ if(G.gust&&p.ground&&(p.ground.kind==='hook'||p.ground.kind==='vehicle'||p.ground.kind==='beatplat'))G.gust.dir=0;
+ // Fundstücke
+ for(const r of L.recs||[])if(!r.got&&live&&Math.abs(p.x+p.w/2-r.x)<12&&Math.abs(p.y+p.h/2-r.y)<18){r.got=true;G.recN++;AU.sfx('vinylGet');popup(r.x,r.y-10,L.plan.rn+' '+G.recN+'/3',LTYPE.suche.c,true);
+  burst(r.x,r.y,20,[LTYPE.suche.c,'#ffffff','#ffe23a'],{speed:110,g:120,life:.8,em:true});if(G.recN===3)UI.toast('Alle '+L.plan.rn+' gefunden – die Bühne ist offen!')}
+ if(L.recs&&L.arena&&!G.bossStarted&&!G.god&&G.recN<3&&live){const gx=L.arena.x-30;if(p.x>gx){p.x=gx;p.vx=-60;if(G.t>G.recMsg){G.recMsg=G.t+3;UI.toast('Erst alle '+L.plan.rn+' finden! ('+G.recN+'/3) – '+L.plan.rt+'.')}}}
+ // Geheimausgang
+ const se=L.sexit;if(se&&live&&!G.sexitUsed&&aabb(p,se)){G.sexitUsed=true;G.done=true;G.doneT=0;G.banner={text:'GEHEIMAUSGANG!',t:0};G.flash=.6;AU.sfx('vinylGet');addShake(6);
+  burst(se.x+9,se.y+13,30,['#ffe23a','#ffffff',L.th.accent],{speed:130,g:60,life:1,em:true});p.vx=0}
+ // Ereignisse
+ for(const v of L.pev||[]){
+  if(v.type==='banner'){if(!v.seen&&p.x>v.x){v.seen=true;G.zoneB={n:'★ '+v.n.toUpperCase(),f:v.t,t:0,hint:1};AU.sfx('checkpoint')}continue}
+  if(v.type==='einsturz'){if(!v.on&&live&&p.x>v.x0+20){v.on=true;v.t=0;addShake(4);AU.sfx('slam')}if(v.on)v.t+=dt;continue}
+  if(v.type==='drop'){const inR=p.x>v.x0-40&&p.x<v.x1+40,bi=Math.floor(beat/16);
+   if(bi!==v.last){const was=v.last;v.last=bi;if(was>=0&&inR&&live&&!G.bossStarted){G.flash=Math.max(G.flash,.35);addShake(9);AU.sfx('slam');
+     for(let k=0;k<26;k++)part({x:v.x0+Math.random()*(v.x1-v.x0),y:FLOOR_Y-2,vx:(Math.random()-.5)*60,vy:-120-Math.random()*120,g:300,life:.7,col:k%2?L.th.accent:'#ffffff',s:2,em:true});
+     if(p.onGround&&p.ground&&p.ground.kind==='ground'){hurtPlayer(p.x+30);p.vy=-260}
+     for(const e of G.enemies)if(e.alive&&e.onGround&&e.x>v.x0&&e.x<v.x1)hitEnemy(e,6,e.x+5,e.y)}}
+   v.cd=inR?16-(beat%16):99;continue}
+  if(v.type==='crowd'){if(live&&p.onGround&&p.ground&&p.ground.kind==='ground'&&p.x+p.w/2>v.x0&&p.x+p.w/2<v.x1){p.vy=-300;p.vx=-150;p.onGround=false;p.ground=null;p.jumps=1;
+    if(!v.msg||G.t>v.msg){v.msg=G.t+2;popup(p.x+5,p.y-10,pick(['Hoch mit dir!','Die Menge trägt dich!','Crowdsurfen!']),L.th.accent)}}continue}
+  if(v.type==='kanone'){const on=live&&p.onGround&&!p.launch&&p.x+p.w/2>v.x&&p.x+p.w/2<v.x+v.w;v.t=on?v.t+dt:0;
+   if(v.t>.06){v.t=0;p.launch={t:0,dur:1.25,x0:p.x,y0:p.y,x1:v.tx,y1:FLOOR_Y-p.h,h:170};AU.sfx('kickgun');addShake(8);G.flash=.25;
+    burst(v.x+15,FLOOR_Y-24,30,v.sty==='confetti'?['#ff2fd6','#2ff3ff','#ffe23a','#b6ff3a']:v.sty==='foam'?['#ffffff','#d8f8ff']:['#ffb13d','#ff3a3a','#ffe23a'],{a:-Math.PI/2+.5,spread:1,speed:220,g:200,life:1,kind:'confetti'})}continue}
+  if(v.type==='flut'){const act=v.arena?G.bossStarted&&!G.done:(p.x>v.x0-30&&p.x<v.x1+60);
+   if(v.arena){v.t+=act?dt:0;const c=v.t%14;v.y=c<9?FLOOR_Y+6:c<10.5?FLOOR_Y+6-(c-9)/1.5*46:c<13?FLOOR_Y-40:FLOOR_Y-40+(c-13)*46}
+   else{if(act&&v.st===0){v.st=1;v.t=0}if(v.st===1){v.t+=dt;const T=9/D.auto;v.y=FLOOR_Y+6-Math.min(1,v.t/T)*(FLOOR_Y+6-v.top);if(p.x>v.x1+80||v.t>T+5){v.st=2;v.t=0}}
+    if(v.st===2){v.t+=dt;v.y=Math.min(FLOOR_Y+6,v.y+60*dt);if(v.y>=FLOOR_Y+6&&p.x<v.x1-40)v.st=0}}
+   if(live&&p.y+p.h>v.y+5&&p.x+p.w>v.x0&&p.x<v.x1){hurtPlayer(p.x);p.vy=-240}continue}
+  if(v.type==='blaser'){for(const c of v.cols){c.on=((Math.floor(beat*2)+c.k)%4)<2&&!G.bossStarted;c.warn=!c.on&&((Math.floor(beat*2)+c.k+1)%4)<2;
+    if(c.on&&live&&p.x+p.w>c.x&&p.x<c.x+3)hurtPlayer(c.x)}}}
+ // Gegner-Eigenschaften
+ for(const e of G.enemies){if(!e.alive||!e.act||!e.trait)continue;const dx=p.x-e.x,near=Math.abs(dx)<150&&Math.abs(p.y-e.y)<50&&live;
+  if(e.trait==='sprinter'){if(e.dashT>0){e.dashT-=dt;e.vx=Math.sign(e.vx||dx)*e.speed*3.2;if(Math.random()<.5)part({x:e.x+5,y:e.y+18,vx:-e.vx*.2,vy:-10,g:0,life:.25,col:'#ffffff',s:1})}else{e.dcd=(e.dcd||1.5)-dt;if(near&&e.dcd<=0&&e.onGround){e.dashT=.6;e.dcd=2.6;e.vx=Math.sign(dx)*e.speed*3.2;popup(e.x+5,e.y-6,'!','#ff7ad8')}}}
+  if(e.trait==='blitzer'){e.fcd=(e.fcd||2+Math.random()*2)-dt;if(near&&e.fcd<=0&&Math.sign(dx)===e.facing){e.fcd=4.5;G.flash=Math.max(G.flash,.55);AU.sfx('cd');popup(e.x+5,e.y-8,'*klick*','#ffffff');p.vx*=.3}}}}
+{const _u=updatePlay;updatePlay=function(dt){_u(dt);if(G.state==='play')planTick(dt)}}
+
+/* Kamera folgt im Fahrt-/Musik-Level dem Bildlauf */
+{const _uc=updateCamera;updateCamera=function(dt){_uc(dt);const a=G.auto;if(a&&a.on&&G.state==='play')G.cam.x=a.x}}
+
+/* Kanonen-Flug: feste Flugbahn */
+{const _up=updatePlayer;updatePlayer=function(dt){const p=G.player;if(p&&p.launch&&!p.dead){const l=p.launch;l.t+=dt;const t=Math.min(1,l.t/l.dur);
+  p.x=l.x0+(l.x1-l.x0)*t;p.y=l.y0+(l.y1-l.y0)*t-Math.sin(t*Math.PI)*l.h;p.vx=0;p.vy=0;p.onGround=false;p.ground=null;p.inv=Math.max(p.inv,.2);p.t+=dt;
+  if(Math.random()<.6)part({x:p.x+5,y:p.y+12,vx:-40,vy:20,g:0,life:.4,col:G.level.th.accent,s:2,em:true});
+  if(t>=1){p.launch=null;p.vy=60;p.jumps=1}return}_up(dt)}}
+
+/* Gegner: Schild blockt von vorn, Cliquen teilen sich */
+{const _he=hitEnemy;hitEnemy=function(e,d,x,y,...a){if(e&&e.trait==='schild'&&x!=null&&y!=null&&y>e.y+5&&(x-(e.x+e.w/2))*e.facing>0){e.flash=.05;
+  if(!e.bt||G.t>e.bt){e.bt=G.t+.6;popup(e.x+5,e.y-6,'GEBLOCKT','#c8c8d0');AU.sfx('shield')}burst(x,y,4,['#ffffff','#c8c8d0'],{speed:60,life:.25});return}return _he(e,d,x,y,...a)}}
+{const _ke=killEnemy;killEnemy=function(e,silent){_ke(e,silent);if(silent||!e||e.trait!=='teiler'||e.split)return;
+ for(const s of[-1,1]){const n=makeEnemy({type:'walker',x:e.x+s*8,y:e.y});n.hp=n.maxHp=Math.max(1,e.maxHp*.35);n.split=true;n.act=true;n.vy=-200;n.vx=s*80;n.dir=s;G.enemies.push(n)}}}
+
+/* ---------- Zeichnen ---------- */
+const LIQ={water:['#2a6aaa','#6ad8ff'],foam:['#e8f0f8','#ffffff'],fog:['#8a8aa0','#c8c8e0'],lava:['#c83a1a','#ffb13d']};
+{const _de=drawExtras;drawExtras=function(cx,cy,beat,pulse){_de(cx,cy,beat,pulse);const L=G.level;if(!L||!L.plan||G.state==='menu')return;const p=RD.p,e=RD.e,ac=L.th.accent;
+ for(const v of L.pev||[]){
+  if(v.type==='cable'){const X0=Math.round(v.x0-cx),X1=Math.round(v.x1-cx);if(X1<0||X0>VW)continue;p.fillStyle='#14141a';p.fillRect(X0,v.y+cy,X1-X0,1);
+   for(const X of[X0,X1]){p.fillStyle=v.sty==='bagger'?'#c8902a':'#e8a82a';p.fillRect(X-3,v.y+cy-6,6,FLOOR_Y-v.y+6);p.fillStyle='#14141a';for(let k=0;k<FLOOR_Y-v.y;k+=8)p.fillRect(X-3,v.y+cy+k,6,1)}}
+  else if(v.type==='kanone'){const X=Math.round(v.x-cx),Y=FLOOR_Y+cy;if(X<-40||X>VW+10)continue;const col=v.sty==='foam'?'#e8f0f8':v.sty==='confetti'?'#ff2fd6':v.sty==='airlock'||v.sty==='plane'?'#c8c8d0':'#4a4a54';
+   p.fillStyle='#2a2a30';p.fillRect(X-4,Y-8,v.w+8,8);p.fillStyle=col;p.fillRect(X+2,Y-26,v.w-4,18);p.fillStyle=shade(col,-.3);p.fillRect(X+2,Y-26,v.w-4,3);
+   const ld=v.t>0;p.fillStyle=ld?'#ffe23a':ac;e.fillStyle=p.fillStyle;p.fillRect(X+v.w/2-3,Y-32,6,4);e.fillRect(X+v.w/2-3,Y-32,6,4);addL(v.x+v.w/2,FLOOR_Y-30,40,ac,.8);
+   if(((beat*2)%1)<.5){p.fillStyle='#ffffff';e.fillStyle='#ffffff';p.fillRect(X+v.w/2-1,Y-44,2,6);e.fillRect(X+v.w/2-1,Y-44,2,6)}}
+  else if(v.type==='crowd'){const X0=Math.round(v.x0-cx),X1=Math.round(v.x1-cx);if(X1<0||X0>VW)continue;for(let k=X0;k<X1;k+=6){const h=14+((k*7)%5),j=((beat+k*.07)%1)<.5?2:0;
+    p.fillStyle=k%12?'#1a1420':'#241a2c';p.fillRect(k,FLOOR_Y+cy-h-j,5,h+j);p.fillStyle='#3a2a34';p.fillRect(k+1,FLOOR_Y+cy-h-j-3,3,3);if((k/6|0)%3===0){p.fillRect(k+1,FLOOR_Y+cy-h-j-10,1,7)}}}
+  else if(v.type==='blaser'){for(const c of v.cols){const X=Math.round(c.x-cx);if(X<-5||X>VW+5)continue;p.fillStyle='#2a2a30';p.fillRect(X-2,2+cy,7,6);p.fillRect(X-2,FLOOR_Y-6+cy,7,6);
+    if(c.on){p.fillStyle=ac;e.fillStyle=ac;p.fillRect(X,8+cy,3,FLOOR_Y-14);e.fillRect(X,8+cy,3,FLOOR_Y-14);addL(c.x+1,FLOOR_Y/2,50,ac,.5)}else if(c.warn){p.fillStyle=rgba(ac,.5);for(let y=10;y<FLOOR_Y-8;y+=6)p.fillRect(X+1,y+cy,1,3)}}}
+  else if(v.type==='drop'&&v.cd<=4&&!G.bossStarted){const X=Math.round((v.x0+v.x1)/2-cx);if(X<-80||X>VW+80)continue;const n=Math.ceil(v.cd),txt=n<=1?'DROP!':String(n-1);
+   if(txt!=='0'){p.font='bold 18px "Pixelify Sans", monospace';p.textAlign='center';p.fillStyle='#000';p.fillText(txt,X+1,60+cy+1);p.fillStyle=n<=1?'#ff2fd6':'#ffe23a';p.fillText(txt,X,60+cy);e.font=p.font;e.textAlign='center';e.fillStyle=p.fillStyle;e.fillText(txt,X,60+cy);p.textAlign='left';e.textAlign='left'}}}
+ // Geheimausgang
+ const se=L.sexit;if(se&&L.secret&&L.secret.found){const X=Math.round(se.x-cx),Y=Math.round(se.y+cy);if(X>-30&&X<VW+10){p.fillStyle='#14141a';p.fillRect(X,Y,se.w,se.h);p.fillStyle='#ffe23a';e.fillStyle='#ffe23a';p.fillRect(X-2,Y-2,se.w+4,2);e.fillRect(X-2,Y-2,se.w+4,2);p.fillRect(X-2,Y,2,se.h);p.fillRect(X+se.w,Y,2,se.h);
+   p.font='6px "Pixelify Sans", monospace';p.textAlign='center';p.fillText('EXIT',X+se.w/2,Y-5);e.font=p.font;e.textAlign='center';e.fillText('EXIT',X+se.w/2,Y-5);p.textAlign='left';e.textAlign='left';addL(se.x+9,se.y+12,40,'#ffe23a',.8)}}
+ // Fundstücke
+ for(const r of L.recs||[]){if(r.got)continue;const X=Math.round(r.x-cx),Y=Math.round(r.y+cy+Math.sin(G.t*3+r.k)*2);if(X<-10||X>VW+10)continue;const c=LTYPE.suche.c;
+  p.fillStyle='#14141a';p.fillRect(X-5,Y-5,10,10);p.fillStyle=c;e.fillStyle=c;p.fillRect(X-4,Y-4,8,8);e.fillRect(X-4,Y-4,8,8);p.fillStyle='#14141a';p.fillRect(X-1,Y-1,2,2);addL(r.x,r.y,36,c,.9);
+  if(((G.t*3)%1)<.5){p.fillStyle='#ffffff';p.fillRect(X+3,Y-6,2,2)}}
+ // Gegner-Merkmale
+ for(const en of G.enemies){if(!en.alive||!en.act||!en.trait)continue;const X=Math.round(en.x-cx),Y=Math.round(en.y+cy);if(X<-20||X>VW+20)continue;
+  if(en.trait==='schild'){const sx=en.facing>0?X+en.w+1:X-4;p.fillStyle='#8a8a94';p.fillRect(sx,Y+5,3,13);p.fillStyle='#c8c8d0';p.fillRect(sx,Y+5,3,2)}
+  else if(en.trait==='blitzer'){const sx=en.facing>0?X+en.w:X-3;p.fillStyle='#2a2a30';p.fillRect(sx,Y+6,3,5);if(en.fcd<.5){p.fillStyle='#ffffff';e.fillStyle='#ffffff';p.fillRect(sx,Y+6,3,2);e.fillRect(sx-2,Y+4,7,6)}}
+  else if(en.trait==='teiler'&&!en.split){p.fillStyle=ac;p.fillRect(X+2,Y-4,2,2);p.fillRect(X+6,Y-4,2,2)}
+  else if(en.trait==='sprinter'){p.fillStyle='#ff7ad8';p.fillRect(X+1,Y+20,en.w-2,1)}}}}
+{const _dp=drawParts;drawParts=function(cx,cy){_dp(cx,cy);const L=G.level;if(!L||!L.plan||G.state==='menu')return;const p=RD.p,e=RD.e;
+ for(const v of L.pev||[]){if(v.type!=='flut'||v.y>=FLOOR_Y+5)continue;const X0=Math.max(0,Math.round(v.x0-cx)),X1=Math.min(VW,Math.round(v.x1-cx));if(X1<=X0)continue;const c=LIQ[v.sty]||LIQ.water,Y=Math.round(v.y+cy);
+  p.globalAlpha=v.sty==='foam'?.92:.72;p.fillStyle=c[0];p.fillRect(X0,Y,X1-X0,FLOOR_Y+cy-Y+2);p.globalAlpha=1;
+  for(let x=X0;x<X1;x+=4){const h=Math.round(Math.sin(x*.2+G.t*4)*1.5+(v.sty==='foam'?Math.sin(x*.07+G.t)*3:0));p.fillStyle=c[1];p.fillRect(x,Y+h-1,4,2);if(v.sty!=='foam'){e.fillStyle=c[1];e.globalAlpha=.4;e.fillRect(x,Y+h-1,4,1);e.globalAlpha=1}}
+  if(v.sty==='foam'&&Math.random()<.3)part({x:v.x0+Math.random()*(v.x1-v.x0),y:v.y,vx:0,vy:-20,g:-10,life:.8,col:'#ffffff',s:2})}}}
+
+/* ---------- HUD ---------- */
+{const _h=drawHUD;drawHUD=function(){_h();const L=G.level;if(G.state!=='play'||!L||!L.plan)return;const d=RD.d,S=RD.S,W=RD.W;d.save();
+ let y=RD.H-30*S;const tags=[];
+ if(L.recs){tags.push([L.plan.rn+' '+G.recN+'/3',LTYPE.suche.c])}
+ if(G.auto&&G.auto.on)tags.push([L.plan.t==='beat'?'♪ IM TAKT':'▶ FAHRT',LTYPE[L.plan.t].c]);
+ for(const[t,c]of tags){const w=(t.length*4.2+12)*S;d.fillStyle='rgba(8,4,20,.75)';d.fillRect(W/2-w/2,y,w,13*S);hudText(d,t,W/2,y+9.5*S,5.5,c,'center');y-=16*S}
+ d.restore()}}
+
+/* ---------- Geheimausgang: Belohnung ---------- */
+{const _sr=UI.showResult.bind(UI);UI.showResult=function(r){if(G.sexitUsed&&r){SAVE.sexit=SAVE.sexit||{};if(!SAVE.sexit[r.i]){SAVE.sexit[r.i]=true;SAVE.earned+=2;persist();r.rewards=(r.rewards||[]).concat([{icon:'skill',text:'Geheimausgang gefunden: +2 Skillpunkte'}])}else r.rewards=(r.rewards||[]).concat([{icon:'vinyl',text:'Geheimausgang genommen'}])}return _sr(r)}}
+
+/* ---------- Level-Intro: Ablauf, Highlight, Schwierigkeit ---------- */
+{const _li=UI.levelIntro.bind(UI);UI.levelIntro=function(i){_li(i);const P=PLAN[LEVELS[i].theme];if(!P||G.after)return;const el=$('#introCard'),T=LTYPE[P.t],D=DF();
+ const div=document.createElement('div');div.className='iplan';
+ div.innerHTML=`<div><b style="color:${T.c}">${T.n}</b> ${esc(T.d)}</div><div><b style="color:#ffe23a">★ ${esc(P.en)}</b>${P.en2?` · <b style="color:#ffe23a">★ ${esc(P.en2)}</b>`:''}${P.foe?` · <b style="color:#ff9a6a">${FOES[P.foe].n}</b> ${esc(FOES[P.foe].d)}`:''}</div>`+
+  `<div class="idiff">SCHWIERIGKEIT: <b style="color:${D.col}">${D.n}</b>${P.mb?' · mit Zwischenboss':''}${P.x?' · irgendwo gibt es einen Geheimausgang …':''}</div>`;
+ el.appendChild(div)}}
 
 /* ================= INPUT ================= */
 const KEYMAP={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',ArrowDown:'down',KeyS:'down',ArrowUp:'jump',KeyW:'jump',Space:'jump',
