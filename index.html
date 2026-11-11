@@ -2393,7 +2393,7 @@ XSEG.bootshaus={
   H.spawn('thrower',x+180,FLOOR_Y-40-22);H.spawn('walker',x+320);H.coinArc(x+110,x+260,FLOOR_Y-56,8);H.L.vinylSpots.push({x:x+260,y:FLOOR_Y-80});return w})
 };
 XSEG.blitz={
- patower:S((x,H)=>{const w=340;H.ground(x,w);H.solid(x+70,FLOOR_Y-72,26,72,'patower');H.solid(x+244,FLOOR_Y-72,26,72,'patower');FX(H,'horns',x+170);
+ patower:S((x,H)=>{const w=340;H.ground(x,w);H.solid(x+40,FLOOR_Y-34,30,34,'step');H.solid(x+70,FLOOR_Y-72,26,72,'patower');H.solid(x+214,FLOOR_Y-34,30,34,'step');H.solid(x+244,FLOOR_Y-72,26,72,'patower');FX(H,'horns',x+170);
   H.zone(x+100,x+240,1.1);H.spawn('walker',x+170);H.spawn('flyer',x+170,FLOOR_Y-120);H.coin(x+83,FLOOR_Y-84);H.coin(x+257,FLOOR_Y-84);H.L.vinylSpots.push({x:x+257,y:FLOOR_Y-104});return w}),
  konferenzbar:S((x,H)=>{const w=340;H.ground(x,w);H.solid(x+60,FLOOR_Y-24,210,24,'woodbar');FX(H,'horns',x+90);FX(H,'horns',x+250);
   H.spawn('thrower',x+165,FLOOR_Y-24-22);H.spawn('walker',x+300);H.coinArc(x+80,x+250,FLOOR_Y-40,6);H.L.lights.push({x:x+165,y:FLOOR_Y-40,r:90,col:'#ffe0b0',a:.6});return w}),
@@ -2456,7 +2456,7 @@ XARENA.berghain=(AX,AW,H)=>{H.L.props=H.L.props.filter(p=>p.type!=='djbooth');co
  BACK(H,AX-40,AW+100,'panorama',{win,ww:120,prints:[AX+10,AX+470]});FX(H,'blinds',AX,{win,ww:120,o:0,back:true});
  PROP(H,'chaintable',AX+AW/2-40,{w:80});NOSPOT(H,AX-40,AX+AW+60)};
 XARENA.blitz=(AX,AW,H)=>{H.L.props=H.L.props.filter(p=>p.type!=='djbooth');PROP(H,'booth2',AX+AW/2-40,{w:80});FX(H,'horns',AX+120);FX(H,'horns',AX+AW-120);
- H.L.solids.push({x:AX+30,y:FLOOR_Y-72,w:26,h:72,type:'solid',kind:'patower'},{x:AX+AW-56,y:FLOOR_Y-72,w:26,h:72,type:'solid',kind:'patower'})};
+ H.L.solids.push({x:AX+30,y:FLOOR_Y-44,w:26,h:44,type:'solid',kind:'patower'},{x:AX+AW-56,y:FLOOR_Y-44,w:26,h:44,type:'solid',kind:'patower'})};
 XARENA.tresor=(AX,AW,H)=>{BACK(H,AX-40,AW+100,'vaultroom');NOCEIL(H,AX-40,AX+AW+60);NOSPOT(H,AX-40,AX+AW+60);PROP(H,'bars',AX+AW/2-70,{w:140});FX(H,'bulbs',AX,{w:AW,col:'#ff2a2a'});H.L.smokers.push({x:AX+20},{x:AX+AW-40})};
 XARENA.pudel=(AX,AW,H)=>{PROP(H,'palm',AX+20,{h:110});PROP(H,'palm',AX+AW-30,{h:96})};
 XARENA.sisyphos=(AX,AW,H)=>{for(const s of H.L.solids)if(s.kind==='ground'&&s.x<=AX&&s.x+s.w>=AX+AW)s.floor='sand'};
@@ -5516,7 +5516,7 @@ ACH.push({id:'mini1',name:'Pult-Pirat',desc:'Gewinne ein Boss-Minispiel.',rw:800
    ZWISCHENBOSSE: verschiedene Minispiele statt immer nur Wortgefecht
    Wortgefecht · Türsteher-Quiz · Tanz-Battle · Plattenkiste · Taktgefühl
    ===================================================================== */
-const MBTYPES=['wort','quiz','tanz','kiste','tapp'];
+const MBTYPES=['wort','quiz','tanz','kiste'];
 const MBDEF={wort:{n:'Wortgefecht',i:'💬'},quiz:{n:'Türsteher-Quiz',i:'❓'},tanz:{n:'Tanz-Battle',i:'🕺'},kiste:{n:'Plattenkiste',i:'💿'},tapp:{n:'Taktgefühl',i:'🥁'}};
 const QUIZ=[
  ['Wo steht das Berghain?','In Berlin-Friedrichshain','In Hamburg-Altona','Auf einem Kreuzfahrtschiff'],
@@ -5652,7 +5652,7 @@ UI.b_pMB=function(focusI){const D=MBDEF[MB.type],pips=(n,max,c)=>Array.from({len
 {const _b=UI.back;UI.back=function(){if(this.cur==='pMB')return;return _b.call(this)}}
 
 /* Boss-Pult nutzt jetzt vier verschiedene Spiele */
-{const _sm=startMini;startMini=function(){const kind=['beat','pads','tanz','tapp'][G.li%4];if(kind==='beat'||kind==='pads'){_sm();MG.kind=kind;UI.b_pMini();return}
+{const _sm=startMini;startMini=function(){const kind=['beat','pads','tanz'][G.li%3];if(kind==='beat'||kind==='pads'){_sm();MG.kind=kind;UI.b_pMini();return}
  $('#bossCard').classList.remove('on');const b=G.boss,g=b?b.g:GENRES[LEVELS[G.li].genre];
  startMB(kind,{name:b?b.def.name:'Boss',lab:'Boss-Pult · '+g.label+' raus, Techno rein',col:g.color,boss:true,cb:won=>{MG.won=won;G.state='mini';miniEnd()}});G.state='mini'}}
 ACH.push({id:'mbAll',name:'Allrounder',desc:'Gewinne jede Art von Zwischenboss-Spiel einmal.',rw:2500,ok:()=>MBTYPES.every(t=>(SAVE.st.mbWon||{})[t])});
