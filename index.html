@@ -6659,7 +6659,7 @@ function vehDraw(p,e,X,Y,m,beat){const c=VEHC[m.sty]||VEHC.truck,w=m.w,ac=G.leve
  if(m.sty==='float'){const b=((beat+m.q)%1)<.5;for(let k=0;k<3;k++){p.fillStyle='#2a2a30';p.fillRect(X+8+k*22,Y-14,12,14);p.fillStyle=b?ac:'#5a5a66';e.fillStyle=ac;p.fillRect(X+11+k*22,Y-10,6,6);if(b)e.fillRect(X+11+k*22,Y-10,6,6)}addL(m.x+w/2,m.y-10,50,ac,.6)}
  if(m.sty==='car'){p.fillStyle=c[0];p.fillRect(X+12,Y-8,w-28,8);p.fillStyle='#9ad8ff';p.fillRect(X+16,Y-6,w-36,4)}
  if(m.sty==='cart'){p.fillStyle='#c84a2a';p.fillRect(X+6,Y-8,16,8);p.fillStyle='#3a6aaa';p.fillRect(X+26,Y-10,18,10);p.fillStyle='#2a8a3a';p.fillRect(X+48,Y-6,14,6)}}
-function tileUpd(m,dt,p){const ev=m.ev;if(!ev.on){m.st=0;m.off=false;m.y=m.oy;return}const tt=ev.t-.9-m.q*ev.iv;
+function tileUpd(m,dt,p){const ev=m.ev;if(!ev.on){m.st=0;m.off=false;m.y=m.oy;return}const tt=ev.t-1.2-m.q*ev.iv;
  if(tt>-.45&&m.st===0)m.st=1;if(tt>0&&m.st<2){m.st=2;m.vt=0;m.off=true;if(p&&p.ground===m){p.ground=null;p.onGround=false}if(Math.abs(m.x-G.cam.x-VW/2)<VW)AU.sfx('land');
   burst(m.x+m.w/2,m.y,6,['#8a8a94','#5a5a66',G.level.th.accent],{a:-Math.PI/2,spread:2,speed:60,g:300,life:.6})}
  if(m.st===2){m.vt+=dt;m.y=m.oy+m.vt*m.vt*260}}
@@ -6753,7 +6753,7 @@ function AU_PX(L){return LEVELS[L.i].bpm/60*24}
  for(const r of L.recs||[])r.got=false;evReset(L,true);
  // Gegner-Eigenschaft
  if(L.plan.foe){let n=0;for(const e of G.enemies)if((e.type==='walker'||e.type==='hopper')&&(n++%2===0))e.trait=L.plan.foe}}}
-function evReset(L,full){for(const v of L.pev||[]){if(v.type==='einsturz'){v.on=false;v.t=0;v.iv=(.47-DF().kd*.12)}if(v.type==='flut'){v.st=0;v.t=0;v.y=FLOOR_Y+6}if(v.type==='banner'&&full)v.seen=false;if(v.type==='kanone')v.t=0}}
+function evReset(L,full){for(const v of L.pev||[]){if(v.type==='einsturz'){v.on=false;v.t=0;v.iv=clamp(.56-DF().kd*.45,.48,.66)}if(v.type==='flut'){v.st=0;v.t=0;v.y=FLOOR_Y+6}if(v.type==='banner'&&full)v.seen=false;if(v.type==='kanone')v.t=0}}
 {const _rp=respawnPlayer;respawnPlayer=function(){_rp();const L=G.level;if(!L||!L.plan)return;evReset(L,false);
  if(G.auto){G.auto.x=clamp(G.respawn.x-90,0,L.w-VW);G.auto.hold=1.2}}}
 
@@ -6780,7 +6780,9 @@ function planTick(dt){const L=G.level,p=G.player;if(!L||!L.plan||!p||G.state!=='
  // Ereignisse
  for(const v of L.pev||[]){
   if(v.type==='banner'){if(!v.seen&&p.x>v.x){v.seen=true;G.zoneB={n:'★ '+v.n.toUpperCase(),f:v.t,t:0,hint:1};AU.sfx('checkpoint')}continue}
-  if(v.type==='einsturz'){if(!v.on&&live&&p.x>v.x0+20){v.on=true;v.t=0;addShake(4);AU.sfx('slam')}if(v.on)v.t+=dt;continue}
+  if(v.type==='einsturz'){if(!v.on&&live&&p.onGround&&p.ground&&p.ground.kind==='ctile'){v.on=true;v.t=0;addShake(4);AU.sfx('slam');popup(p.x+5,p.y-10,'LAUF!','#ffe23a',true)}
+   if(v.on){v.t+=dt;// zurück am Anfang? Boden kommt wieder, damit man nie festsitzt
+    if(live&&p.onGround&&p.x+p.w<v.x0-2&&v.t>.5){v.on=false;v.t=0;popup(p.x+5,p.y-10,'Neuer Versuch!','#c8bce8')}}continue}
   if(v.type==='drop'){const inR=p.x>v.x0-40&&p.x<v.x1+40,bi=Math.floor(beat/16);
    if(bi!==v.last){const was=v.last;v.last=bi;if(was>=0&&inR&&live&&!G.bossStarted){G.flash=Math.max(G.flash,.35);addShake(9);AU.sfx('slam');
      for(let k=0;k<26;k++)part({x:v.x0+Math.random()*(v.x1-v.x0),y:FLOOR_Y-2,vx:(Math.random()-.5)*60,vy:-120-Math.random()*120,g:300,life:.7,col:k%2?L.th.accent:'#ffffff',s:2,em:true});
