@@ -5504,14 +5504,14 @@ UI.panels.push('pMini');
 UI.b_pMini=function(){const b=G.boss,g=b?b.g:GENRES[LEVELS[G.li].genre],beat=MG.kind==='beat';
  const title=beat?'Beat-Match':'Sample-Pads',lab=`Minispiel · ${esc(g.label)} raus, Techno rein`;let body='';
  const pips=(n,max,c)=>Array.from({length:max},(_,k)=>`<i class="${k<n?'on':''}" style="--pc:${c}"></i>`).join('');
- if(MG.phase==='intro')body=`<p class="mtxt">${beat?`Der Regler läuft hin und her. Drück <b>DROP!</b>, wenn er im grünen Feld ist. <b>3 Treffer</b> aus 5 Versuchen – dann fliegt ${esc(b?b.def.name:'der Boss')} raus.`:`Die Pads leuchten in einer Reihenfolge auf. Spiel sie nach (Tasten <b>1–4</b> oder antippen). <b>3 Runden</b>, 2 Fehler erlaubt.`}</p>
+ if(MG.phase==='intro')body=`<p class="mtxt">${beat?`Der Regler läuft hin und her. Drück <b>DROP!</b>, wenn er im grünen Feld ist. <b>3 Treffer</b> aus 5 Versuchen – dann fliegt ${esc(b?b.def.name:'der Boss')} raus.`:`Die Pads leuchten in einer Reihenfolge auf. Spiel sie nach (Tasten <b>1–4</b>, Gamepad-Steuerkreuz ◀ ▲ ▶ ▼ oder antippen). <b>3 Runden</b>, 2 Fehler erlaubt.`}</p>
   <p class="mtxt dim">Gewonnen: Boss verliert <b>2 Balken</b>.</p><button class="btn" data-act="minigo" data-focus><div>Los geht’s ▸</div></button>`;
  else if(MG.phase==='end')body=`<div class="dres ${MG.won?'won':'lost'}">${MG.won?'🎛️ Gewonnen! Der Boss verliert 2 Balken.':'Verloren … Das Pult lädt neu auf – versuch’s gleich nochmal.'}</div><button class="btn" data-act="miniend" data-focus><div>Zurück in den Kampf ▸</div></button>`;
  else if(beat)body=`<div class="mscore">Treffer ${pips(MG.hits,3,'#3aff9a')} <span class="dim">Runde ${Math.min(5,MG.round+1)}/5</span></div>
   <div class="mbar"><div class="mzone" style="left:${MG.zone[0]*100}%;width:${(MG.zone[1]-MG.zone[0])*100}%"></div><div id="mCur" class="mcur" style="left:${MG.pos*100}%"></div></div>
   <div class="mtxt">${esc(MG.msg||' ')}</div><button class="btn big" data-act="minihit" data-focus><div>DROP!</div></button>`;
  else body=`<div class="mscore">Runde ${pips(MG.round,3,'#3aff9a')} <span class="dim">Leben ${pips(MG.lives,2,'#ff2fd6')}</span></div>
-  <div class="mtxt">${esc(MG.msg)}</div><div class="pads ${MG.phase==='input'?'':'wait'}">${PADS.map((q,i)=>`<button class="btn pad" data-act="minipad" data-j="${i}" style="--pc:${q.c}" ${i===0?'data-focus':''}><div><b>${i+1}</b>${q.n}</div></button>`).join('')}</div>`;
+  <div class="mtxt">${esc(MG.msg)}</div><div class="pads ${MG.phase==='input'?'':'wait'}">${PADS.map((q,i)=>`<button class="btn pad" data-act="minipad" data-j="${i}" style="--pc:${q.c}" ${i===0?'data-focus':''}><div><b>${i+1}</b>${q.n}<small style="opacity:.7">${['◀','▲','▶','▼'][i]}</small></div></button>`).join('')}</div>`;
  $('#pMini').innerHTML=`<div class="card box duel mini" style="--gc:${g.color}"><div class="dhead"><span class="lab">${lab}</span><h2>🎛️ ${title}</h2></div>${body}</div>`;
  if(MG.kind==='pads')padLight()};
 {const _a=UI.act;UI.act=function(a,el){
@@ -5636,7 +5636,7 @@ UI.panels.push('pMB');
 UI.b_pMB=function(focusI){const D=MBDEF[MB.type],pips=(n,max,c)=>Array.from({length:max},(_,k)=>`<i class="${k<n?'on':''}" style="--pc:${c}"></i>`).join('');
  const need={quiz:3,tanz:2,tapp:2}[MB.type]||0;let body='';
  const rules={quiz:'Beantworte die Fragen des Türstehers. <b>3 richtige</b> gewinnen, 3 falsche verlieren. Die Zeit läuft mit! (Tasten 1–3)',
-  tanz:'Tanz die Pfeilfolge nach – Pfeiltasten/WASD oder antippen. Ein falscher Schritt oder zu langsam kostet die Runde. <b>2 Runden</b> gewinnen!',
+  tanz:'Tanz die Pfeilfolge nach – Pfeiltasten/WASD, Gamepad-Steuerkreuz oder antippen. Ein falscher Schritt oder zu langsam kostet die Runde. <b>2 Runden</b> gewinnen!',
   kiste:'In der Plattenkiste liegen Paare. Dreh zwei Hüllen um und finde alle Paare, bevor dir zu viele Fehlgriffe passieren.',
   tapp:'Hör dir vier Schläge an, dann klopf <b>6 Schläge</b> genau auf die Kick mit – der Takt läuft weiter (Leertaste oder großer Knopf). <b>2 Runden</b> gewinnen!'}[MB.type];
  const score=need?`<div class="dscore"><span>Du ${pips(MB.me,need,'#2ff3ff')}</span><span>${pips(MB.op,MB.type==='quiz'?3:2,MB.col)} ${esc(MB.name.split(' ')[0])}</span></div>`:
@@ -6431,6 +6431,16 @@ let MAPIMG_OUT=null;
 /* Abspann im Finale-Bildschirm erneut ansehen */
 {const _be=UI.b_pEnding;UI.b_pEnding=function(){_be.call(this);if(this.res&&this.res.finale===4){const b=$('#pEnding .brow');if(b)b.insertAdjacentHTML('beforeend','<button class="btn ghost" data-act="outro"><div>Abspann nochmal</div></button>')}}}
 
+/* Zurück aus Plattenkoffer und Afterhour */
+{const _b=UI.back;UI.back=function(){if((this.cur==='pRack'||this.cur==='pAfter')&&$('#confirm').hidden){AU.sfx('ui');this.show(this.ret||'pMenu');return}return _b.call(this)}}
+/* Gamepad in Minispielen: Steuerkreuz/Stick direkt als Eingabe, wo Tempo zählt */
+function padMini(now,prev){const pr=k=>now[k]&&!prev[k];const dir=pr('l')?0:pr('up')?1:pr('down')?2:pr('r')?3:-1;
+ if(UI.cur==='pMB'&&MB.type==='tanz'&&MB.phase==='play'){if(dir>=0)tanzHit(dir);return true}
+ if(UI.cur==='pMini'&&MG.kind==='pads'&&MG.phase==='input'){const m=[0,1,3,2][dir];if(dir>=0)padHit(m);
+  return true}
+ if(UI.cur==='pMini'&&MG.kind==='beat'&&MG.phase==='play'){if(pr(0)||pr(2)||pr(3)||pr(7)){beatHit();return true}return false}
+ return false}
+
 /* ================= INPUT ================= */
 const KEYMAP={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',ArrowDown:'down',KeyS:'down',ArrowUp:'jump',KeyW:'jump',Space:'jump',
  KeyJ:'shoot',KeyX:'shoot',KeyC:'shoot',KeyK:'drop',KeyF:'drop',ShiftLeft:'dash',ShiftRight:'dash',KeyL:'dash',KeyQ:'prev',KeyE:'next',KeyI:'aimUp',
@@ -6485,6 +6495,7 @@ function pollPad(){
  for(let i=0;i<17;i++)now[i]=bt(i);
  now.down=IN.padY>.5;now.up=IN.padY<-.5;now.l=IN.padX<0;now.r=IN.padX>0;
  if(G.state==='play'){for(const i in map)if(now[i]&&!prev[i])IN.pressed.add(map[i]);if(now.down&&!prev.down)IN.pressed.add('down');IN.touchMode=false}
+ else if(typeof padMini==='function'&&padMini(now,prev)){}
  else{if(now.up&&!prev.up)navMove(0,-1);if(now.down&&!prev.down)navMove(0,1);if(now.l&&!prev.l)navMove(-1,0);if(now.r&&!prev.r)navMove(1,0);
   if(now[0]&&!prev[0]){const ae=document.activeElement;if(ae&&ae.tagName==='BUTTON')ae.click();else if(UI.cur==='pSplash')$('#btnEnter').click()}
   if(now[1]&&!prev[1])UI.back();if(now[9]&&!prev[9]&&UI.cur==='pPause')resumeGame()}
