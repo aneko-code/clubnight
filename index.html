@@ -896,7 +896,7 @@ const GINST={
  accordion:{type:'square',uni:2,det:16,cut:2400,q:1.5,vol:.045,att:.015,rel:.06,vib:.005,vibR:6},
  tuba:{type:'sawtooth',cut:420,vol:.2,att:.02,rel:.08},
  brass:{type:'sawtooth',uni:2,det:8,cut:1700,q:1,vol:.055,att:.03,rel:.08},
- dist:{type:'sawtooth',uni:2,det:12,shape:60,cut:2600,vol:.045,att:.003,rel:.04},
+ dist:{type:'sawtooth',uni:2,det:12,shape:10,cut:2200,vol:.04,att:.003,rel:.04},
  twang:{type:'triangle',cut:4200,vol:.12,att:.002,rel:.3},
  upright:{type:'triangle',cut:700,vol:.24,att:.005,rel:.12},
  sax:{type:'sawtooth',cut:1500,q:3,vol:.055,att:.04,rel:.1,vib:.008,vibR:5},
@@ -919,9 +919,10 @@ const AU={
   const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
   try{this.ctx=new AC()}catch(e){return}
   const c=this.ctx;
-  this.master=c.createGain();this.master.gain.value=.9;
-  const comp=c.createDynamicsCompressor();comp.threshold.value=-14;comp.ratio.value=4;comp.attack.value=.004;comp.release.value=.2;
-  this.master.connect(comp);comp.connect(c.destination);
+  this.master=c.createGain();this.master.gain.value=.8;
+  const comp=c.createDynamicsCompressor();comp.threshold.value=-12;comp.ratio.value=3;comp.knee.value=12;comp.attack.value=.012;comp.release.value=.25;
+  const lim=c.createDynamicsCompressor();lim.threshold.value=-2;lim.knee.value=0;lim.ratio.value=20;lim.attack.value=.002;lim.release.value=.12;
+  this.master.connect(comp);comp.connect(lim);lim.connect(c.destination);this.comp=lim;
   this.musicBus=c.createGain();this.sfxBus=c.createGain();
   this.mfilt=c.createBiquadFilter();this.mfilt.type='lowpass';this.mfilt.frequency.value=20000;this.mfilt.Q.value=.8;
   this.musicBus.connect(this.mfilt);this.mfilt.connect(this.master);this.sfxBus.connect(this.master);
@@ -1000,7 +1001,7 @@ const AU={
   o.type='sine';o.frequency.setValueAtTime(150+hard*70,t);o.frequency.exponentialRampToValueAtTime(50,t+.09);o.frequency.exponentialRampToValueAtTime(40,t+.4);
   g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(.001,v),t+.004);g.gain.exponentialRampToValueAtTime(.001,t+.42);
   o.connect(g);
-  if(hard>0){const ws=c.createWaveShaper();ws.curve=this.curve(2+hard*22);const og=c.createGain();og.gain.value=1/(1+hard*.6);g.connect(ws);ws.connect(og);og.connect(this.musicBus)}else g.connect(this.musicBus);
+  if(hard>0){const ws=c.createWaveShaper();ws.oversample='2x';ws.curve=this.curve(1.5+hard*6);const og=c.createGain();og.gain.value=1/(1+hard*.35);g.connect(ws);ws.connect(og);og.connect(this.musicBus)}else g.connect(this.musicBus);
   o.start(t);o.stop(t+.45);
  },
  hat(t,v,open){
@@ -1032,7 +1033,7 @@ const AU={
   g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(v,t+att);g.gain.setValueAtTime(v,t+hold);g.gain.exponentialRampToValueAtTime(.0004,t+hold+rel);
   const n=o.uni||1,end=t+hold+rel+.05;
   let last=fl;
-  if(o.shape){const ws=c.createWaveShaper();ws.curve=this.curve(o.shape);fl.connect(ws);last=ws}
+  if(o.shape){const ws=c.createWaveShaper();ws.oversample='2x';ws.curve=this.curve(o.shape);fl.connect(ws);last=ws}
   for(let k=0;k<n;k++){
    const os=c.createOscillator();os.type=o.type||'sawtooth';
    if(o.slideFrom){os.frequency.setValueAtTime(o.slideFrom,t);os.frequency.exponentialRampToValueAtTime(f,t+.06)}else os.frequency.setValueAtTime(f,t);
@@ -1061,7 +1062,7 @@ const AU={
    if(K==='broken'){if([0,6,10].includes(step)||(step===13&&bar%2))this.kick(t,.85*ta,hard)}
    else if(step%4===0){this.kick(t,(K==='soft'?.7:.9)*ta,K==='hard'?Math.max(.8,hard):hard);
     if(K==='rumble'){this.voice(t+sd*.8,mtof(S.root-12),sd*2.2,{type:'sawtooth',cut:150,q:2,vol:.13*ta,att:.02,rel:.25,rev:.7,shape:6})}
-    if(K==='hard'&&g.tail)this.voice(t+sd*.25,mtof(S.root-12+(step===8?3:0)),sd*1.4,{type:'square',cut:900,cutEnd:200,vol:.06*ta,att:.004,rel:.06,shape:20})}
+    if(K==='hard'&&g.tail)this.voice(t+sd*.25,mtof(S.root-12+(step===8?3:0)),sd*1.4,{type:'square',cut:900,cutEnd:200,vol:.05*ta,att:.004,rel:.06,shape:6})}
    if(K==='soft'&&step===14&&bar%2)this.kick(t,.35*ta,0)}
   // Hats
   if(sec.h){const Hh=g.hats;
@@ -1193,7 +1194,7 @@ const AU={
    case'bosshit':N(.07,900,300,.12,'lowpass');break;
    case'slam':this.kickSfx(t);N(.4,500,60,.35,'lowpass');break;
    case'warn':V(880,.08,{type:'square',cut:3000,vol:.04,rel:.03});V(880,.08,{type:'square',cut:3000,vol:.04,rel:.03,delay:.16});break;
-   case'beam':N(.6,2000,300,.2);V(110,.5,{type:'sawtooth',cut:800,vol:.08,shape:20});break;
+   case'beam':N(.6,2000,300,.2);V(110,.5,{type:'sawtooth',cut:800,vol:.07,shape:6});break;
    case'bossdie':N(1.6,3000,60,.35,'lowpass');[0,3,7,10,12].forEach((s,k)=>V(mtof(root+24+s),.3,{type:'sawtooth',uni:2,cut:2600,vol:.04,rel:.6,delay:.3+k*.09}));break;
    case'ui':V(1100,.03,{type:'square',cut:4000,vol:.03,rel:.03});break;
    case'uiok':V(880,.04,{type:'square',cut:4000,vol:.035,rel:.04});V(1320,.06,{type:'square',cut:4000,vol:.035,rel:.06,delay:.05});break;
@@ -2585,7 +2586,7 @@ Object.assign(EVENTS,{
  funken:{bad:false,run(){toastMsg('Funkenregen aus dem Stahlwerk!');G.evSparks=4}},
  voegel:{bad:false,run(){toastMsg('Die Vögel begrüßen den Morgen.');G.evBirds={t:0,n:12,col:'#2a2030'}}},
  glitzer:{bad:false,run(){toastMsg('Glitzerregen über der Spree!');G.evGlitter=5}},
- strom:{bad:false,run(){toastMsg('Kurzer Stromausfall im Kraftwerk …');G.blackoutT=2.6;AU.muffle(true);setTimeout(()=>{if(G.state==='play')AU.muffle(false)},2600)}},
+ strom:{bad:false,run(){toastMsg('Kurzer Stromausfall im Kraftwerk … nur der Ton spinnt kurz!');AU.muffle(true);setTimeout(()=>{if(G.state==='play')AU.muffle(false)},1600)}},
  sonne:{bad:false,run(){toastMsg('Durch einen Spalt fällt Morgenlicht.');G.evSun=6}}
 });
 function confettiRain(n){for(let k=0;k<n;k++)part({x:G.cam.x+Math.random()*VW,y:-5-Math.random()*30,vx:(Math.random()-.5)*30,vy:20+Math.random()*30,g:30,life:3.5,col:pick(['#ff2fd6','#2ff3ff','#ffe23a','#ffffff','#b6ff3a']),s:2,kind:'confetti'})}
@@ -5663,8 +5664,8 @@ for(const k of['b_pMB','b_pDuel','b_pMini']){const _f=UI[k];UI[k]=function(...a)
 /* =====================================================================
    LEVEL-REGELN: jedes Level spielt sich anders (Karte 2 kombiniert zwei, das Finale drei)
    ===================================================================== */
-const GIM={distillery:[],rj:['ice'],omen:['hot'],bootshaus:['chase'],blitz:['timer'],ms:['gust'],sisyphos:['lowg'],kater:['mud'],tresor:['dark'],berghain:['chase','hot'],
- loveparade:['chase','gust'],fusion:['mud','dark'],melt:['lowg','gust'],natureone:['mud','timer'],timewarp:['hot','dark'],parooka:['chase','ice'],kappa:['timer','hot'],hive:['dark','chase'],sonar:['lowg','hot'],tml:['chase','mud','gust']};
+const GIM={distillery:[],rj:['ice'],omen:['hot'],bootshaus:['chase'],blitz:['timer'],ms:['gust'],sisyphos:['lowg'],kater:['mud'],tresor:['escal'],berghain:['chase','hot'],
+ loveparade:['chase','gust'],fusion:['mud','gust'],melt:['lowg','gust'],natureone:['mud','timer'],timewarp:['hot','ice'],parooka:['chase','ice'],kappa:['timer','hot'],hive:['escal','chase'],sonar:['lowg','hot'],tml:['chase','mud','gust']};
 const GIMDEF={
  ice:{n:'GLATTEIS',c:'#8ae8ff',d:'Verschüttete Drinks! Auf den blauen Pfützen rutschst du – früh abbremsen.'},
  hot:{n:'LED-BODEN',c:'#ff3a6a',d:'Der Leuchtboden glüht im Takt: Gelb = gleich springen, Rot = nicht draufstehen!'},
@@ -5690,7 +5691,7 @@ function gimRng(seed){let s=seed>>>0||1;return()=>(s=(s*1664525+1013904223)>>>0)
  if(L.gim.includes('mud'))L.mud=patches(.7,70,180,180,460);
  if(L.gim.includes('hot'))L.hot=patches(.9,140,320,70,160,L.tour&&L.tour[1]?L.tour[1].x0:start);
  if(L.gim.includes('timer')){L.timeMax=Math.round((A-start)/60)+25;L.clocks=[.28,.52,.76].map(f=>{const x=start+(A-start)*f,g=grounds.find(g=>g.x<=x&&g.x+g.w>=x);return{x:g?x:(grounds[Math.floor(grounds.length*f)]||{x:x}).x+30,y:FLOOR_Y-34,t:0}})}
- if(L.gim.includes('chase'))L.chaseSp=30+L.i*1.25;
+ if(L.gim.includes('chase'))L.chaseSp=20+L.i*.55;
 }}
 {const _sl=startLevel;startLevel=function(i){_sl(i);const L=G.level;G.gimT=0;G.chase=null;G.gust={ph:0,dir:0,warn:0};G.timer=null;G.strobe=0;
  if(!L||!L.gim||!L.gim.length)return;if(L.timeMax)G.timer=L.timeMax+(hasSkill('v9')?30:0);if(L.chaseSp)G.chase={x:-400,on:false};
@@ -5719,8 +5720,8 @@ function gimTick(dt){const L=G.level,p=G.player;if(!L||!L.gim||!L.gim.length||!p
  if(G.timer!=null&&live&&!G.bossStarted){G.timer-=dt;for(const c of L.clocks)if(!c.taken&&Math.abs(p.x+p.w/2-c.x)<14&&Math.abs(p.y+p.h/2-c.y)<20){c.taken=true;const ad=hasSkill('v9')?30:20;G.timer+=ad;popup(c.x,c.y-10,'+'+ad+' SEK','#ffe23a',true);AU.sfx('checkpoint')}
   if(G.timer<=0){G.timer=0;if(!G.god){UI.toast(pick(['SPERRSTUNDE! Der Türsteher trägt dich raus.','Licht an, Musik aus – Sperrstunde!','„Habt ihr kein Zuhause?“ – Sperrstunde!']));p.hp=1;p.inv=0;p.shield=0;hurtPlayer(p.x,true)}G.timer=45}}
  // Verfolgung
- if(G.chase&&live){const c=G.chase,A=L.arena?L.arena.x-380:L.w;if(!c.on&&p.x>360){c.on=true;c.x=p.x-330;UI.toast('Die Kommerz-Walze rollt los!')}
-  if(c.on&&!G.bossStarted){c.x=Math.min(A,Math.max(c.x+L.chaseSp*dt,G.cam.x-150));if(p.x<c.x+6){hurtPlayer(c.x-40,true);p.x=Math.max(p.x,c.x+8);p.vx=220;p.vy=-180;addShake(5)}}}
+ if(G.chase&&live){const c=G.chase,A=L.arena?L.arena.x-380:L.w;if(!c.on&&p.x>360){c.on=true;c.x=p.x-420;UI.toast('Die Kommerz-Walze rollt los!')}
+  if(c.on&&!G.bossStarted){c.x=Math.min(A,Math.max(c.x+L.chaseSp*dt,G.cam.x-230));if(p.x<c.x+6){hurtPlayer(c.x-40,true);p.x=Math.max(p.x,c.x+8);p.vx=220;p.vy=-180;addShake(5)}}}
  // Sturm
  if(gimHas('gust')){const g=G.gust,per=6.2,t=(G.gimT%per);if(t<dt*1.5){g.next=Math.random()<.68?-1:1}g.warn=t>2.6&&t<3.6?g.next:0;g.dir=t>=3.6&&t<5.4?g.next:0;
   if((g.warn||g.dir)&&Math.random()<(g.dir?.9:.3)){const d=g.dir||g.warn;part({x:G.cam.x+(d>0?-4:VW+4),y:20+Math.random()*(FLOOR_Y-20),vx:d*(g.dir?260:120),vy:(Math.random()-.5)*20,g:0,life:1.6,col:g.dir?'#e8ffe0':'#9ab89a',s:1,em:!!g.dir})}}
@@ -5789,7 +5790,7 @@ Object.assign(GIMDEF,{
  train:{n:'U-BAHN',c:'#ffd84a',d:'Züge donnern von hinten heran – rauf aufs Dach und mitfahren!'},
  escal:{n:'FLIESSBAND',c:'#c8c8e8',d:'Laufbänder schieben dich – achte auf die Pfeile am Boden.'},
  gpulse:{n:'SCHWERKRAFT',c:'#c8a8ff',d:'Die Schwerkraft wechselt im Takt zwischen schwer und schwebend.'}});
-const GIMLAB={tokyo:{escal:'ROLLTREPPEN'},tempelhof:{escal:'GEPÄCKBAND'},era85:{train:'HOCHBAHN'},newyork:{train:'HOCHBAHN'}};
+const GIMLAB={tresor:{escal:'LAUFBAND'},hive:{escal:'LAUFBAND'},era90:{escal:'LAUFBAND'},tokyo:{escal:'ROLLTREPPEN'},tempelhof:{escal:'GEPÄCKBAND'},era85:{train:'HOCHBAHN'},newyork:{train:'HOCHBAHN'}};
 const WATER_Y=FLOOR_Y-56;
 {const _pl=postLevel;postLevel=function(L){_pl(L);if(L.menu||!L.gim||!L.gim.length)return;
  const r=gimRng(L.i*313+7),A=L.arena?L.arena.x:L.w,cpx=(L.checkpoints||[]).map(c=>c.x),near=x=>cpx.some(c=>Math.abs(c-x)<100);
@@ -6083,8 +6084,8 @@ Object.assign(SND,{
  era2077:{kick:'rumble',hats:'ride',perc:'noise',swing:0,leads:['psy','hoover','supersaw'],bass:'reese',arr:'peak',hard:.85,tail:1}
 });
 /* Spielregeln: Karte 3 immer mit Jetlag, Karte 4 mit Zeit-Filter */
-Object.assign(GIM,{ibiza:['jetlag','swim'],london:['jetlag','train'],amsterdam:['jetlag','ice'],tbilisi:['jetlag','dark'],detroit:['jetlag','escal'],newyork:['jetlag','train','timer'],saopaulo:['jetlag','hot','chase'],tokyo:['jetlag','escal','chase'],karoo:['jetlag','gust','timer'],tempelhof:['jetlag','escal','chase','gust'],
- era74:['timer'],era77:['hot','ice'],era85:['train','gust'],era88:['escal','timer'],era89:['chase','mud'],era90:['dark','ice'],era99:['chase','hot'],era05:['lowg','timer'],era20:['lag','hot'],era2077:['gpulse','chase','hot']});
+Object.assign(GIM,{ibiza:['jetlag','swim'],london:['jetlag','train'],amsterdam:['jetlag','ice'],tbilisi:['jetlag','hot'],detroit:['jetlag','escal'],newyork:['jetlag','train','timer'],saopaulo:['jetlag','hot','chase'],tokyo:['jetlag','escal','chase'],karoo:['jetlag','gust','timer'],tempelhof:['jetlag','escal','chase','gust'],
+ era74:['timer'],era77:['hot','ice'],era85:['train','gust'],era88:['escal','timer'],era89:['chase','mud'],era90:['ice','escal'],era99:['chase','hot'],era05:['lowg','timer'],era20:['lag','hot'],era2077:['gpulse','chase','hot']});
 const ERAFX={era74:'bit8',era77:'film',era85:'vhs',era88:'sepia',era89:'acid',era90:'bw',era99:'y2k',era05:'mono',era20:'webcam',era2077:'holo'};
 /* Baupläne der neuen Level */
 const BPX={
